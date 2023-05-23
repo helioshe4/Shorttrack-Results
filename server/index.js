@@ -11,21 +11,13 @@ app.use(express.json());
 
 //SKATERS
 
-//create a skater
+//create a skater (only name)
 app.post("/skaters", async (req, res) => {
   try {
     const { skater_name } = req.body;
     const newSkater = await pool.query(
       "INSERT INTO skaters (skater_name) VALUES($1) RETURNING *",
       [skater_name]
-    );
-
-    const skaterId = newSkater.rows[0].skater_id;
-
-    // Insert into all_time_pbs table with skater_id and skater_name
-    const newPB = await pool.query(
-      "INSERT INTO all_time_pbs (skater_id, skater_name) VALUES ($1, $2) RETURNING *",
-      [skaterId, skater_name]
     );
 
     res.json(newSkater.rows[0]);
@@ -60,19 +52,85 @@ app.get("/skaters/:skater_id", async (req, res) => {
   }
 });
 
-//update a skater
-app.put("/skaters/:skater_id", async (req, res) => {
+//update a skater's info
+app.put("/skaters/:skater_id/update", async (req, res) => {
   try {
     const { skater_id } = req.params;
-    const { skater_name } = req.body;
-    const updateSkater = await pool.query(
-      "UPDATE skaters SET skater_name = $1 WHERE skater_id = $2",
-      [skater_name, skater_id]
-    );
+    const {
+      all_time_pb,
+      all_time_location,
+      all_time_competition,
+      all_time_date,
+      season_pb,
+      season_location,
+      season_competition,
+      season_date,
+    } = req.body;
 
-    res.json("Skater name was updated");
+    let query = "UPDATE skaters SET";
+    const values = [];
+    const params = [];
+
+    if (all_time_pb !== undefined) {
+      query += " all_time_pb = $1,";
+      values.push(all_time_pb);
+      params.push("all_time_pb");
+    }
+
+    if (all_time_location !== undefined) {
+      query += " all_time_location = $" + (values.length + 1) + ",";
+      values.push(all_time_location);
+      params.push("all_time_location");
+    }
+
+    if (all_time_competition !== undefined) {
+      query += " all_time_competition = $" + (values.length + 1) + ",";
+      values.push(all_time_competition);
+      params.push("all_time_competition");
+    }
+
+    if (all_time_date !== undefined) {
+      query += " all_time_date = $" + (values.length + 1) + ",";
+      values.push(all_time_date);
+      params.push("all_time_date");
+    }
+
+    if (season_pb !== undefined) {
+      query += " season_pb = $" + (values.length + 1) + ",";
+      values.push(season_pb);
+      params.push("season_pb");
+    }
+
+    if (season_location !== undefined) {
+      query += " season_location = $" + (values.length + 1) + ",";
+      values.push(season_location);
+      params.push("season_location");
+    }
+
+    if (season_competition !== undefined) {
+      query += " season_competition = $" + (values.length + 1) + ",";
+      values.push(season_competition);
+      params.push("season_competition");
+    }
+
+    if (season_date !== undefined) {
+      query += " season_date = $" + (values.length + 1) + ",";
+      values.push(season_date);
+      params.push("season_date");
+    }
+
+    // Remove the trailing comma from the query
+    query = query.slice(0, -1);
+
+    query += " WHERE skater_id = $" + (values.length + 1);
+    values.push(skater_id);
+
+    const updateSkater = await pool.query(query, values);
+
+    res.json("Skater information updated");
   } catch (err) {
     console.error(err.message);
+    //res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -90,44 +148,6 @@ app.delete("/skaters/:skater_id", async (req, res) => {
     console.error(err.message);
   }
 });
-
-//ALL TIME PBS
-
-//add a pb
-// app.post("/skaters/:skater_id/all-time-pbs", async (req, res) => {
-//   try {
-//     const { skater_id } = req.params;
-//     const { skater_name, time, location, competition_name, date } = req.body;
-//     const newPb = await pool.query(
-//       "INSERT INTO all_time_pbs (skater_id, skater_name, time, location, competition_name, date) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
-//       [skater_id, skater_name, time, location, competition_name, date]
-//     );
-
-//     res.json(newPb.rows);
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
-
-//update a pb
-app.put("/skaters/:skater_id/all-time-pbs", async (req, res) => {
-  try {
-    const { skater_id } = req.params;
-    const { skater_name } = req.body;
-    const updateSkater = await pool.query(
-      "UPDATE skaters SET skater_name = $1 WHERE skater_id = $2",
-      [skater_name, skater_id]
-    );
-
-    res.json("Skater name was updated");
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-//get a pb
-
-//delete a pb
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");
