@@ -2,14 +2,52 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
+const session = require("express-session");
 
 //middleware
 app.use(cors());
 app.use(express.json());
 
-//ROUTES
+app.use(
+  session({
+    secret: "your_session_secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
-//SKATERS
+app.post("/login", async (req, res) => {
+  // Validate admin credentials
+  const { username, password } = req.body;
+  // Perform authentication logic here
+
+  if (username === "admin" && password === "admin") {
+    // If the admin is authenticated, create a session and store admin data
+    req.session.admin = {
+      username,
+      role: "admin", // Set the admin role or any other relevant data
+    };
+
+    res.json({ message: "Login successful" });
+  } else {
+    // Admin authentication failed
+    res.status(401).json({ error: "Invalid credentials" });
+  }
+});
+
+//Protect the admin routes by checking if a valid session exists and if the user is authenticated:
+app.get("/admin/dashboard", (req, res) => {
+  // Check if a valid session exists and if the user is authenticated
+  if (req.session.admin && req.session.admin.role === "admin") {
+    // Admin is authenticated, proceed with accessing the admin dashboard
+    res.send("Admin Dashboard");
+  } else {
+    // Admin is not authenticated, redirect to login page or return an error
+    res.status(401).json({ error: "Unauthorized" });
+  }
+});
+
+//ROUTES
 
 //create a skater (only name)
 app.post("/skaters", async (req, res) => {
