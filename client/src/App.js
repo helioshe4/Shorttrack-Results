@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/pages/Home";
 import Login from "./components/pages/Login";
 import LoginContainer from "./containers/LoginContainer";
-import Contact from "./components/pages/Contact";
+import Dashboard from "./components/pages/Dashboard";
 import NoPage from "./components/pages/NoPage";
 
 //Styling
@@ -21,13 +21,16 @@ function App() {
             path="login"
             element={
               token ? (
-                <Login />
+                <Navigate to="/dashboard" />
               ) : (
-                <LoginContainer setToken={setToken} />
+                <>
+                  {/* <LoginContainer setToken={setToken} /> */}
+                  <Login setToken={setToken}/>
+                </>
               )
             }
           />
-          <Route path="contact" element={<Contact />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

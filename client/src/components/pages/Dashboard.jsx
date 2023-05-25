@@ -1,7 +1,7 @@
 import React from "react";
 import Homebar from "../Homebar";
 
-function Contact() {
+function Dashboard() {
   return (
     <>
       <Homebar />
@@ -10,4 +10,4 @@ function Contact() {
   );
 }
 
-export default Contact;
+export default Dashboard;
