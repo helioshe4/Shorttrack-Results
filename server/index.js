@@ -47,12 +47,11 @@ app.use(express.json());
 //   }
 // });
 
-app.use('/login', (req,res) => {
+app.use("/login", (req, res) => {
   res.send({
-    token: 'test123'
-  })
-})
-
+    token: "test123",
+  });
+});
 
 //ROUTES
 
@@ -67,7 +66,8 @@ app.post("/skaters", async (req, res) => {
 
     res.json(newSkater.rows[0]);
   } catch (err) {
-    console.error(err.message);
+    console.error("already added");
+    res.status(409).json({ error: "Skater already exists" });
   }
 });
 
