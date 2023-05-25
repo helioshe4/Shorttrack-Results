@@ -6,7 +6,6 @@ function Login() {
   return (
     <>
       <Homebar />
-      <LoginContainer />
       <h1>this is the login page</h1>
     </>
   );
