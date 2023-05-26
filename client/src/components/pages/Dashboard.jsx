@@ -4,11 +4,12 @@ import AddSkater from "../AddSkater";
 import DeleteSkater from "../DeleteSkater";
 
 function Dashboard() {
+
   return (
     <>
       <Homebar />
       <AddSkater />
-      {/* <DeleteSkater /> */}
+      <DeleteSkater />
       <h1>this is the dashboard</h1>
     </>
   );

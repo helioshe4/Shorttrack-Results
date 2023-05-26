@@ -194,6 +194,22 @@ app.delete("/skaters/:skater_id", async (req, res) => {
   }
 });
 
+//get a skater_id given their name
+app.get("/skaters/skater-name/:skater_name", async (req, res) => {
+  try {
+    const { skater_name } = req.params;
+    const skater = await pool.query(
+      "SELECT skater_id FROM skaters WHERE skater_name = $1 LIMIT 1",
+      [skater_name]
+    );
+
+    res.json(skater.rows[0]);
+    //res.json(typeof skater.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 app.listen(5000, () => {
   console.log("server has started on port 5000");
 });
