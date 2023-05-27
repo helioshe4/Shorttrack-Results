@@ -23,13 +23,16 @@ function App() {
                 <Navigate to="/dashboard" />
               ) : (
                 <>
-                  {/* <LoginContainer setToken={setToken} /> */}
-                  <Login setToken={setToken}/>
+                  <Login setToken={setToken} />
                 </>
               )
             }
           />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route
+            path="dashboard"
+            // element={token ? <Dashboard /> : <NoPage />} //uncomment this after finalized
+            element={<Dashboard />}
+          />
           <Route path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

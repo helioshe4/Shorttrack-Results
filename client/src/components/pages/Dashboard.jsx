@@ -9,7 +9,7 @@ function Dashboard() {
     <>
       <Homebar />
       <AddSkater />
-      <DeleteSkater />
+      {/* <DeleteSkater /> */}
       <SearchSkater />
       <h1>this is the dashboard</h1>
     </>

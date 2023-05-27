@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-.searchContainer {
+.search-container {
   width: 280px;
   display: flex;
   flex-direction: column;
@@ -38,4 +38,14 @@ input {
 .search-inner {
   display: flex;
   color: red;
+}
+
+/* .table-header-spacing {
+  display: flex;
+  justify-content: space-between;
+} */
+
+.table-header-spacing th {
+  flex: 1;
+  text-align: center;
 }
