@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "../styling/searchSkater.css";
+import EditSkater from "./EditSkater";
 
 export default function SearchSkater() {
   const [value, setValue] = useState(""); //value in the search bar
@@ -40,7 +41,7 @@ export default function SearchSkater() {
           tableSkaters.filter((skater) => skater.skater_id !== parseInt(id))
         );
       } else {
-        setSuccessMessage('');
+        setSuccessMessage("");
         setFailureMessage("Something went wrong! Try again please.");
       }
     } catch (err) {
@@ -99,7 +100,10 @@ export default function SearchSkater() {
 
   const handleSearchClick = () => {
     //onSearch(value);
-    performSearch();
+
+    if (value !== "") { //ensures user has box input
+      performSearch();
+    }
   };
 
   return (
@@ -150,7 +154,9 @@ export default function SearchSkater() {
                 <tr key={skater.skater_id}>
                   <td>{skater.skater_name}</td>
                   <td>
-                    <button className="btn btn-warning">Edit</button>
+                    {/* <button className="btn"> */}
+                    <EditSkater skater={skater} />
+                    {/* </button> */}
                   </td>
                   <td>
                     <button
