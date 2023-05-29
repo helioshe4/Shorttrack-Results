@@ -248,7 +248,7 @@ app.get("/skaters/skater-name/:skater_name", async (req, res) => {
   }
 });
 
-//post a skater's info
+//post a skater's results
 app.post("/skaters/:skater_id/results_500", async (req, res) => {
   try {
     const {
@@ -316,6 +316,7 @@ app.post("/skaters/:skater_id/results_500", async (req, res) => {
     //res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");

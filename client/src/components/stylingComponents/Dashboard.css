@@ -1,0 +1,14 @@
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  margin: 0 10px; /* Adjust the margin as needed */
+}
+
+.add-results-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px; /* Adjust the gap as needed */
+}

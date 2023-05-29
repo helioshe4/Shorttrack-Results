@@ -10,5 +10,13 @@
 }
 
 .form-group input {
-  width: 15%;
+  width: 50%;
 }
+
+h1 {
+  font-size: large;
+}
+
+/* .form-control {
+  width: 100%;
+} */
