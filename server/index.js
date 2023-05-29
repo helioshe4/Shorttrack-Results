@@ -8,32 +8,32 @@ const session = require("express-session");
 app.use(cors());
 app.use(express.json());
 
-// app.use(
-//   session({
-//     secret: "your_session_secret",
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
+app.use(
+  session({
+    secret: "your_session_secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
-// app.post("/login", async (req, res) => {
-//   // Validate admin credentials
-//   const { username, password } = req.body;
-//   // Perform authentication logic here
+app.post("/login", async (req, res) => {
+  // Validate admin credentials
+  const { username, password } = req.body;
+  // Perform authentication logic here
 
-//   if (username === "admin" && password === "admin") {
-//     // If the admin is authenticated, create a session and store admin data
-//     req.session.admin = {
-//       username,
-//       role: "admin", // Set the admin role or any other relevant data
-//     };
+  if (username === "admin" && password === "admin") {
+    // If the admin is authenticated, create a session and store admin data
+    req.session.admin = {
+      username,
+      role: "admin", // Set the admin role or any other relevant data
+    };
 
-//     res.json({ message: "Login successful" });
-//   } else {
-//     // Admin authentication failed
-//     res.status(401).json({ error: "Invalid credentials" });
-//   }
-// });
+    res.json({ message: "Login successful" });
+  } else {
+    // Admin authentication failed
+    res.status(401).json({ error: "Invalid credentials" });
+  }
+});
 
 //Protect the admin routes by checking if a valid session exists and if the user is authenticated:
 // app.get("/admin/dashboard", (req, res) => {
@@ -55,19 +55,78 @@ app.use("/login", (req, res) => {
 
 //ROUTES
 
-//create a skater (only name)
+// //create a skater (only name)
+// app.post("/skaters", async (req, res) => {
+//   try {
+//     const { skater_name } = req.body;
+//     const newSkater = await pool.query(
+//       "INSERT INTO skaters (skater_name) VALUES($1) RETURNING *",
+//       [skater_name]
+//     );
+
+//     res.json(newSkater.rows[0]);
+//   } catch (err) {
+//     console.error("already added");
+//     res.status(409).json({ error: "Skater already exists" });
+//   }
+// });
+
+//post a skater's info
 app.post("/skaters", async (req, res) => {
   try {
-    const { skater_name } = req.body;
-    const newSkater = await pool.query(
-      "INSERT INTO skaters (skater_name) VALUES($1) RETURNING *",
-      [skater_name]
-    );
+    const { skater_name, dob, home_club, gender, country, region } = req.body;
+
+    let query = "INSERT INTO skaters (skater_name";
+    const values = [skater_name];
+    const params = ["$1"];
+
+    let paramIndex = 2;
+
+    if (dob) {
+      query += ", dob";
+      values.push(dob);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (home_club) {
+      query += ", home_club";
+      values.push(home_club);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (gender) {
+      query += ", gender";
+      values.push(gender);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (country) {
+      query += ", country";
+      values.push(country);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (region) {
+      query += ", region";
+      values.push(region);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    query += `) VALUES (${params.join(", ")}) RETURNING *`;
+
+    const newSkater = await pool.query(query, values);
+
+    console.log("New skater: ", newSkater.rows[0]);
 
     res.json(newSkater.rows[0]);
   } catch (err) {
-    console.error("already added");
-    res.status(409).json({ error: "Skater already exists" });
+    console.error(err.message);
+    //res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -101,67 +160,46 @@ app.get("/skaters/:skater_id", async (req, res) => {
 app.put("/skaters/:skater_id/update", async (req, res) => {
   try {
     const { skater_id } = req.params;
-    const {
-      all_time_pb,
-      all_time_location,
-      all_time_competition,
-      all_time_date,
-      season_pb,
-      season_location,
-      season_competition,
-      season_date,
-    } = req.body;
+    const { skater_name, dob, home_club, gender, country, region } = req.body;
 
     let query = "UPDATE skaters SET";
     const values = [];
     const params = [];
 
-    if (all_time_pb !== undefined) {
-      query += " all_time_pb = $1,";
-      values.push(all_time_pb);
-      params.push("all_time_pb");
+    if (skater_name !== undefined) {
+      query += " skater_name = $1,";
+      values.push(skater_name);
+      params.push("skater_name");
     }
 
-    if (all_time_location !== undefined) {
-      query += " all_time_location = $" + (values.length + 1) + ",";
-      values.push(all_time_location);
-      params.push("all_time_location");
+    if (dob !== undefined) {
+      query += " dob = $1,";
+      values.push(dob);
+      params.push("dob");
     }
 
-    if (all_time_competition !== undefined) {
-      query += " all_time_competition = $" + (values.length + 1) + ",";
-      values.push(all_time_competition);
-      params.push("all_time_competition");
+    if (home_club !== undefined) {
+      query += " home_club = $" + (values.length + 1) + ",";
+      values.push(home_club);
+      params.push("home_club");
     }
 
-    if (all_time_date !== undefined) {
-      query += " all_time_date = $" + (values.length + 1) + ",";
-      values.push(all_time_date);
-      params.push("all_time_date");
+    if (gender !== undefined) {
+      query += " gender = $" + (values.length + 1) + ",";
+      values.push(gender);
+      params.push("gender");
     }
 
-    if (season_pb !== undefined) {
-      query += " season_pb = $" + (values.length + 1) + ",";
-      values.push(season_pb);
-      params.push("season_pb");
+    if (country !== undefined) {
+      query += " country = $" + (values.length + 1) + ",";
+      values.push(country);
+      params.push("country");
     }
 
-    if (season_location !== undefined) {
-      query += " season_location = $" + (values.length + 1) + ",";
-      values.push(season_location);
-      params.push("season_location");
-    }
-
-    if (season_competition !== undefined) {
-      query += " season_competition = $" + (values.length + 1) + ",";
-      values.push(season_competition);
-      params.push("season_competition");
-    }
-
-    if (season_date !== undefined) {
-      query += " season_date = $" + (values.length + 1) + ",";
-      values.push(season_date);
-      params.push("season_date");
+    if (region !== undefined) {
+      query += " region = $" + (values.length + 1) + ",";
+      values.push(region);
+      params.push("region");
     }
 
     // Remove the trailing comma from the query
@@ -207,6 +245,75 @@ app.get("/skaters/skater-name/:skater_name", async (req, res) => {
     //res.json(typeof skater.rows[0]);
   } catch (err) {
     console.error(err.message);
+  }
+});
+
+//post a skater's info
+app.post("/skaters/:skater_id/results_500", async (req, res) => {
+  try {
+    const {
+      skater_id,
+      all_time_500,
+      season_500,
+      all_time_location,
+      all_time_competition_name,
+      all_time_date,
+      season_location,
+      season_competition_name,
+      season_date
+    } = req.body;
+
+    let query = "INSERT INTO skaters (skater_name";
+    const values = [skater_name];
+    const params = ["$1"];
+
+    let paramIndex = 2;
+
+    if (dob) {
+      query += ", dob";
+      values.push(dob);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (home_club) {
+      query += ", home_club";
+      values.push(home_club);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (gender) {
+      query += ", gender";
+      values.push(gender);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (country) {
+      query += ", country";
+      values.push(country);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (region) {
+      query += ", region";
+      values.push(region);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    query += `) VALUES (${params.join(", ")}) RETURNING *`;
+
+    const newSkater = await pool.query(query, values);
+
+    console.log("New skater: ", newSkater.rows[0]);
+
+    res.json(newSkater.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    //res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

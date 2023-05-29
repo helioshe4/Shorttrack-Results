@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
+import InputMask from "react-input-mask";
+import "./stylingComponents/AddSkater.css";
 
 const AddSkater = () => {
   const [skater_name, setSkaterName] = useState("");
+  const [dob, setDob] = useState("");
+  const [home_club, setHomeClub] = useState("");
+  const [gender, setGender] = useState("");
+  const [country, setCountry] = useState("");
+  const [region, setRegion] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [failureMessage, setFailureMessage] = useState("");
 
@@ -12,7 +19,12 @@ const AddSkater = () => {
 
   const clearBar = () => {
     setSkaterName("");
-  }
+    setDob("");
+    setHomeClub("");
+    setGender("");
+    setCountry("");
+    setRegion("");
+  };
 
   useEffect(() => {
     document.addEventListener("click", clearMessages);
@@ -25,7 +37,16 @@ const AddSkater = () => {
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      const body = { skater_name };
+      const body = {
+        skater_name,
+        dob: dob !== "" ? new Date(dob).toISOString() : null,
+        home_club,
+        gender,
+        country,
+        region,
+      };
+
+      console.log("Form data:", body);
 
       //for when form is blank
       if (skater_name.trim() === "") {
@@ -40,45 +61,113 @@ const AddSkater = () => {
       });
 
       //console.log(await response.text());
-      //console.log(await response.json());
+      console.log("Response:", response);
+      console.log("Response data:", await response.json());
 
       // Check for duplicate key constraint violation
       if (response.status === 409) {
         //clear error messages:
         setSuccessMessage("");
-
         setFailureMessage(`${skater_name} has already been added!`);
       } else {
-        //clear error messages:
-        setFailureMessage("");
-
-        setSuccessMessage(`${skater_name} was added!`);
-        // Clear the input field
-        setSkaterName("");
+        if (response.ok) {
+          //clear error messages:
+          setFailureMessage("");
+          setSuccessMessage(`${skater_name} was added!`);
+          // Clear the input fields
+          clearBar();
+        } else {
+          // Handle the case when the server returns an error
+          setFailureMessage(`There was an error adding ${skater_name}!`);
+        }
       }
-
     } catch (err) {
       console.error(err.message);
     }
   };
 
-
   return (
     <>
       <h1 className="text-center mt-5">Add a skater</h1>
       <form className="d-flex mt-5" onSubmit={onSubmitForm}>
-        <input
-          type="text"
-          className="form-control"
-          value={skater_name}
-          onChange={(e) => setSkaterName(e.target.value)}
-        />
-        <button type="submit" className="btn btn-success">Add</button>
-        <button type="button" onClick={clearBar} className="btn btn-danger" >Clear</button>
+        <div className="form-group">
+          <label htmlFor="skaterName">Skater Name</label>
+          <input
+            type="text"
+            className="form-control"
+            id="skaterName"
+            placeholder="First Last"
+            value={skater_name}
+            onChange={(e) => setSkaterName(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="dob">Date of Birth</label>
+          <InputMask
+            mask="9999/99/99"
+            className="form-control"
+            id="dob"
+            placeholder="YYYY/MM/DD"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="homeClub">Home Club</label>
+          <input
+            type="text"
+            className="form-control"
+            id="homeClub"
+            placeholder="Home Club"
+            value={home_club}
+            onChange={(e) => setHomeClub(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="gender">Gender</label>
+          <select
+            className="form-control"
+            id="gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="country">Country</label>
+          <input
+            type="text"
+            className="form-control"
+            id="country"
+            placeholder="Country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="region">Region</label>
+          <input
+            type="text"
+            className="form-control"
+            id="region"
+            placeholder="Region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="btn btn-success">
+          Add
+        </button>
+        <button type="button" onClick={clearBar} className="btn btn-danger">
+          Clear
+        </button>
       </form>
 
-      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-      {failureMessage && <p style={{ color: 'red' }}>{failureMessage}</p>}
+      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+      {failureMessage && <p style={{ color: "red" }}>{failureMessage}</p>}
     </>
   );
 };
