@@ -19,9 +19,8 @@ app.use(
 app.post("/login", async (req, res) => {
   // Validate admin credentials
   const { username, password } = req.body;
-  // Perform authentication logic here
 
-  if (username === "admin" && password === "admin") {
+  if (username === process.env.LOGIN_USERNAME && password === process.env.LOGIN_PASSWORD) {
     // If the admin is authenticated, create a session and store admin data
     req.session.admin = {
       username,
