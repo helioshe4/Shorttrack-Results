@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../styling/searchSkater.css";
+import "./stylingComponents/SearchSkater.css";
 import EditSkater from "./EditSkater";
 
 export default function SearchSkater() {
@@ -10,6 +10,8 @@ export default function SearchSkater() {
   const [showDropdown, setShowDropdown] = useState(true); //the dropdown list of skaters while you search
   const [successMessage, setSuccessMessage] = useState(""); //message after deleting skater
   const [failureMessage, setFailureMessage] = useState("");
+  const [currentPage, setCurrentPage] = useState(1); // current page number
+  const skatersPerPage = 5; // number of skaters to display per page
 
   useEffect(() => {
     document.addEventListener("click", clearMessages);
@@ -101,9 +103,33 @@ export default function SearchSkater() {
   const handleSearchClick = () => {
     //onSearch(value);
 
-    if (value !== "") { //ensures user has box input
+    if (value !== "") {
+      //ensures user has box input
       performSearch();
     }
+  };
+
+  const handleShowAllClick = () => {
+    setCurrentPage(1);
+    setTableSkaters(skaters.slice(0, skatersPerPage));
+    setShowTable(true);
+    setShowDropdown(false);
+  };
+
+  const handleNextPageClick = () => {
+    const nextPage = currentPage + 1;
+    const startIndex = (nextPage - 1) * skatersPerPage;
+    const endIndex = startIndex + skatersPerPage;
+    setCurrentPage(nextPage);
+    setTableSkaters(skaters.slice(startIndex, endIndex));
+  };
+
+  const handlePreviousPageClick = () => {
+    const previousPage = currentPage - 1;
+    const startIndex = (previousPage - 1) * skatersPerPage;
+    const endIndex = startIndex + skatersPerPage;
+    setCurrentPage(previousPage);
+    setTableSkaters(skaters.slice(startIndex, endIndex));
   };
 
   return (
@@ -116,6 +142,13 @@ export default function SearchSkater() {
           <button onClick={handleSearchClick}> Search </button>
           <button type="button" onClick={clearBar} className="btn btn-danger">
             Clear
+          </button>
+          <button
+            type="button"
+            onClick={handleShowAllClick}
+            className="btn btn-primary"
+          >
+            Show All
           </button>
         </div>
 
@@ -141,35 +174,54 @@ export default function SearchSkater() {
         </div>
 
         {showTable && (
-          <table className="table mt-5 text-center table-header-spacing">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableSkaters.map((skater) => (
-                <tr key={skater.skater_id}>
-                  <td>{skater.skater_name}</td>
-                  <td>
-                    {/* <button className="btn"> */}
-                    <EditSkater skater={skater} />
-                    {/* </button> */}
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => deleteSkater(skater.skater_id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
+          <>
+            <table className="table mt-5 text-center table-header-spacing">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {tableSkaters.map((skater) => (
+                  <tr key={skater.skater_id}>
+                    <td>{skater.skater_name}</td>
+                    <td>
+                      <EditSkater skater={skater} />
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteSkater(skater.skater_id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="pagination-buttons">
+              <button
+                type="button"
+                onClick={handlePreviousPageClick}
+                className="btn btn-secondary"
+                disabled={currentPage === 1}
+              >
+                Previous Page
+              </button>
+              <button
+                type="button"
+                onClick={handleNextPageClick}
+                className="btn btn-secondary"
+                disabled={tableSkaters.length < skatersPerPage}
+              >
+                Next Page
+              </button>
+            </div>
+          </>
         )}
       </div>
 

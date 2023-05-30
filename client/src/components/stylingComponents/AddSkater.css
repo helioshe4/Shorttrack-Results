@@ -1,0 +1,22 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 50%;
+}
+
+h1 {
+  font-size: large;
+}
+
+/* .form-control {
+  width: 100%;
+} */
