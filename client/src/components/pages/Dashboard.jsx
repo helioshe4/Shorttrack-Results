@@ -23,7 +23,7 @@ function Dashboard() {
         </div>
       </div>
       <SearchSkater />
-      <h1>this is the dashboard</h1>
+      {/* <h1>this is the dashboard</h1> */}
     </>
   );
 }
