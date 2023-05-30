@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 
 const Pool = require("pg").Pool;
 
@@ -9,5 +9,6 @@ const pool = new Pool({
   port: 5432,
   database: "new_skater_database"
 });
+
 
 module.exports = pool;

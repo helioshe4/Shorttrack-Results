@@ -48,3 +48,10 @@ CREATE TABLE results_1000 (
     season_date TIMESTAMP,
     skater_id INT REFERENCES skaters(skater_id)
 );
+
+-- Alter the table to add a new case-insensitive collation for skater_name
+ALTER TABLE skaters
+ALTER COLUMN skater_name TYPE VARCHAR(50) COLLATE "C";
+
+-- Create a functional index for case-insensitive uniqueness
+CREATE UNIQUE INDEX unique_skater_name ON skaters (LOWER(skater_name));
