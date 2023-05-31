@@ -13,11 +13,11 @@ CREATE TABLE skaters(
 CREATE TABLE results_500 (
     result_id SERIAL PRIMARY KEY,
     skater_id INT REFERENCES skaters(skater_id),
-    all_time_500 DECIMAL(10, 3),
-    season_500 DECIMAL(10, 3),
+    all_time_best DECIMAL(10, 3),
     all_time_location VARCHAR(50),
     all_time_competition_name VARCHAR(50),
     all_time_date TIMESTAMP,
+    season_best DECIMAL(10, 3),
     season_location VARCHAR(50),
     season_competition_name VARCHAR(50),
     season_date TIMESTAMP
@@ -25,28 +25,28 @@ CREATE TABLE results_500 (
 
 CREATE TABLE results_1500 (
     result_id SERIAL PRIMARY KEY,
-    all_time_1500 DECIMAL(10, 3),
-    season_1500 DECIMAL(10, 3),
+    skater_id INT REFERENCES skaters(skater_id),
+    all_time_best DECIMAL(10, 3),
     all_time_location VARCHAR(50),
     all_time_competition_name VARCHAR(50),
     all_time_date TIMESTAMP,
+    season_best DECIMAL(10, 3),
     season_location VARCHAR(50),
     season_competition_name VARCHAR(50),
-    season_date TIMESTAMP,
-    skater_id INT REFERENCES skaters(skater_id)
+    season_date TIMESTAMP
 );
 
 CREATE TABLE results_1000 (
     result_id SERIAL PRIMARY KEY,
-    all_time_1000 DECIMAL(10, 3),
-    season_1000 DECIMAL(10, 3),
+    skater_id INT REFERENCES skaters(skater_id),
+    all_time_best DECIMAL(10, 3),
     all_time_location VARCHAR(50),
     all_time_competition_name VARCHAR(50),
     all_time_date TIMESTAMP,
+    season_best DECIMAL(10, 3),
     season_location VARCHAR(50),
     season_competition_name VARCHAR(50),
-    season_date TIMESTAMP,
-    skater_id INT REFERENCES skaters(skater_id)
+    season_date TIMESTAMP
 );
 
 -- Alter the table to add a new case-insensitive collation for skater_name
