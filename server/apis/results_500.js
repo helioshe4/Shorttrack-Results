@@ -3,16 +3,16 @@ const router = express.Router();
 const pool = require("../db");
 
 //post a skater's results
-router.post("/:skater_id/results_500", async (req, res) => {
+router.post("/:skater_id", async (req, res) => {
   try {
     const { skater_id } = req.params;
 
     const {
-      all_time_500,
-      season_500,
+      all_time_best,
       all_time_location,
       all_time_competition_name,
       all_time_date,
+      season_best,
       season_location,
       season_competition_name,
       season_date,
@@ -24,16 +24,16 @@ router.post("/:skater_id/results_500", async (req, res) => {
 
     let paramIndex = 2;
 
-    if (all_time_500) {
-      query += ", all_time_500";
-      values.push(all_time_500);
+    if (all_time_best) {
+      query += ", all_time_best";
+      values.push(all_time_best);
       params.push(`$${paramIndex}`);
       paramIndex++;
     }
 
-    if (season_500) {
-      query += ", season_500";
-      values.push(season_500);
+    if (season_best) {
+      query += ", season_best";
+      values.push(season_best);
       params.push(`$${paramIndex}`);
       paramIndex++;
     }
@@ -94,7 +94,7 @@ router.post("/:skater_id/results_500", async (req, res) => {
 });
 
 //update a skater's results
-router.put("/:result_id/results_500", async (req, res) => {
+router.put("/:result_id", async (req, res) => {
   try {
     const { result_id } = req.params;
 
@@ -188,7 +188,7 @@ router.put("/:result_id/results_500", async (req, res) => {
 });
 
 //get a result_500
-router.get("/results/:result_id", async (req, res) => {
+router.get("/:result_id", async (req, res) => {
   try {
     const { result_id } = req.params;
     const result_500 = await pool.query(
@@ -203,7 +203,7 @@ router.get("/results/:result_id", async (req, res) => {
 });
 
 //get all result_500's
-router.get("/results_500", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const allResult_500 = await pool.query("SELECT * FROM results_500;");
 
@@ -214,7 +214,7 @@ router.get("/results_500", async (req, res) => {
 });
 
 //delete a result
-router.delete("/:result_id/results_500", async (req, res) => {
+router.delete("/:result_id", async (req, res) => {
   try {
     const { result_id } = req.params;
     const deleteResult = await pool.query(
@@ -227,5 +227,8 @@ router.delete("/:result_id/results_500", async (req, res) => {
     console.error(err.message);
   }
 });
+
+//get result_id from a skater_id
+
 
 module.exports = router;

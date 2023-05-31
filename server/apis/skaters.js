@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
     res.json(newSkater.rows[0]);
   } catch (err) {
     console.error(err.message);
-    //res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -70,6 +70,7 @@ router.get("/", async (req, res) => {
     res.json(allSkaters.rows);
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -85,6 +86,7 @@ router.get("/:skater_id", async (req, res) => {
     res.json(skater.rows[0]);
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -145,7 +147,7 @@ router.put("/:skater_id/update", async (req, res) => {
     res.json("Skater information updated");
   } catch (err) {
     console.error(err.message);
-    //res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -161,6 +163,7 @@ router.delete("/:skater_id", async (req, res) => {
     res.json("Skater was deleted");
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -177,6 +180,7 @@ router.get("/skater-name/:skater_name", async (req, res) => {
     //res.json(typeof skater.rows[0]);
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
