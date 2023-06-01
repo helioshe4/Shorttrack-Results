@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import "./stylingComponents/AddSkater.css";
 
-const AddSkater = () => {
+const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
   const [skater_name, setSkaterName] = useState("");
   const [dob, setDob] = useState("");
   const [home_club, setHomeClub] = useState("");
@@ -34,7 +34,7 @@ const AddSkater = () => {
     };
   }, []);
 
-  const onSubmitForm = async (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     try {
       const body = {
@@ -65,7 +65,7 @@ const AddSkater = () => {
       console.log("Response data:", await response.json());
 
       // Check for duplicate key constraint violation
-      if (response.status === 409) {
+      if (response.status !== 200) {
         //clear error messages:
         setSuccessMessage("");
         setFailureMessage(`${skater_name} has already been added!`);
@@ -86,10 +86,18 @@ const AddSkater = () => {
     }
   };
 
+  React.useImperativeHandle(ref, () => ({
+    submitForm,
+  }));
+
+  useEffect(() => {
+    updateSkaterName(skater_name); // Call the updateSkaterName function whenever skater_name changes
+  }, [skater_name, updateSkaterName]);
+
   return (
     <>
       <h1 className="text-center mt-5">Add a skater</h1>
-      <form className="d-flex mt-5" onSubmit={onSubmitForm}>
+      <form id="addSkaterForm" className="d-flex mt-5" onSubmit={submitForm}>
         <div className="form-group">
           <label htmlFor="skaterName">Skater Name</label>
           <input
@@ -99,6 +107,7 @@ const AddSkater = () => {
             placeholder="First Last"
             value={skater_name}
             onChange={(e) => setSkaterName(e.target.value)}
+            style={{ textAlign: "center" }}
           />
         </div>
         <div className="form-group">
@@ -110,6 +119,7 @@ const AddSkater = () => {
             placeholder="YYYY/MM/DD"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
+            style={{ textAlign: "center" }}
           />
         </div>
         <div className="form-group">
@@ -121,6 +131,7 @@ const AddSkater = () => {
             placeholder="Home Club"
             value={home_club}
             onChange={(e) => setHomeClub(e.target.value)}
+            style={{ textAlign: "center" }}
           />
         </div>
         <div className="form-group">
@@ -145,6 +156,7 @@ const AddSkater = () => {
             placeholder="Country"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
+            style={{ textAlign: "center" }}
           />
         </div>
         <div className="form-group">
@@ -156,11 +168,12 @@ const AddSkater = () => {
             placeholder="Region"
             value={region}
             onChange={(e) => setRegion(e.target.value)}
+            style={{ textAlign: "center" }}
           />
         </div>
-        <button type="submit" className="btn btn-success">
+        {/* <button type="submit" className="btn btn-success">
           Add
-        </button>
+        </button> */}
         <button type="button" onClick={clearBar} className="btn btn-danger">
           Clear
         </button>
@@ -170,6 +183,6 @@ const AddSkater = () => {
       {failureMessage && <p style={{ color: "red" }}>{failureMessage}</p>}
     </>
   );
-};
+});
 
 export default AddSkater;
