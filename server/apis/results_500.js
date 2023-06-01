@@ -94,7 +94,7 @@ router.post("/:skater_id", async (req, res) => {
 });
 
 //update a skater's results
-router.put("/:result_id", async (req, res) => {
+router.put("/:skater_id", async (req, res) => {
   try {
     const { result_id } = req.params;
 
@@ -188,7 +188,7 @@ router.put("/:result_id", async (req, res) => {
 });
 
 //get a result_500
-router.get("/:result_id", async (req, res) => {
+router.get("/:skater_id", async (req, res) => {
   try {
     const { result_id } = req.params;
     const result_500 = await pool.query(
@@ -214,7 +214,7 @@ router.get("/", async (req, res) => {
 });
 
 //delete a result
-router.delete("/:result_id", async (req, res) => {
+router.delete("/:skater_id", async (req, res) => {
   try {
     const { result_id } = req.params;
     const deleteResult = await pool.query(
@@ -229,6 +229,20 @@ router.delete("/:result_id", async (req, res) => {
 });
 
 //get result_id from a skater_id
+router.get("/result-id/:skater_id", async (req, res) => {
+  try {
+    const { skater_id } = req.params;
+    const result_id = await pool.query(
+      "SELECT result_id FROM results_500 WHERE skater_id = $1 LIMIT 1",
+      [skater_id]
+    );
 
+    res.json(result_id.rows[0]);
+    //res.json(typeof skater.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 module.exports = router;
