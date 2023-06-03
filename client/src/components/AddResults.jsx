@@ -3,7 +3,7 @@ import InputMask from "react-input-mask";
 
 import "./stylingComponents/AddResults.css";
 
-const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
+const AddResults = ({ distance, skaterName, onSubmit }) => {
   const [all_time_best, setAllTimeBest] = useState("");
   const [all_time_location, setAllTimeLocation] = useState("");
   const [all_time_competition_name, setAllTimeCompetition] = useState("");
@@ -50,15 +50,16 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
 
     return totalSeconds.toFixed(3); // Convert to a decimal with 3 decimal places
   };
-
+  
   const submitForm = async (e) => {
     e.preventDefault();
     try {
-      // if (skaterName === "") {
-      //   setSuccessMessage("");
-      //   setFailureMessage("enter a skater name please!");
-      //   return;
-      // }
+      const response1 = await fetch(
+        `http://localhost:5000/skaters/skater-name/${skaterName}`
+      );
+      const jsonData = await response1.json();
+      const skater_id = jsonData.skater_id;
+
       const body = {
         all_time_best: convertTimeToSeconds(all_time_best),
         all_time_location,
@@ -72,14 +73,8 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
 
       console.log("Form data:", body);
 
-      //for when form is blank
-      // if (skater_name.trim() === "") {
-      //   setFailureMessage("Skater name cannot be empty!");
-      //   return;
-      // }
-
       const response = await fetch(
-        `http://localhost:5000/results_${distance}/${skaterName}`,
+        `http://localhost:5000/results_${distance}/${skater_id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -108,18 +103,41 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
           //setFailureMessage(`There was an error adding ${skater_name}!`);
         }
       }
+
     } catch (err) {
       console.error(err.message);
     }
   };
+  
 
-  React.useImperativeHandle(ref, () => ({
-    submitForm,
-  }));
+    /*
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("here");
+
+    const resultFormData = {
+      all_time_best,
+      all_time_location,
+      all_time_competition_name,
+      all_time_date,
+      season_best,
+      season_location,
+      season_competition_name,
+      season_date,
+    };
+
+    // Call the onSubmit prop with the form data
+    onSubmit(resultFormData);
+    clearBar();
+  };
+  */
 
   return (
     <div>
-      <h1>Add {distance} PBs</h1>
+      <h1>
+        Add {distance} PBs for {skaterName}{" "}
+      </h1>
       <form
         // id={`addResults${distance}Form`}
         className="add-results-form"
@@ -144,7 +162,7 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
             className="form-control"
             id="allTime500"
             // placeholder="First Last"
-            value={""}
+            value={all_time_location}
             onChange={(e) => setAllTimeLocation(e.target.value)}
           />
         </div>
@@ -155,7 +173,7 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
             className="form-control"
             id="allTime500"
             // placeholder="First Last"
-            value={""}
+            value={all_time_competition_name}
             onChange={(e) => setAllTimeCompetition(e.target.value)}
           />
         </div>
@@ -166,7 +184,7 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
             className="form-control"
             id="allTime500"
             placeholder="YYYY/MM/DD"
-            value={""}
+            value={all_time_date}
             onChange={(e) => setAllTimeDate(e.target.value)}
             style={{ textAlign: "center" }}
           />
@@ -178,7 +196,7 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
             className="form-control"
             id="allTime500"
             // placeholder="First Last"
-            value={""}
+            value={season_best}
             onChange={(e) => setSeasonBest(e.target.value)}
           />
         </div>
@@ -189,7 +207,7 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
             className="form-control"
             id="allTime500"
             // placeholder="First Last"
-            value={""}
+            value={season_location}
             onChange={(e) => setSeasonLocation(e.target.value)}
           />
         </div>
@@ -200,7 +218,7 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
             className="form-control"
             id="allTime500"
             // placeholder="First Last"
-            value={""}
+            value={season_competition_name}
             onChange={(e) => setSeasonCompetition(e.target.value)}
           />
         </div>
@@ -212,24 +230,25 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
               className="form-control"
               id="allTime500"
               placeholder="YYYY/MM/DD"
-              value={""}
+              value={season_date}
               onChange={(e) => setSeasonDate(e.target.value)}
               style={{ textAlign: "center" }}
             />
           </div>
         </div>
-        {/* <button type="submit" className="btn btn-success">
-          Add
-        </button> */}
+        <button type="submit" className="btn btn-success">
+          Submit
+        </button>
         <button type="button" onClick={clearBar} className="btn btn-danger">
           Clear
         </button>
       </form>
+      {/* <h1>{skaterName}</h1> */}
 
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       {failureMessage && <p style={{ color: "red" }}>{failureMessage}</p>}
     </div>
   );
-});
+};
 
 export default AddResults;

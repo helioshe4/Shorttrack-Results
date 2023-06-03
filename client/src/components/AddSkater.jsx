@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import "./stylingComponents/AddSkater.css";
+//import { use } from "../../../server/apis/skaters";
 
-const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
+const AddSkater = ({ updateSkaterName, onSubmit }) => {
   const [skater_name, setSkaterName] = useState("");
   const [dob, setDob] = useState("");
   const [home_club, setHomeClub] = useState("");
@@ -11,6 +12,7 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
   const [region, setRegion] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [failureMessage, setFailureMessage] = useState("");
+  const [skaterFormData, setSkaterFormData] = useState({});
 
   const clearMessages = () => {
     setSuccessMessage("");
@@ -35,7 +37,7 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
   }, []);
 
   const submitForm = async (e) => {
-    console.log('submit skater');
+    console.log("submit skater");
     e.preventDefault();
     try {
       const body = {
@@ -75,8 +77,11 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
           //clear error messages:
           setFailureMessage("");
           setSuccessMessage(`${skater_name} was added!`);
+          setSkaterFormData(body);
           // Clear the input fields
+          await updateSkaterName(skater_name);
           clearBar();
+          onSubmit();
         } else {
           // Handle the case when the server returns an error
           setFailureMessage(`There was an error adding ${skater_name}!`);
@@ -87,18 +92,42 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
     }
   };
 
-  React.useImperativeHandle(ref, () => ({
-    submitForm,
-  }));
+  /*
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    updateSkaterName(skater_name); // Call the updateSkaterName function whenever skater_name changes
-  }, [skater_name, updateSkaterName]);
+    console.log("here");
+
+    if (skater_name.trim() === "") {
+      setFailureMessage("Skater name cannot be empty!");
+      return;
+    }
+
+    const skaterFormData = {
+      skater_name,
+      dob: dob !== "" ? new Date(dob).toISOString() : null,
+      home_club: home_club,
+      gender: gender,
+      country: country,
+      region: region,
+    };
+
+    // Call the onSubmit prop with the form data
+
+    console.log(skaterFormData);
+    onSubmit(skaterFormData);
+    clearBar();
+  };
+  */
+
+  // React.useImperativeHandle(ref, () => ({
+  //   submitForm,
+  // }));
 
   return (
     <>
-      <h1 className="text-center mt-5">Add a skater</h1>
-      <form id="addSkaterForm" className="d-flex mt-5" onSubmit={submitForm}>
+      <h1 className="text-center ">Add a skater</h1>
+      <form id="addSkaterForm" className="" type="submit" onSubmit={submitForm}>
         <div className="form-group">
           <label htmlFor="skaterName">Skater Name</label>
           <input
@@ -135,13 +164,15 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
             style={{ textAlign: "center" }}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group select-input">
           <label htmlFor="gender">Gender</label>
           <select
+            type="text"
             className="form-control"
             id="gender"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
+            style={{ textAlign: "center" }}
           >
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
@@ -172,9 +203,9 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
             style={{ textAlign: "center" }}
           />
         </div>
-        {/* <button type="submit" className="btn btn-success">
-          Add
-        </button> */}
+        <button type="submit" className="btn btn-success">
+          Submit
+        </button>
         <button type="button" onClick={clearBar} className="btn btn-danger">
           Clear
         </button>
@@ -184,6 +215,6 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
       {failureMessage && <p style={{ color: "red" }}>{failureMessage}</p>}
     </>
   );
-});
+};
 
 export default AddSkater;

@@ -139,7 +139,7 @@ export default function SearchSkater() {
       <div className="search-container">
         <div className="search-inner">
           <input type="text" value={value} onChange={onChange} />
-          <button onClick={handleSearchClick}> Search </button>
+          <button type="button" onClick={handleSearchClick} className="btn btn-primary"> Search </button>
           <button type="button" onClick={clearBar} className="btn btn-danger">
             Clear
           </button>
