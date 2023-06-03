@@ -33,9 +33,11 @@ app.use(
 //ROUTES
 const skatersRouter = require("./skaters");
 const results_500Router = require("./results_500");
+const results_1000Router = require("./results_1000");
 
 app.use("/skaters", skatersRouter);
 app.use("/results_500", results_500Router);
+app.use("/results_1000", results_1000Router);
 
 app.post("/login", async (req, res) => {
   // Validate admin credentials
