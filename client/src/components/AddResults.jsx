@@ -43,10 +43,18 @@ const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
   const convertTimeToSeconds = (timeString) => {
     const [minutes, seconds, milliseconds] = timeString.split(":");
 
+    let paddedMilliseconds = String(milliseconds);
+    paddedMilliseconds = paddedMilliseconds.replace(/_/g, "");
+    paddedMilliseconds = paddedMilliseconds.padEnd(3, "0");
+
+    console.log(minutes);
+    console.log(seconds);
+    console.log(paddedMilliseconds);
+
     const totalSeconds =
       parseInt(minutes) * 60 +
       parseInt(seconds) +
-      parseFloat(milliseconds) / 1000;
+      parseFloat(paddedMilliseconds) / 1000;
 
     return totalSeconds.toFixed(3); // Convert to a decimal with 3 decimal places
   };
@@ -105,9 +113,9 @@ const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
         }
       }
     } catch (err) {
-      if(err.message === 'Invalid time value') {
+      if (err.message === "Invalid time value") {
         setSuccessMessage(``);
-        setFailureMessage('Invalid date format!');
+        setFailureMessage("Invalid date format!");
       }
       console.error(err.message);
     }

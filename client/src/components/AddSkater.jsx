@@ -72,7 +72,6 @@ const AddSkater = ({ updateSkaterName, onSubmit, setSkaterFormData }) => {
           //clear error messages:
           setFailureMessage("");
           setSuccessMessage(`${skater_name} was added!`);
-          setSkaterFormData(body);
           // Clear the input fields
           await updateSkaterName(skater_name);
           await setSkaterFormData(body);

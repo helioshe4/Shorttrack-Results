@@ -28,11 +28,40 @@ export default function SearchSkater() {
 
   const deleteSkater = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/skaters/${id}`, {
-        method: "DELETE",
-      });
+      const response500 = await fetch(
+        `http://localhost:5000/results_500/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-      if (response.status === 200) {
+      const response1000 = await fetch(
+        `http://localhost:5000/results_1000/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const response1500 = await fetch(
+        `http://localhost:5000/results_1500/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const responseSkater = await fetch(
+        `http://localhost:5000/skaters/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (
+        responseSkater.status === 200 &&
+        response500.status === 200 &&
+        response1000.status === 200 &&
+        response1500.status === 200
+      ) {
         setFailureMessage("");
         setSuccessMessage(`Successfully deleted!`);
 
@@ -47,7 +76,7 @@ export default function SearchSkater() {
         setFailureMessage("Something went wrong! Try again please.");
       }
     } catch (err) {
-      console.error(err.message);
+      console.error(`error: ${err.message}`);
     }
   };
 
@@ -139,7 +168,14 @@ export default function SearchSkater() {
       <div className="search-container">
         <div className="search-inner">
           <input type="text" value={value} onChange={onChange} />
-          <button type="button" onClick={handleSearchClick} className="btn btn-primary"> Search </button>
+          <button
+            type="button"
+            onClick={handleSearchClick}
+            className="btn btn-primary"
+          >
+            {" "}
+            Search{" "}
+          </button>
           <button type="button" onClick={clearBar} className="btn btn-danger">
             Clear
           </button>

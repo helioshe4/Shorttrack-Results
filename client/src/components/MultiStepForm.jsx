@@ -11,7 +11,9 @@ const MultiStepForm = () => {
   const [skaterName, setSkaterName] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
   const [skaterFormData, setSkaterFormData] = useState({});
-  const [resultsFormData, setResultsFormData] = useState({});
+  const [results500FormData, setResults500FormData] = useState({});
+  const [results1000FormData, setResults1000FormData] = useState({});
+  const [results1500FormData, setResults1500FormData] = useState({});
   const [previewData, setPreviewData] = useState(null);
 
   const updateSkaterName = (name) => {
@@ -28,16 +30,17 @@ const MultiStepForm = () => {
 
     // Reset form data and navigate back to the first step (AddSkater)
     // setSkaterFormData({});
-    // setResultsFormData({});
-    handlePreviewSubmit();
-    setCurrentStep(3);
+    //handlePreviewSubmit();
+    handleNextStep();
   };
 
   const handlePreviewSubmit = () => {
     // Combine skaterFormData and resultsFormData into a single previewData object
     const combinedData = {
       ...skaterFormData,
-      ...resultsFormData,
+      ...results500FormData,
+      ...results1000FormData,
+      ...results1500FormData,
     };
 
     setPreviewData(combinedData);
@@ -54,15 +57,15 @@ const MultiStepForm = () => {
     setCurrentStep(currentStep + 1);
   };
 
-  const handleSubmit = () => {
-    // Perform necessary API calls or data handling with skaterFormData and resultsFormData
+  // const handleSubmit = () => {
+  //   // Perform necessary API calls or data handling with skaterFormData and resultsFormData
 
-    // Reset form data and navigate back to the first step (AddSkater)
-    setSkaterFormData({});
-    setResultsFormData({});
-    setPreviewData(null);
-    setCurrentStep(1);
-  };
+  //   // Reset form data and navigate back to the first step (AddSkater)
+  //   setSkaterFormData({});
+  //   setResultsFormData({});
+  //   setPreviewData(null);
+  //   setCurrentStep(1);
+  // };
 
   return (
     <Container>
@@ -70,9 +73,9 @@ const MultiStepForm = () => {
         <Col md={6}>
           {currentStep === 1 && (
             <AddSkater
-              onSubmit={handleSkaterFormSubmit}
               updateSkaterName={updateSkaterName}
-              setSkaterName={setSkaterName}
+              onSubmit={handleSkaterFormSubmit}
+              //setSkaterName={setSkaterName}
               setSkaterFormData={setSkaterFormData}
             />
           )}
@@ -80,29 +83,35 @@ const MultiStepForm = () => {
             <AddResults
               distance="500"
               skaterName={skaterName}
-              onSubmit={handleNextStep}
-              setResultsFormData={setResultsFormData}
+              onSubmit={handleResultsFormSubmit}
+              setResultsFormData={setResults500FormData}
             />
           )}
           {currentStep === 3 && (
             <AddResults
               distance="1000"
               skaterName={skaterName}
-              onSubmit={handleNextStep}
-              setResultsFormData={setResultsFormData}
+              onSubmit={handleResultsFormSubmit}
+              setResultsFormData={setResults1000FormData}
             />
           )}
           {currentStep === 4 && (
             <AddResults
               distance="1500"
               skaterName={skaterName}
-              onSubmit={handleNextStep}
-              setResultsFormData={setResultsFormData}
+              onSubmit={handleResultsFormSubmit}
+              setResultsFormData={setResults1500FormData}
             />
           )}
 
           {currentStep === 5 && (
-            <PreviewData />
+            <PreviewData
+              previewSkater={skaterFormData}
+              preview500={results500FormData}
+              preview1000={results1000FormData}
+              preview1500={results1500FormData}
+              setCurrentStep={setCurrentStep}
+            />
             // <div>
             //   <h2>Preview</h2>
             //   {previewData && (

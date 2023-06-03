@@ -216,10 +216,10 @@ router.get("/", async (req, res) => {
 //delete a result
 router.delete("/:skater_id", async (req, res) => {
   try {
-    const { result_id } = req.params;
+    const { skater_id } = req.params;
     const deleteResult = await pool.query(
-      "DELETE FROM results_1000 WHERE result_id = $1",
-      [result_id]
+      "DELETE FROM results_1000 WHERE skater_id = $1",
+      [skater_id]
     );
 
     res.json("Result was deleted");

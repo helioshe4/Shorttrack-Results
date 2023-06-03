@@ -5,7 +5,6 @@ import SearchSkater from "../SearchSkater";
 import AddResults from "../AddResults";
 
 import "../stylingComponents/Dashboard.css";
-import BasicExample from "../TestForm";
 import MultiStepForm from "../MultiStepForm.jsx";
 
 function Dashboard() {
