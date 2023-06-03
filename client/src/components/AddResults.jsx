@@ -54,11 +54,11 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
   const submitForm = async (e) => {
     e.preventDefault();
     try {
-      if (skaterName === "") {
-        setSuccessMessage("");
-        setFailureMessage("enter a skater name please!");
-        return;
-      }
+      // if (skaterName === "") {
+      //   setSuccessMessage("");
+      //   setFailureMessage("enter a skater name please!");
+      //   return;
+      // }
       const body = {
         all_time_best: convertTimeToSeconds(all_time_best),
         all_time_location,
@@ -126,7 +126,7 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
         onSubmit={submitForm}
       >
         <div className="form-group">
-          <label htmlFor="allTime500">All Time {distance}</label>
+          <label htmlFor="allTime500">All Time PB</label>
           <InputMask
             mask="99:99:999"
             className="form-control"
@@ -172,7 +172,7 @@ const AddResults = React.forwardRef(({ distance, skaterName }, ref) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="allTime500">Season Best {distance}</label>
+          <label htmlFor="allTime500">Season PB</label>
           <input
             type="text"
             className="form-control"

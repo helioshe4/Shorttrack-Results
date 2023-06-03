@@ -20,12 +20,17 @@ function Dashboard() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await Promise.all([
-      addSkaterRef.current?.submitForm(e),
-      addResults500mRef.current?.submitForm(e),
-      addResults1000mRef.current?.submitForm(e),
-      addResults1500mRef.current?.submitForm(e),
-    ]);
+    try {
+      await addSkaterRef.current.submitForm(e); // Wait for addSkater form submission
+
+      await Promise.all([
+        addResults500mRef.current.submitForm(e),
+        addResults1000mRef.current.submitForm(e),
+        addResults1500mRef.current.submitForm(e),
+      ]);
+    } catch (error) {
+      console.error("Error submitting forms:", error);
+    }
   };
 
   return (
@@ -34,7 +39,7 @@ function Dashboard() {
       <div className="dashboard-container">
         <div className="container">
           <AddSkater
-          ref={addSkaterRef}
+            ref={addSkaterRef}
             updateSkaterName={updateSkaterName}
             setSkaterName={setSkaterName}
           />
@@ -47,8 +52,8 @@ function Dashboard() {
               ref={addResults500mRef}
               onSubmitForm={handleFormSubmit}
             />
-            <AddResults distance="1000"  />
-            <AddResults distance="1500"  />
+            <AddResults distance="1000" />
+            <AddResults distance="1500" />
           </div>
         </div>
       </div>

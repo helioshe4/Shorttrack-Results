@@ -35,6 +35,7 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
   }, []);
 
   const submitForm = async (e) => {
+    console.log('submit skater');
     e.preventDefault();
     try {
       const body = {
@@ -46,7 +47,7 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
         region,
       };
 
-      console.log("Form data:", body);
+      //console.log("Form data:", body);
 
       //for when form is blank
       if (skater_name.trim() === "") {
@@ -61,8 +62,8 @@ const AddSkater = React.forwardRef(({ updateSkaterName }, ref) => {
       });
 
       //console.log(await response.text());
-      console.log("Response:", response);
-      console.log("Response data:", await response.json());
+      // console.log("Response:", response);
+      // console.log("Response data:", await response.json());
 
       // Check for duplicate key constraint violation
       if (response.status !== 200) {
