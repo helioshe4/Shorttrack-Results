@@ -3,7 +3,7 @@ import InputMask from "react-input-mask";
 
 import "./stylingComponents/AddResults.css";
 
-const AddResults = ({ distance, skaterName, onSubmit }) => {
+const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
   const [all_time_best, setAllTimeBest] = useState("");
   const [all_time_location, setAllTimeLocation] = useState("");
   const [all_time_competition_name, setAllTimeCompetition] = useState("");
@@ -50,7 +50,7 @@ const AddResults = ({ distance, skaterName, onSubmit }) => {
 
     return totalSeconds.toFixed(3); // Convert to a decimal with 3 decimal places
   };
-  
+
   const submitForm = async (e) => {
     e.preventDefault();
     try {
@@ -65,7 +65,7 @@ const AddResults = ({ distance, skaterName, onSubmit }) => {
         all_time_location,
         all_time_competition_name,
         all_time_date,
-        season_best,
+        season_best: convertTimeToSeconds(season_best),
         season_location,
         season_competition_name,
         season_date,
@@ -96,21 +96,24 @@ const AddResults = ({ distance, skaterName, onSubmit }) => {
           //clear error messages:
           setFailureMessage("");
           setSuccessMessage("success!");
-          // Clear the input fields
+          await setResultsFormData(body);
           clearBar();
+          onSubmit();
         } else {
           // Handle the case when the server returns an error
           //setFailureMessage(`There was an error adding ${skater_name}!`);
         }
       }
-
     } catch (err) {
+      if(err.message === 'Invalid time value') {
+        setSuccessMessage(``);
+        setFailureMessage('Invalid date format!');
+      }
       console.error(err.message);
     }
   };
-  
 
-    /*
+  /*
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -191,13 +194,14 @@ const AddResults = ({ distance, skaterName, onSubmit }) => {
         </div>
         <div className="form-group">
           <label htmlFor="allTime500">Season PB</label>
-          <input
-            type="text"
+          <InputMask
+            mask="99:99:999"
             className="form-control"
             id="allTime500"
-            // placeholder="First Last"
+            placeholder="00:00:000"
             value={season_best}
             onChange={(e) => setSeasonBest(e.target.value)}
+            style={{ textAlign: "center" }}
           />
         </div>
         <div className="form-group">
@@ -223,18 +227,16 @@ const AddResults = ({ distance, skaterName, onSubmit }) => {
           />
         </div>
         <div className="form-group">
-          <div className="form-group">
-            <label htmlFor="allTime500">Date</label>
-            <InputMask
-              mask="9999/99/99"
-              className="form-control"
-              id="allTime500"
-              placeholder="YYYY/MM/DD"
-              value={season_date}
-              onChange={(e) => setSeasonDate(e.target.value)}
-              style={{ textAlign: "center" }}
-            />
-          </div>
+          <label htmlFor="allTime500">Date</label>
+          <InputMask
+            mask="9999/99/99"
+            className="form-control"
+            id="allTime500"
+            placeholder="YYYY/MM/DD"
+            value={season_date}
+            onChange={(e) => setSeasonDate(e.target.value)}
+            style={{ textAlign: "center" }}
+          />
         </div>
         <button type="submit" className="btn btn-success">
           Submit

@@ -3,7 +3,7 @@ import InputMask from "react-input-mask";
 import "./stylingComponents/AddSkater.css";
 //import { use } from "../../../server/apis/skaters";
 
-const AddSkater = ({ updateSkaterName, onSubmit }) => {
+const AddSkater = ({ updateSkaterName, onSubmit, setSkaterFormData }) => {
   const [skater_name, setSkaterName] = useState("");
   const [dob, setDob] = useState("");
   const [home_club, setHomeClub] = useState("");
@@ -12,7 +12,7 @@ const AddSkater = ({ updateSkaterName, onSubmit }) => {
   const [region, setRegion] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [failureMessage, setFailureMessage] = useState("");
-  const [skaterFormData, setSkaterFormData] = useState({});
+  //const [skaterFormData, setSkaterFormData] = useState({});
 
   const clearMessages = () => {
     setSuccessMessage("");
@@ -37,7 +37,6 @@ const AddSkater = ({ updateSkaterName, onSubmit }) => {
   }, []);
 
   const submitForm = async (e) => {
-    console.log("submit skater");
     e.preventDefault();
     try {
       const body = {
@@ -63,10 +62,6 @@ const AddSkater = ({ updateSkaterName, onSubmit }) => {
         body: JSON.stringify(body),
       });
 
-      //console.log(await response.text());
-      // console.log("Response:", response);
-      // console.log("Response data:", await response.json());
-
       // Check for duplicate key constraint violation
       if (response.status !== 200) {
         //clear error messages:
@@ -80,6 +75,7 @@ const AddSkater = ({ updateSkaterName, onSubmit }) => {
           setSkaterFormData(body);
           // Clear the input fields
           await updateSkaterName(skater_name);
+          await setSkaterFormData(body);
           clearBar();
           onSubmit();
         } else {
@@ -88,6 +84,10 @@ const AddSkater = ({ updateSkaterName, onSubmit }) => {
         }
       }
     } catch (err) {
+      if(err.message === 'Invalid time value') {
+        setSuccessMessage(``);
+        setFailureMessage('Invalid date format!');
+      }
       console.error(err.message);
     }
   };
