@@ -28,13 +28,17 @@ const DeleteSkater = () => {
     try {
       const id = await getSkaterId(skater_name);
 
-      const response = await fetch(`http://localhost:5000/skaters/${id}`, {
+      const response1 = await fetch(`http://localhost:5000/results_500/${id}`, {
+        method: "DELETE",
+      });
+
+      const response2 = await fetch(`http://localhost:5000/skaters/${id}`, {
         method: "DELETE",
       });
 
       setSkaters(skaters.filter((skater) => skater.skater_id !== parseInt(id)));
 
-      if (response.status === 200) {
+      if (response1.status && response2.status === 200) {
         setFailureMessage("");
         setSuccessMessage(`${skater_name} was successfully deleted!`);
       }
