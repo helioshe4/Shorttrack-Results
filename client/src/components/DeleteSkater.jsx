@@ -13,7 +13,7 @@ const DeleteSkater = () => {
 
   const clearBar = () => {
     setSkaterName("");
-  }
+  };
 
   useEffect(() => {
     document.addEventListener("click", clearMessages);
@@ -28,13 +28,43 @@ const DeleteSkater = () => {
     try {
       const id = await getSkaterId(skater_name);
 
-      const response = await fetch(`http://localhost:5000/skaters/${id}`, {
-        method: "DELETE",
-      });
+      const response500 = await fetch(
+        `http://localhost:5000/results_500/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const response1000 = await fetch(
+        `http://localhost:5000/results_1000/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const response1500 = await fetch(
+        `http://localhost:5000/results_1500/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const responseSkater = await fetch(
+        `http://localhost:5000/skaters/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
 
       setSkaters(skaters.filter((skater) => skater.skater_id !== parseInt(id)));
 
-      if (response.status === 200) {
+      if (
+        responseSkater.status &&
+        response500.status &&
+        response1000.status &&
+        response1500.status === 200
+      ) {
         setFailureMessage("");
         setSuccessMessage(`${skater_name} was successfully deleted!`);
       }
@@ -77,19 +107,21 @@ const DeleteSkater = () => {
 
   return (
     <>
-        <h1 className="text-center mt-5">Delete a skater</h1>
-        <form className="d-flex mt-5" onSubmit={deleteSkater}>
-          <input
-            type="text"
-            className="form-control"
-            value={skater_name}
-            onChange={(e) => setSkaterName(e.target.value)}
-          />
-          <button className="btn btn-success">Delete</button>
-          <button type="button" onClick={clearBar} className="btn btn-danger" >Clear</button>
-        </form>
-        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-        {failureMessage && <p style={{ color: "red" }}>{failureMessage}</p>}
+      <h1 className="text-center mt-5">Delete a skater</h1>
+      <form className="d-flex mt-5" onSubmit={deleteSkater}>
+        <input
+          type="text"
+          className="form-control"
+          value={skater_name}
+          onChange={(e) => setSkaterName(e.target.value)}
+        />
+        <button className="btn btn-success">Delete</button>
+        <button type="button" onClick={clearBar} className="btn btn-danger">
+          Clear
+        </button>
+      </form>
+      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+      {failureMessage && <p style={{ color: "red" }}>{failureMessage}</p>}
     </>
   );
 };

@@ -5,60 +5,107 @@ import SearchSkater from "../SearchSkater";
 import AddResults from "../AddResults";
 
 import "../stylingComponents/Dashboard.css";
+import MultiStepForm from "../MultiStepForm.jsx";
 
 function Dashboard() {
   const [skaterName, setSkaterName] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [failureMessage, setFailureMessage] = useState("");
+  const [formData, setFormData] = useState({
+    skaterFormData: null,
+    resultsFormData: null,
+  });
 
   const updateSkaterName = (name) => {
     setSkaterName(name);
   };
 
-  const addSkaterRef = useRef(null);
-  const addResults500mRef = useRef(null);
-  const addResults1000mRef = useRef(null);
-  const addResults1500mRef = useRef(null);
+  const handleSubmitAll = async () => {
+    try {
+      // Submit AddSkater form
+      if (formData.skaterFormData) {
+        const skaterData = formData.skaterFormData;
+        try {
+          console.log(skaterData);
+          const skater_name = skaterData.skater_name;
+          console.log(skater_name);
+          if (skater_name.trim() === "") {
+            setFailureMessage("Skater name cannot be empty!");
+            return;
+          }
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    await Promise.all([
-      addSkaterRef.current?.submitForm(e),
-      addResults500mRef.current?.submitForm(e),
-      addResults1000mRef.current?.submitForm(e),
-      addResults1500mRef.current?.submitForm(e),
-    ]);
+          const response = await fetch("http://localhost:5000/skaters", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(skaterData),
+          });
+
+          // Check for duplicate key constraint violation
+          if (response.status !== 200) {
+            //clear error messages:
+            setSuccessMessage("");
+            setFailureMessage(`${skater_name} has already been added!`);
+          } else {
+            if (response.ok) {
+              //clear error messages:
+              setFailureMessage("");
+              setSuccessMessage(`${skater_name} was added!`);
+              // Clear the input fields
+              //clearBar();
+            } else {
+              // Handle the case when the server returns an error
+              setFailureMessage(`There was an error adding ${skater_name}!`);
+            }
+          }
+        } catch (err) {
+          console.error(err.message);
+        }
+      }
+
+      // Submit AddResults form
+      if (formData.resultsFormData) {
+        const response2 = await fetch("http://localhost:5000/results", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData.resultsFormData),
+        });
+        // Handle the response
+      }
+
+      // Clear the form data after submission
+      setFormData({ skaterFormData: null, resultsFormData: null });
+    } catch (error) {
+      console.error("Error submitting forms:", error);
+    }
   };
 
   return (
     <>
       <Homebar />
-      <div className="dashboard-container">
+      {/* <div className="dashboard-container">
         <div className="container">
           <AddSkater
-          ref={addSkaterRef}
+            onSubmit={handleSubmitAll}
             updateSkaterName={updateSkaterName}
             setSkaterName={setSkaterName}
           />
         </div>
         <div className="container">
           <div className="add-results-container">
-            <AddResults
-              skaterName={skaterName}
-              distance="500"
-              ref={addResults500mRef}
-              onSubmitForm={handleFormSubmit}
-            />
-            <AddResults distance="1000"  />
-            <AddResults distance="1500"  />
+            <AddResults onSubmit={handleSubmitAll} skaterName={skaterName} />
+            <AddResults distance="1000" />
+            <AddResults distance="1500" />
           </div>
         </div>
       </div>
       <button
         type="button"
-        onClick={(e) => handleFormSubmit(e)}
+        onClick={handleSubmitAll}
         className="btn btn-success"
       >
         Submit All Forms
-      </button>
+      </button> */}
+      <MultiStepForm />
       <SearchSkater />
       {/* <h1>this is the dashboard</h1> */}
     </>

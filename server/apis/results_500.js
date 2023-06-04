@@ -96,14 +96,14 @@ router.post("/:skater_id", async (req, res) => {
 //update a skater's results
 router.put("/:skater_id", async (req, res) => {
   try {
-    const { result_id } = req.params;
+    const { skater_id } = req.params;
 
     const {
-      all_time_500,
-      season_500,
+      all_time_best,
       all_time_location,
       all_time_competition_name,
       all_time_date,
+      season_best,
       season_location,
       season_competition_name,
       season_date,
@@ -115,16 +115,9 @@ router.put("/:skater_id", async (req, res) => {
 
     let paramIndex = 1;
 
-    if (all_time_500 !== undefined) {
-      query += ` all_time_500 = $${paramIndex},`;
-      values.push(all_time_500);
-      params.push(`$${paramIndex}`);
-      paramIndex++;
-    }
-
-    if (season_500 !== undefined) {
-      query += ` season_500 = $${paramIndex},`;
-      values.push(season_500);
+    if (all_time_best !== undefined) {
+      query += ` all_time_best = $${paramIndex},`;
+      values.push(all_time_best);
       params.push(`$${paramIndex}`);
       paramIndex++;
     }
@@ -146,6 +139,13 @@ router.put("/:skater_id", async (req, res) => {
     if (all_time_date !== undefined) {
       query += ` all_time_date = $${paramIndex},`;
       values.push(all_time_date);
+      params.push(`$${paramIndex}`);
+      paramIndex++;
+    }
+
+    if (season_best !== undefined) {
+      query += ` season_best = $${paramIndex},`;
+      values.push(season_best);
       params.push(`$${paramIndex}`);
       paramIndex++;
     }
@@ -173,8 +173,8 @@ router.put("/:skater_id", async (req, res) => {
 
     // Remove the trailing comma and add the WHERE condition
     query = query.slice(0, -1);
-    query += ` WHERE result_id = $${paramIndex} RETURNING *`;
-    values.push(result_id);
+    query += ` WHERE skater_id = $${paramIndex} RETURNING *`;
+    values.push(skater_id);
 
     const updatedResult = await pool.query(query, values);
 
@@ -216,10 +216,10 @@ router.get("/", async (req, res) => {
 //delete a result
 router.delete("/:skater_id", async (req, res) => {
   try {
-    const { result_id } = req.params;
+    const { skater_id } = req.params;
     const deleteResult = await pool.query(
-      "DELETE FROM results_500 WHERE result_id = $1",
-      [result_id]
+      "DELETE FROM results_500 WHERE skater_id = $1",
+      [skater_id]
     );
 
     res.json("Result was deleted");
