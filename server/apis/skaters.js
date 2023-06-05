@@ -91,7 +91,7 @@ router.get("/:skater_id", async (req, res) => {
 });
 
 //update a skater's info
-router.put("/:skater_id/update", async (req, res) => {
+router.put("/:skater_id", async (req, res) => {
   try {
     const { skater_id } = req.params;
     const { skater_name, dob, home_club, gender, country, region } = req.body;
@@ -107,7 +107,7 @@ router.put("/:skater_id/update", async (req, res) => {
     }
 
     if (dob !== undefined) {
-      query += " dob = $1,";
+      query += " dob = $" + (values.length + 1) + ",";
       values.push(dob);
       params.push("dob");
     }

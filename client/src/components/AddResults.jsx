@@ -121,29 +121,6 @@ const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
     }
   };
 
-  /*
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log("here");
-
-    const resultFormData = {
-      all_time_best,
-      all_time_location,
-      all_time_competition_name,
-      all_time_date,
-      season_best,
-      season_location,
-      season_competition_name,
-      season_date,
-    };
-
-    // Call the onSubmit prop with the form data
-    onSubmit(resultFormData);
-    clearBar();
-  };
-  */
-
   return (
     <div>
       <h1>

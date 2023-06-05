@@ -21,7 +21,7 @@ const PreviewData = ({
       return skater.skater_id;
     } catch (err) {
       setSuccessMessage("");
-      setFailureMessage('There was an error deleting some stuff!');
+      setFailureMessage("There was an error deleting some stuff!");
     }
   };
 
@@ -66,7 +66,6 @@ const PreviewData = ({
         // setFailureMessage("");
         // setSuccessMessage(`${} was successfully deleted!`);
       }
-
     } catch (err) {
       console.error(err.message);
     }
@@ -112,6 +111,7 @@ const PreviewData = ({
           {/* Render other preview data fields */}
         </div>
       )}
+      {failureMessage && <p style={{ color: "red" }}>{failureMessage}</p>}
       <Button
         variant="secondary"
         className="btn btn-success"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 import "./stylingComponents/AddSkater.css";
-//import { use } from "../../../server/apis/skaters";
 
 const AddSkater = ({ updateSkaterName, onSubmit, setSkaterFormData }) => {
   const [skater_name, setSkaterName] = useState("");
