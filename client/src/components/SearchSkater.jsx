@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./stylingComponents/SearchSkater.css";
 import EditSkater from "./EditSkater";
+import Table from "react-bootstrap/Table";
 
 export default function SearchSkater() {
   const [value, setValue] = useState(""); //value in the search bar
@@ -211,7 +212,7 @@ export default function SearchSkater() {
 
         {showTable && (
           <>
-            <table className="table mt-5 text-center table-header-spacing">
+            <Table striped bordered hover className="table mt-5 text-center table-header-spacing">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -237,7 +238,7 @@ export default function SearchSkater() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
 
             <div className="pagination-buttons">
               <button
