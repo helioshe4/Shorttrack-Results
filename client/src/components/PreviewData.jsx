@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 const PreviewData = ({
   previewSkater,
@@ -10,6 +11,7 @@ const PreviewData = ({
 }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [failureMessage, setFailureMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const getSkaterId = async () => {
     try {
@@ -80,6 +82,14 @@ const PreviewData = ({
     setCurrentStep(1);
   };
 
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div>
       <h2>Preview</h2>
@@ -119,13 +129,23 @@ const PreviewData = ({
       >
         OK
       </Button>
-      <Button
-        variant="primary"
-        className="btn btn-danger"
-        onClick={handleDeleteClick}
-      >
+      <Button variant="danger" onClick={handleOpenModal}>
         Delete and Start Over
       </Button>
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure?</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Footer style={{ justifyContent: "center" }}>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Go Back
+          </Button>
+          <Button variant="danger" onClick={handleDeleteClick}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
