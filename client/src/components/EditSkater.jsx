@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import InputMask from "react-input-mask";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
+import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 
 const EditSkater = ({ skater }) => {
   const [showModal, setShowModal] = useState(false);
@@ -51,7 +54,7 @@ const EditSkater = ({ skater }) => {
         country,
         region,
       };
-      
+
       console.log("Form data:", body);
 
       //for when form is blank
@@ -62,11 +65,14 @@ const EditSkater = ({ skater }) => {
 
       console.log(skater.skater_id);
 
-      const response = await fetch(`http://localhost:5000/skaters/${skater.skater_id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      const response = await fetch(
+        `http://localhost:5000/skaters/${skater.skater_id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
 
       console.log("Response:", response);
 
@@ -92,6 +98,17 @@ const EditSkater = ({ skater }) => {
       console.error(err.message);
     }
   };
+
+  const [radioValue, setRadioValue] = useState("1");
+  const [activeForm, setActiveForm] = useState("editSkaterForm");
+  const handleFormChange = (formName) => {
+    setActiveForm(formName);
+  };
+  const radios = [
+    { name: "500m", value: "1" },
+    { name: "1000m", value: "2" },
+    { name: "1500m", value: "3" },
+  ];
 
   return (
     <div>
@@ -192,6 +209,145 @@ const EditSkater = ({ skater }) => {
               Clear
             </button>
           </form>
+
+          <ToggleButtonGroup
+            name="toggle-forms"
+            value={activeForm}
+            defaultValue={handleFormChange}
+          >
+            {/* {radios.map((radio, idx) => (
+              <ToggleButton
+                key={idx}
+                id={`radio-${idx}`}
+                type="radio"
+                variant={"outline-secondary"}
+                name="radio"
+                value={radio.value}
+                checked={radioValue === radio.value}
+                onChange={(e) => setRadioValue(e.currentTarget.value)}
+              >
+                {radio.name}
+              </ToggleButton>
+            ))} */}
+            <ToggleButton value="500m">500m</ToggleButton>
+            <ToggleButton value="1000m">1000m</ToggleButton>
+            <ToggleButton value="1500m">1500m</ToggleButton>
+          </ToggleButtonGroup>
+          {/* <form
+            // id={`addResults${distance}Form`}
+            className="add-results-form"
+            onSubmit={submitForm}
+          >
+            <div className="form-group">
+              <label htmlFor="allTime500">All Time PB</label>
+              <InputMask
+                mask="99:99:999"
+                className="form-control"
+                id="allTime500"
+                placeholder="00:00:000"
+                value={all_time_best}
+                onChange={(e) => setAllTimeBest(e.target.value)}
+                style={{ textAlign: "center" }}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="allTime500">Location</label>
+              <input
+                type="text"
+                className="form-control"
+                id="allTime500"
+                // placeholder="First Last"
+                value={all_time_location}
+                onChange={(e) => setAllTimeLocation(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="allTime500">Competition</label>
+              <input
+                type="text"
+                className="form-control"
+                id="allTime500"
+                // placeholder="First Last"
+                value={all_time_competition_name}
+                onChange={(e) => setAllTimeCompetition(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="allTime500">Date</label>
+              <InputMask
+                mask="9999/99/99"
+                className="form-control"
+                id="allTime500"
+                placeholder="YYYY/MM/DD"
+                value={all_time_date}
+                onChange={(e) => setAllTimeDate(e.target.value)}
+                style={{ textAlign: "center" }}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="allTime500">Season PB</label>
+              <InputMask
+                mask="99:99:999"
+                className="form-control"
+                id="allTime500"
+                placeholder="00:00:000"
+                value={season_best}
+                onChange={(e) => setSeasonBest(e.target.value)}
+                style={{ textAlign: "center" }}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="allTime500">Location</label>
+              <input
+                type="text"
+                className="form-control"
+                id="allTime500"
+                // placeholder="First Last"
+                value={season_location}
+                onChange={(e) => setSeasonLocation(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="allTime500">Competition</label>
+              <input
+                type="text"
+                className="form-control"
+                id="allTime500"
+                // placeholder="First Last"
+                value={season_competition_name}
+                onChange={(e) => setSeasonCompetition(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="allTime500">Date</label>
+              <InputMask
+                mask="9999/99/99"
+                className="form-control"
+                id="allTime500"
+                placeholder="YYYY/MM/DD"
+                value={season_date}
+                onChange={(e) => setSeasonDate(e.target.value)}
+                style={{ textAlign: "center" }}
+              />
+            </div>
+            <button type="submit" className="btn btn-success">
+              {!(
+                all_time_best ||
+                all_time_location ||
+                all_time_competition_name ||
+                all_time_date ||
+                season_best ||
+                season_location ||
+                season_competition_name ||
+                season_date
+              )
+                ? "Skip"
+                : "Submit"}
+            </button>
+            <button type="button" onClick={clearBar} className="btn btn-danger">
+              Clear
+            </button>
+          </form> */}
         </Modal.Body>
 
         <Modal.Footer>
