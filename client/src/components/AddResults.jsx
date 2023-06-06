@@ -224,7 +224,18 @@ const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
           />
         </div>
         <button type="submit" className="btn btn-success">
-          Submit
+          {!(
+            all_time_best ||
+            all_time_location ||
+            all_time_competition_name ||
+            all_time_date ||
+            season_best ||
+            season_location ||
+            season_competition_name ||
+            season_date
+          )
+            ? "Skip"
+            : "Submit"}
         </button>
         <button type="button" onClick={clearBar} className="btn btn-danger">
           Clear
