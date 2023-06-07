@@ -228,6 +228,23 @@ router.delete("/:skater_id", async (req, res) => {
   }
 });
 
+//gets results_1500 given skater name
+router.get("/skaters/:skater_name", async (req, res) => {
+  try {
+    const { skater_name } = req.params;
+    const results_1500 = await pool.query(
+      `SELECT * FROM results_1500 LEFT JOIN 
+      skaters ON results_1500.skater_id = skaters.skater_id 
+      WHERE skater_name = $1`,
+      [skater_name]
+    );
+
+    res.json(results_1500.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //get result_id from a skater_id
 router.get("/result-id/:skater_id", async (req, res) => {
   try {

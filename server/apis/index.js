@@ -66,6 +66,23 @@ app.use("/login", (req, res) => {
   });
 });
 
+app.get("/complete", async (req, res) => {
+  try {
+    const completeInfo = await pool.query(`
+    SELECT *
+    FROM skaters
+    FULL OUTER JOIN results_500 ON skaters.skater_id = results_500.skater_id
+    FULL OUTER JOIN results_1000 ON skaters.skater_id = results_1000.skater_id
+    FULL OUTER JOIN results_1500 ON skaters.skater_id = results_1500.skater_id
+    `);
+
+    res.json(completeInfo.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+})
+
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");
