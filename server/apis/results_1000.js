@@ -233,8 +233,8 @@ router.get("/skaters/:skater_name", async (req, res) => {
   try {
     const { skater_name } = req.params;
     const result_1000 = await pool.query(
-      `SELECT * FROM result_1000 LEFT JOIN 
-      skaters ON result_1000.skater_id = skaters.skater_id 
+      `SELECT * FROM results_1000 LEFT JOIN 
+      skaters ON results_1000.skater_id = skaters.skater_id 
       WHERE skater_name = $1`,
       [skater_name]
     );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import InputMask from "react-input-mask";
@@ -10,13 +10,60 @@ const EditSkater = ({ skater }) => {
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [failureMessage, setFailureMessage] = useState("");
+  const [currentDistance, setCurrentDistance] = useState("500");
 
+  // Fetch results for a given distance
+  const fetchResults = async (distance) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/results_${distance}/skaters/${skater.skater_name}`
+      );
+      const text = await response.text();
+      const jsonData = text ? JSON.parse(text) : {};
+      console.log("jsonData:", jsonData);
+      return jsonData;
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchResults(currentDistance);
+      setAllTimeBest(convertTimeToISO(data.all_time_best));
+      setAllTimeLocation(data.all_time_location);
+      setAllTimeCompetition(data.all_time_competition_name);
+      setAllTimeDate(data.all_time_date);
+      setSeasonBest(convertTimeToISO(data.season_best));
+      setSeasonLocation(data.season_location);
+      setSeasonCompetition(data.season_competition_name);
+      setSeasonDate(data.season_date);
+    };
+
+    fetchData();
+  }, [skater.skater_name, currentDistance]);
+
+  //skaters
   const [skater_name, setSkaterName] = useState(skater.skater_name);
   const [dob, setDob] = useState(skater.dob);
   const [home_club, setHomeClub] = useState(skater.home_club);
   const [gender, setGender] = useState(skater.gender);
   const [country, setCountry] = useState(skater.country);
   const [region, setRegion] = useState(skater.region);
+
+  //results
+  const [all_time_best, setAllTimeBest] = useState("");
+  const [all_time_location, setAllTimeLocation] = useState("");
+  const [all_time_competition_name, setAllTimeCompetition] = useState("");
+  const [all_time_date, setAllTimeDate] = useState("");
+  const [season_best, setSeasonBest] = useState("");
+  const [season_location, setSeasonLocation] = useState("");
+  const [season_competition_name, setSeasonCompetition] = useState("");
+  const [season_date, setSeasonDate] = useState("");
+
+  useEffect(() => {
+    fetchResults(500); // Call fetchResults with distance of 500m to set the initial values
+  }, []);
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -34,6 +81,23 @@ const EditSkater = ({ skater }) => {
     setShowModal(false);
   };
 
+  const handleToggleChange = async (value) => {
+    setActiveForm(value);
+    const distance = parseInt(value.replace("m", ""));
+    setCurrentDistance(distance);
+
+    // Fetch results for the new distance
+    const data = await fetchResults(distance);
+    setAllTimeBest(convertTimeToISO(data.all_time_best) || '');
+    setAllTimeLocation(data.all_time_location || '');
+    setAllTimeCompetition(data.all_time_competition_name || '');
+    setAllTimeDate(data.all_time_date || '');
+    setSeasonBest(convertTimeToISO(data.season_best));
+    setSeasonLocation(data.season_location || '');
+    setSeasonCompetition(data.season_competition_name || '');
+    setSeasonDate(data.season_date || '');
+  };
+
   const clearBar = () => {
     setSkaterName("");
     setDob("");
@@ -42,6 +106,19 @@ const EditSkater = ({ skater }) => {
     setCountry("");
     setRegion("");
   };
+
+  function convertTimeToISO(timeInSeconds) {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    const milliseconds = Math.round((timeInSeconds % 1) * 1000)
+      .toFixed(0)
+      .padStart(3, "0");
+
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+
+    return `${formattedMinutes}:${formattedSeconds}:${milliseconds}`;
+  }
 
   const submitSkaterForm = async () => {
     //e.preventDefault();
@@ -99,15 +176,12 @@ const EditSkater = ({ skater }) => {
     }
   };
 
-  const [radioValue, setRadioValue] = useState("1");
-  const [activeForm, setActiveForm] = useState("editSkaterForm");
-  const handleFormChange = (formName) => {
-    setActiveForm(formName);
-  };
-  const radios = [
-    { name: "500m", value: "1" },
-    { name: "1000m", value: "2" },
-    { name: "1500m", value: "3" },
+  const [activeForm, setActiveForm] = useState("500m");
+
+  const distances = [
+    { name: "500m", value: "500m" },
+    { name: "1000m", value: "1000m" },
+    { name: "1500m", value: "1500m" },
   ];
 
   return (
@@ -213,33 +287,37 @@ const EditSkater = ({ skater }) => {
           <ToggleButtonGroup
             name="toggle-forms"
             value={activeForm}
-            defaultValue={handleFormChange}
+            defaultValue={"500m"}
+            onChange={handleToggleChange}
           >
-            {/* {radios.map((radio, idx) => (
+            {distances.map((distance, idx) => (
               <ToggleButton
                 key={idx}
                 id={`radio-${idx}`}
                 type="radio"
                 variant={"outline-secondary"}
                 name="radio"
-                value={radio.value}
-                checked={radioValue === radio.value}
-                onChange={(e) => setRadioValue(e.currentTarget.value)}
+                value={distance.value}
+                checked={activeForm === distance.value}
+                onChange={(e) => {
+                  setActiveForm(e.currentTarget.value);
+                  setCurrentDistance(e.currentTarget.value);
+                }}
               >
-                {radio.name}
+                {distance.name}
               </ToggleButton>
-            ))} */}
-            <ToggleButton value="500m">500m</ToggleButton>
-            <ToggleButton value="1000m">1000m</ToggleButton>
-            <ToggleButton value="1500m">1500m</ToggleButton>
+            ))}
           </ToggleButtonGroup>
-          {/* <form
+          <h1>
+            Edit {activeForm} PBs for {skater.skater_name}
+          </h1>
+          <form
             // id={`addResults${distance}Form`}
             className="add-results-form"
-            onSubmit={submitForm}
+            onSubmit={submitSkaterForm}
           >
             <div className="form-group">
-              <label htmlFor="allTime500">All Time PB</label>
+              <label htmlFor={`allTime${currentDistance}`} >All Time PB for {activeForm}</label>
               <InputMask
                 mask="99:99:999"
                 className="form-control"
@@ -251,7 +329,7 @@ const EditSkater = ({ skater }) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="allTime500">Location</label>
+              <label htmlFor={`allTime${currentDistance}`}>Location</label>
               <input
                 type="text"
                 className="form-control"
@@ -262,7 +340,7 @@ const EditSkater = ({ skater }) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="allTime500">Competition</label>
+              <label htmlFor={`allTime${currentDistance}`}>Competition</label>
               <input
                 type="text"
                 className="form-control"
@@ -273,7 +351,7 @@ const EditSkater = ({ skater }) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="allTime500">Date</label>
+              <label htmlFor={`allTime${currentDistance}`}>Date</label>
               <InputMask
                 mask="9999/99/99"
                 className="form-control"
@@ -285,11 +363,11 @@ const EditSkater = ({ skater }) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="allTime500">Season PB</label>
+              <label htmlFor={`allTime${currentDistance}`}>Season PB</label>
               <InputMask
                 mask="99:99:999"
                 className="form-control"
-                id="allTime500"
+                id={`allTime${currentDistance}`}
                 placeholder="00:00:000"
                 value={season_best}
                 onChange={(e) => setSeasonBest(e.target.value)}
@@ -297,33 +375,33 @@ const EditSkater = ({ skater }) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="allTime500">Location</label>
+              <label htmlFor={`allTime${currentDistance}`}>Location</label>
               <input
                 type="text"
                 className="form-control"
-                id="allTime500"
+                id={`allTime${currentDistance}`}
                 // placeholder="First Last"
                 value={season_location}
                 onChange={(e) => setSeasonLocation(e.target.value)}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="allTime500">Competition</label>
+              <label htmlFor={`allTime${currentDistance}`}>Competition</label>
               <input
                 type="text"
                 className="form-control"
-                id="allTime500"
+                id={`allTime${currentDistance}`}
                 // placeholder="First Last"
                 value={season_competition_name}
                 onChange={(e) => setSeasonCompetition(e.target.value)}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="allTime500">Date</label>
+              <label htmlFor={`allTime${currentDistance}`}>Date</label>
               <InputMask
                 mask="9999/99/99"
                 className="form-control"
-                id="allTime500"
+                id={`allTime${currentDistance}`}
                 placeholder="YYYY/MM/DD"
                 value={season_date}
                 onChange={(e) => setSeasonDate(e.target.value)}
@@ -347,7 +425,7 @@ const EditSkater = ({ skater }) => {
             <button type="button" onClick={clearBar} className="btn btn-danger">
               Clear
             </button>
-          </form> */}
+          </form>
         </Modal.Body>
 
         <Modal.Footer>

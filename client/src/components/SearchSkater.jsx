@@ -96,7 +96,7 @@ export default function SearchSkater() {
       const response = await fetch("http://localhost:5000/skaters");
       const jsonData = await response.json();
 
-      console.log(response);
+      console.log(jsonData);
       setSkaters(jsonData);
     } catch (err) {
       console.error(err.message);
