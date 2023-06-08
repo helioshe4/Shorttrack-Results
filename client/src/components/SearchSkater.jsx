@@ -12,7 +12,7 @@ export default function SearchSkater() {
   const [successMessage, setSuccessMessage] = useState(""); //message after deleting skater
   const [failureMessage, setFailureMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1); // current page number
-  const skatersPerPage = 5; // number of skaters to display per page
+  const skatersPerPage = 10; // number of skaters to display per page
 
   useEffect(() => {
     document.addEventListener("click", clearMessages);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import "./stylingComponents/PreviewData.css";
 
 const PreviewData = ({
   previewSkater,
@@ -93,34 +94,133 @@ const PreviewData = ({
   return (
     <div>
       <h2>Preview</h2>
-      {previewSkater && (
-        <div>
-          <p>Skater Name: {previewSkater.skater_name}</p>
-          <p>Date of Birth: {previewSkater.dob}</p>
-          {/* Render other preview data fields */}
-        </div>
-      )}
-      {preview500 && (
-        <div>
-          <p>All Time 500 PB: {preview500.all_time_best}</p>
-          <p>Date of Birth: {preview500.all_time_date}</p>
-          {/* Render other preview data fields */}
-        </div>
-      )}
-      {preview1000 && (
-        <div>
-          <p>All Time 1000 PB: {preview1000.all_time_best}</p>
-          <p>Date of Birth: {preview1000.all_time_date}</p>
-          {/* Render other preview data fields */}
-        </div>
-      )}
-      {preview1500 && (
-        <div>
-          <p>All Time 1500 PB: {preview1500.all_time_best}</p>
-          <p>Date of Birth: {preview1500.all_time_date}</p>
-          {/* Render other preview data fields */}
-        </div>
-      )}
+      <div className="preview-column">
+        {previewSkater && (
+          <div>
+            <p>
+              <strong>Skater Name: </strong>
+              {previewSkater.skater_name}
+            </p>
+            <p>
+              <strong>Date of Birth:</strong> {previewSkater.dob}
+            </p>
+            <p>
+              <strong>Home Club: </strong> {previewSkater.home_club}
+            </p>
+            <p>
+              <strong>Gender:</strong> {previewSkater.gender}
+            </p>
+            <p>
+              <strong>Country: </strong> {previewSkater.country}
+            </p>
+            <p>
+              <strong>Region: </strong>
+              {previewSkater.region}
+            </p>
+            {/* Render other preview data fields */}
+          </div>
+        )}
+      </div>
+      <div className="preview-column">
+        {preview500 && (
+          <div>
+            <p>
+              <strong>All Time 500 PB:</strong> {preview500.all_time_best}
+            </p>
+            <p>
+              <strong>All Time Location:</strong> {preview500.location}
+            </p>
+            <p>
+              <strong>All Time Competition Name:</strong>{" "}
+              {preview500.competition_name}
+            </p>
+            <p>
+              <strong>All Time Date:</strong> {preview500.all_time_date}
+            </p>
+            <p>
+              <strong>Season 500 PB:</strong> {preview500.season_best}
+            </p>
+            <p>
+              <strong>Season Location:</strong> {preview500.location}
+            </p>
+            <p>
+              <strong>Season Competition Name:</strong>{" "}
+              {preview500.competition_name}
+            </p>
+            <p>
+              <strong>Season Date:</strong> {preview500.season_date}
+            </p>
+            {/* Render other preview data fields */}
+          </div>
+        )}
+      </div>
+      <div className="preview-column">
+        {preview1000 && (
+          <div>
+            <p>
+              <strong>All Time 1000 PB:</strong> {preview1000.all_time_best}
+            </p>
+            <p>
+              <strong>All Time Location:</strong>{" "}
+              {preview1000.all_time_location}
+            </p>
+            <p>
+              <strong>All Time Competition Name:</strong>{" "}
+              {preview1000.all_time_competition_name}
+            </p>
+            <p>
+              <strong>All Time Date:</strong> {preview1000.all_time_date}
+            </p>
+            <p>
+              <strong>Season 1000 PB:</strong> {preview1000.season_best}
+            </p>
+            <p>
+              <strong>Season Location:</strong> {preview1000.season_location}
+            </p>
+            <p>
+              <strong>Season Competition Name:</strong>{" "}
+              {preview1000.season_competition_name}
+            </p>
+            <p>
+              <strong>Season Date:</strong> {preview1000.season_date}
+            </p>
+            {/* Render other preview data fields */}
+          </div>
+        )}
+      </div>
+      <div className="preview-column">
+        {preview1500 && (
+          <div>
+            <p>
+              <strong>All Time 1500 PB:</strong> {preview1500.all_time_best}
+            </p>
+            <p>
+              <strong>All Time Location:</strong> {preview1500.all_time_best}
+            </p>
+            <p>
+              <strong>All Time Competition Name:</strong>{" "}
+              {preview1500.all_time_competition_name}
+            </p>
+            <p>
+              <strong>All Time Date:</strong> {preview1500.all_time_date}
+            </p>
+            <p>
+              <strong>Season 1500 PB:</strong> {preview1500.season_best}
+            </p>
+            <p>
+              <strong>Season Location:</strong> {preview1500.season_location}
+            </p>
+            <p>
+              <strong>Season Competition Name:</strong>{" "}
+              {preview1500.season_competition_name}
+            </p>
+            <p>
+              <strong>Season Date:</strong> {preview1500.season_date}
+            </p>
+            {/* Render other preview data fields */}
+          </div>
+        )}
+      </div>
       {failureMessage && <p style={{ color: "red" }}>{failureMessage}</p>}
       <Button
         variant="secondary"

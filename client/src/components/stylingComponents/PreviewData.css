@@ -1,0 +1,8 @@
+.preview-column {
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+  text-align: right;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
