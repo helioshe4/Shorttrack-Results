@@ -1,14 +1,21 @@
-.dashboard-container {
-  display: flex;
+.container {
+  display: fixed;
   justify-content: center;
 }
 
-/* .container {
-  margin: 0 10px; 
-} */
-
-.add-results-container {
+.dashboard {
   display: flex;
-  justify-content: center;
-  gap: 50px; 
+  /* justify-content: center; */
+
+  align-items: flex-start;
+}
+
+.multistep-form {
+  flex: 1;
+  margin-right: 5px; /* Adjust the spacing between the components */
+}
+
+.search-skater {
+  flex: 1;
+  margin-left: 5px; /* Adjust the spacing between the components */
 }

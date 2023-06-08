@@ -172,7 +172,7 @@ export default function SearchSkater() {
           <button
             type="button"
             onClick={handleSearchClick}
-            className="btn btn-primary"
+            className="btn btn-success"
           >
             {" "}
             Search{" "}
@@ -183,7 +183,7 @@ export default function SearchSkater() {
           <button
             type="button"
             onClick={handleShowAllClick}
-            className="btn btn-primary"
+            className="btn btn-secondary"
           >
             Show All
           </button>

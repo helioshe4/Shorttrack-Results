@@ -5,6 +5,7 @@ import InputMask from "react-input-mask";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import "./stylingComponents/EditSkater.css";
 
 const EditSkater = ({ skater }) => {
   const [showModal, setShowModal] = useState(false);
@@ -88,14 +89,14 @@ const EditSkater = ({ skater }) => {
 
     // Fetch results for the new distance
     const data = await fetchResults(distance);
-    setAllTimeBest(convertTimeToISO(data.all_time_best) || '');
-    setAllTimeLocation(data.all_time_location || '');
-    setAllTimeCompetition(data.all_time_competition_name || '');
-    setAllTimeDate(data.all_time_date || '');
+    setAllTimeBest(convertTimeToISO(data.all_time_best) || "");
+    setAllTimeLocation(data.all_time_location || "");
+    setAllTimeCompetition(data.all_time_competition_name || "");
+    setAllTimeDate(data.all_time_date || "");
     setSeasonBest(convertTimeToISO(data.season_best));
-    setSeasonLocation(data.season_location || '');
-    setSeasonCompetition(data.season_competition_name || '');
-    setSeasonDate(data.season_date || '');
+    setSeasonLocation(data.season_location || "");
+    setSeasonCompetition(data.season_competition_name || "");
+    setSeasonDate(data.season_date || "");
   };
 
   const clearBar = () => {
@@ -192,240 +193,265 @@ const EditSkater = ({ skater }) => {
       <Modal show={showModal} fullscreen={true} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Skater</Modal.Title>
+          <div className="toggle-buttons-container">
+            <ToggleButtonGroup
+              name="toggle-forms"
+              value={activeForm}
+              defaultValue={"500m"}
+              onChange={handleToggleChange}
+            >
+              {distances.map((distance, idx) => (
+                <ToggleButton
+                  key={idx}
+                  id={`radio-${idx}`}
+                  type="radio"
+                  variant={"outline-secondary"}
+                  name="radio"
+                  value={distance.value}
+                  checked={activeForm === distance.value}
+                  onChange={(e) => {
+                    setActiveForm(e.currentTarget.value);
+                    setCurrentDistance(e.currentTarget.value);
+                  }}
+                >
+                  {distance.name}
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </div>
         </Modal.Header>
 
         <Modal.Body>
-          <form
-            id="editSkaterForm"
-            className=""
-            type="submit"
-            onSubmit={submitSkaterForm}
-          >
-            <div className="form-group">
-              <label htmlFor="skaterName">Skater Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="skaterName"
-                placeholder="First Last"
-                value={skater_name}
-                onChange={(e) => setSkaterName(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="dob">Date of Birth</label>
-              <InputMask
-                mask="9999/99/99"
-                className="form-control"
-                id="dob"
-                placeholder="YYYY/MM/DD"
-                value={dob}
-                onChange={(e) => setDob(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="homeClub">Home Club</label>
-              <input
-                type="text"
-                className="form-control"
-                id="homeClub"
-                placeholder="Home Club"
-                value={home_club}
-                onChange={(e) => setHomeClub(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
-            </div>
-            <div className="form-group select-input">
-              <label htmlFor="gender">Gender</label>
-              <select
-                type="text"
-                className="form-control"
-                id="gender"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                style={{ textAlign: "center" }}
+          <div className="forms-container">
+            <div className="form-container">
+              <h1>Edit Skater Information</h1>
+              <form
+                id="editSkaterForm"
+                className=""
+                type="submit"
+                onSubmit={submitSkaterForm}
               >
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
+                <div className="form-group">
+                  <label htmlFor="skaterName">Skater Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="skaterName"
+                    placeholder="First Last"
+                    value={skater_name}
+                    onChange={(e) => setSkaterName(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="dob">Date of Birth</label>
+                  <InputMask
+                    mask="9999/99/99"
+                    className="form-control"
+                    id="dob"
+                    placeholder="YYYY/MM/DD"
+                    value={dob}
+                    onChange={(e) => setDob(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="homeClub">Home Club</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="homeClub"
+                    placeholder="Home Club"
+                    value={home_club}
+                    onChange={(e) => setHomeClub(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <div className="form-group select-input">
+                  <label htmlFor="gender">Gender</label>
+                  <select
+                    type="text"
+                    className="form-control"
+                    id="gender"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="country">Country</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="country"
+                    placeholder="Country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="region">Region</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="region"
+                    placeholder="Region"
+                    value={region}
+                    onChange={(e) => setRegion(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <button type="submit" className="btn btn-success">
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  onClick={clearBar}
+                  className="btn btn-danger"
+                >
+                  Clear
+                </button>
+              </form>
             </div>
-            <div className="form-group">
-              <label htmlFor="country">Country</label>
-              <input
-                type="text"
-                className="form-control"
-                id="country"
-                placeholder="Country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="region">Region</label>
-              <input
-                type="text"
-                className="form-control"
-                id="region"
-                placeholder="Region"
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
-            </div>
-            <button type="submit" className="btn btn-success">
-              Submit
-            </button>
-            <button type="button" onClick={clearBar} className="btn btn-danger">
-              Clear
-            </button>
-          </form>
 
-          <ToggleButtonGroup
-            name="toggle-forms"
-            value={activeForm}
-            defaultValue={"500m"}
-            onChange={handleToggleChange}
-          >
-            {distances.map((distance, idx) => (
-              <ToggleButton
-                key={idx}
-                id={`radio-${idx}`}
-                type="radio"
-                variant={"outline-secondary"}
-                name="radio"
-                value={distance.value}
-                checked={activeForm === distance.value}
-                onChange={(e) => {
-                  setActiveForm(e.currentTarget.value);
-                  setCurrentDistance(e.currentTarget.value);
-                }}
+            <div className="form-container">
+              {/* </div>
+            <div className="form-container"> */}
+              <h1>
+                Edit {activeForm} PBS for {skater.skater_name}
+              </h1>
+              <form
+                // id={`addResults${distance}Form`}
+                className="add-results-form"
+                onSubmit={submitSkaterForm}
               >
-                {distance.name}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-          <h1>
-            Edit {activeForm} PBs for {skater.skater_name}
-          </h1>
-          <form
-            // id={`addResults${distance}Form`}
-            className="add-results-form"
-            onSubmit={submitSkaterForm}
-          >
-            <div className="form-group">
-              <label htmlFor={`allTime${currentDistance}`} >All Time PB for {activeForm}</label>
-              <InputMask
-                mask="99:99:999"
-                className="form-control"
-                id="allTime500"
-                placeholder="00:00:000"
-                value={all_time_best}
-                onChange={(e) => setAllTimeBest(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
+                <div className="form-group">
+                  <label htmlFor={`allTime${currentDistance}`}>
+                    All Time PB for {activeForm}
+                  </label>
+                  <InputMask
+                    mask="99:99:999"
+                    className="form-control"
+                    id="allTime500"
+                    placeholder="00:00:000"
+                    value={all_time_best}
+                    onChange={(e) => setAllTimeBest(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`allTime${currentDistance}`}>Location</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="allTime500"
+                    // placeholder="First Last"
+                    value={all_time_location}
+                    onChange={(e) => setAllTimeLocation(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`allTime${currentDistance}`}>
+                    Competition
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="allTime500"
+                    // placeholder="First Last"
+                    value={all_time_competition_name}
+                    onChange={(e) => setAllTimeCompetition(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`allTime${currentDistance}`}>Date</label>
+                  <InputMask
+                    mask="9999/99/99"
+                    className="form-control"
+                    id="allTime500"
+                    placeholder="YYYY/MM/DD"
+                    value={all_time_date}
+                    onChange={(e) => setAllTimeDate(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`allTime${currentDistance}`}>Season PB</label>
+                  <InputMask
+                    mask="99:99:999"
+                    className="form-control"
+                    id={`allTime${currentDistance}`}
+                    placeholder="00:00:000"
+                    value={season_best}
+                    onChange={(e) => setSeasonBest(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`allTime${currentDistance}`}>Location</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id={`allTime${currentDistance}`}
+                    // placeholder="First Last"
+                    value={season_location}
+                    onChange={(e) => setSeasonLocation(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`allTime${currentDistance}`}>
+                    Competition
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id={`allTime${currentDistance}`}
+                    // placeholder="First Last"
+                    value={season_competition_name}
+                    onChange={(e) => setSeasonCompetition(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`allTime${currentDistance}`}>Date</label>
+                  <InputMask
+                    mask="9999/99/99"
+                    className="form-control"
+                    id={`allTime${currentDistance}`}
+                    placeholder="YYYY/MM/DD"
+                    value={season_date}
+                    onChange={(e) => setSeasonDate(e.target.value)}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
+                <button type="submit" className="btn btn-success">
+                  {!(
+                    all_time_best ||
+                    all_time_location ||
+                    all_time_competition_name ||
+                    all_time_date ||
+                    season_best ||
+                    season_location ||
+                    season_competition_name ||
+                    season_date
+                  )
+                    ? "Skip"
+                    : "Submit"}
+                </button>
+                <button
+                  type="button"
+                  onClick={clearBar}
+                  className="btn btn-danger"
+                >
+                  Clear
+                </button>
+              </form>
             </div>
-            <div className="form-group">
-              <label htmlFor={`allTime${currentDistance}`}>Location</label>
-              <input
-                type="text"
-                className="form-control"
-                id="allTime500"
-                // placeholder="First Last"
-                value={all_time_location}
-                onChange={(e) => setAllTimeLocation(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`allTime${currentDistance}`}>Competition</label>
-              <input
-                type="text"
-                className="form-control"
-                id="allTime500"
-                // placeholder="First Last"
-                value={all_time_competition_name}
-                onChange={(e) => setAllTimeCompetition(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`allTime${currentDistance}`}>Date</label>
-              <InputMask
-                mask="9999/99/99"
-                className="form-control"
-                id="allTime500"
-                placeholder="YYYY/MM/DD"
-                value={all_time_date}
-                onChange={(e) => setAllTimeDate(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`allTime${currentDistance}`}>Season PB</label>
-              <InputMask
-                mask="99:99:999"
-                className="form-control"
-                id={`allTime${currentDistance}`}
-                placeholder="00:00:000"
-                value={season_best}
-                onChange={(e) => setSeasonBest(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`allTime${currentDistance}`}>Location</label>
-              <input
-                type="text"
-                className="form-control"
-                id={`allTime${currentDistance}`}
-                // placeholder="First Last"
-                value={season_location}
-                onChange={(e) => setSeasonLocation(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`allTime${currentDistance}`}>Competition</label>
-              <input
-                type="text"
-                className="form-control"
-                id={`allTime${currentDistance}`}
-                // placeholder="First Last"
-                value={season_competition_name}
-                onChange={(e) => setSeasonCompetition(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`allTime${currentDistance}`}>Date</label>
-              <InputMask
-                mask="9999/99/99"
-                className="form-control"
-                id={`allTime${currentDistance}`}
-                placeholder="YYYY/MM/DD"
-                value={season_date}
-                onChange={(e) => setSeasonDate(e.target.value)}
-                style={{ textAlign: "center" }}
-              />
-            </div>
-            <button type="submit" className="btn btn-success">
-              {!(
-                all_time_best ||
-                all_time_location ||
-                all_time_competition_name ||
-                all_time_date ||
-                season_best ||
-                season_location ||
-                season_competition_name ||
-                season_date
-              )
-                ? "Skip"
-                : "Submit"}
-            </button>
-            <button type="button" onClick={clearBar} className="btn btn-danger">
-              Clear
-            </button>
-          </form>
+          </div>
         </Modal.Body>
 
         <Modal.Footer>

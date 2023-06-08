@@ -15,12 +15,14 @@
 
 .form-group select {
   width: 50%;
-  
 }
 
 h1 {
   font-size: large;
+  margin-top: 40px;
 }
+
+
 
 /* .form-control {
   width: 100%;

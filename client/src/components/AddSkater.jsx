@@ -125,7 +125,7 @@ const AddSkater = ({ updateSkaterName, onSubmit, setSkaterFormData }) => {
   return (
     <>
       <h1 className="text-center ">Add a skater</h1>
-      <form id="addSkaterForm" className="" type="submit" onSubmit={submitForm}>
+      <form id="addSkaterForm" className="add-skater-form" type="submit" onSubmit={submitForm}>
         <div className="form-group">
           <label htmlFor="skaterName">Skater Name</label>
           <input
