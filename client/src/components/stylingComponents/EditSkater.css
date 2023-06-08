@@ -1,0 +1,38 @@
+.form-container {
+  flex-basis: 85%;
+  align-self: flex-start;
+}
+
+.forms-container > .form-container:first-child {
+  margin-left: 15rem;
+}
+
+.forms-container > .form-container:last-child {
+  margin-right: 15rem;
+}
+
+.forms-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin-right: auto;
+}
+
+.toggle-buttons-container {
+  /* order: 2; */
+  margin-left: auto;
+}
