@@ -1,15 +1,14 @@
 import React, { useState, useRef } from "react";
 import Homebar from "../Homebar";
-import AddSkater from "../AddSkater";
 import SearchSkater from "../SearchSkater";
-import AddResults from "../AddResults";
+import MultiStepForm from "../MultiStepForm.jsx";
 
 import "../stylingComponents/Dashboard.css";
-import MultiStepForm from "../MultiStepForm.jsx";
 
 function Dashboard() {
   return (
     <div className="container">
+      <Homebar />
       <div className="dashboard">
         <div className="multistep-form">
           <MultiStepForm />

@@ -99,13 +99,24 @@ const EditSkater = ({ skater }) => {
     setSeasonDate(data.season_date || "");
   };
 
-  const clearBar = () => {
+  const clearSkaterInfo = () => {
     setSkaterName("");
     setDob("");
     setHomeClub("");
     setGender("");
     setCountry("");
     setRegion("");
+  };
+
+  const clearResultsInfo = () => {
+    setAllTimeBest("");
+    setAllTimeLocation("");
+    setAllTimeCompetition("");
+    setAllTimeDate("");
+    setSeasonBest("");
+    setSeasonLocation("");
+    setSeasonCompetition("");
+    setSeasonDate("");
   };
 
   function convertTimeToISO(timeInSeconds) {
@@ -306,12 +317,12 @@ const EditSkater = ({ skater }) => {
                     style={{ textAlign: "center" }}
                   />
                 </div>
-                <button type="submit" className="btn btn-success">
+                {/* <button type="submit" className="btn btn-success">
                   Submit
-                </button>
+                </button> */}
                 <button
                   type="button"
-                  onClick={clearBar}
+                  onClick={clearSkaterInfo}
                   className="btn btn-danger"
                 >
                   Clear
@@ -428,7 +439,7 @@ const EditSkater = ({ skater }) => {
                     style={{ textAlign: "center" }}
                   />
                 </div>
-                <button type="submit" className="btn btn-success">
+                {/* <button type="submit" className="btn btn-success">
                   {!(
                     all_time_best ||
                     all_time_location ||
@@ -441,10 +452,10 @@ const EditSkater = ({ skater }) => {
                   )
                     ? "Skip"
                     : "Submit"}
-                </button>
+                </button> */}
                 <button
                   type="button"
-                  onClick={clearBar}
+                  onClick={clearResultsInfo}
                   className="btn btn-danger"
                 >
                   Clear
