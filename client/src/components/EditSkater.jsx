@@ -21,7 +21,6 @@ const EditSkater = ({ skater }) => {
       );
       const text = await response.text();
       const jsonData = text ? JSON.parse(text) : {};
-      console.log("jsonData:", jsonData);
       return jsonData;
     } catch (err) {
       console.error(err.message);
@@ -72,10 +71,14 @@ const EditSkater = ({ skater }) => {
 
   const handleSaveModal = () => {
     submitSkaterForm();
-    //save500Results();
-    //save1000Results();
-    //save1500Results();
-    setShowModal(false);
+    if (activeForm === "500m") {
+      save500Results();
+    } else if (activeForm === "1000m") {
+      save1000Results();
+    } else if (activeForm === "1500m") {
+      save1500Results();
+    }
+    //setShowModal(false);
   };
 
   const handleCloseModal = () => {
@@ -132,6 +135,21 @@ const EditSkater = ({ skater }) => {
     return `${formattedMinutes}:${formattedSeconds}:${milliseconds}`;
   }
 
+  const convertTimeToSeconds = (timeString) => {
+    const [minutes, seconds, milliseconds] = timeString.split(":");
+
+    let paddedMilliseconds = String(milliseconds);
+    paddedMilliseconds = paddedMilliseconds.replace(/_/g, "");
+    paddedMilliseconds = paddedMilliseconds.padEnd(3, "0");
+
+    const totalSeconds =
+      parseInt(minutes) * 60 +
+      parseInt(seconds) +
+      parseFloat(paddedMilliseconds) / 1000;
+
+    return totalSeconds.toFixed(3); // Convert to a decimal with 3 decimal places
+  };
+
   const submitSkaterForm = async () => {
     //e.preventDefault();
     try {
@@ -151,8 +169,6 @@ const EditSkater = ({ skater }) => {
         setFailureMessage("Skater name cannot be empty!");
         return;
       }
-
-      console.log(skater.skater_id);
 
       const response = await fetch(
         `http://localhost:5000/skaters/${skater.skater_id}`,
@@ -177,6 +193,210 @@ const EditSkater = ({ skater }) => {
         } else {
           // Handle the case when the server returns an error
           setFailureMessage(`There was an error adding ${skater_name}!`);
+        }
+      }
+    } catch (err) {
+      if (err.message === "Invalid time value") {
+        setSuccessMessage(``);
+        setFailureMessage("Invalid date format!");
+      }
+      console.error(err.message);
+    }
+  };
+
+  const skaterIdExists = async (skaterId, distance) => {
+    const response = await fetch(
+      `http://localhost:5000/exists/${skaterId}/${distance}`
+    );
+    const data = await response.json();
+    const count = parseInt(data.count);
+    return count > 0;
+  };
+
+  const save500Results = async () => {
+    try {
+      const body = {
+        all_time_best: convertTimeToSeconds(all_time_best),
+        all_time_location,
+        all_time_competition_name,
+        all_time_date,
+        season_best: convertTimeToSeconds(season_best),
+        season_location,
+        season_competition_name,
+        season_date,
+      };
+
+      const exists = await skaterIdExists(skater.skater_id, 500);
+      let response;
+      if (exists) {
+        response = await fetch(
+          `http://localhost:5000/results_500/${skater.skater_id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        );
+      } else {
+        response = await fetch(
+          `http://localhost:5000/results_500/${skater.skater_id}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        );
+      }
+
+      console.log("Form data:", body);
+      console.log("Response:", response);
+
+      // Check for duplicate key constraint violation
+      if (response.status !== 200) {
+        //clear error messages:
+        setSuccessMessage("");
+        setFailureMessage(
+          `There was an error adding ${skater_name}'s results!`
+        );
+      } else {
+        if (response.ok) {
+          setFailureMessage("");
+          setSuccessMessage(`${skater_name}'s results were added!`);
+        } else {
+          // Handle the case when the server returns an error
+          setFailureMessage(
+            `There was an error adding ${skater_name}'s results!`
+          );
+        }
+      }
+    } catch (err) {
+      if (err.message === "Invalid time value") {
+        setSuccessMessage(``);
+        setFailureMessage("Invalid date format!");
+      }
+      console.error(err.message);
+    }
+  };
+
+  const save1000Results = async () => {
+    try {
+      const body = {
+        all_time_best: convertTimeToSeconds(all_time_best),
+        all_time_location,
+        all_time_competition_name,
+        all_time_date,
+        season_best: convertTimeToSeconds(season_best),
+        season_location,
+        season_competition_name,
+        season_date,
+      };
+
+      const exists = await skaterIdExists(skater.skater_id, 1000);
+      let response;
+      if (exists) {
+        response = await fetch(
+          `http://localhost:5000/results_1000/${skater.skater_id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        );
+      } else {
+        response = await fetch(
+          `http://localhost:5000/results_1000/${skater.skater_id}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        );
+      }
+
+      console.log("Form data:", body);
+      console.log("Response:", response);
+
+      // Check for duplicate key constraint violation
+      if (response.status !== 200) {
+        //clear error messages:
+        setSuccessMessage("");
+        setFailureMessage(
+          `There was an error adding ${skater_name}'s results!`
+        );
+      } else {
+        if (response.ok) {
+          setFailureMessage("");
+          setSuccessMessage(`${skater_name}'s results were added!`);
+        } else {
+          // Handle the case when the server returns an error
+          setFailureMessage(
+            `There was an error adding ${skater_name}'s results!`
+          );
+        }
+      }
+    } catch (err) {
+      if (err.message === "Invalid time value") {
+        setSuccessMessage(``);
+        setFailureMessage("Invalid date format!");
+      }
+      console.error(err.message);
+    }
+  };
+
+  const save1500Results = async () => {
+    try {
+      const body = {
+        all_time_best: convertTimeToSeconds(all_time_best),
+        all_time_location,
+        all_time_competition_name,
+        all_time_date,
+        season_best: convertTimeToSeconds(season_best),
+        season_location,
+        season_competition_name,
+        season_date,
+      };
+
+      const exists = await skaterIdExists(skater.skater_id, 1500);
+      let response;
+      if (exists) {
+        response = await fetch(
+          `http://localhost:5000/results_1500/${skater.skater_id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        );
+      } else {
+        response = await fetch(
+          `http://localhost:5000/results_1500/${skater.skater_id}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        );
+      }
+
+      console.log("Form data:", body);
+      console.log("Response:", response);
+
+      // Check for duplicate key constraint violation
+      if (response.status !== 200) {
+        //clear error messages:
+        setSuccessMessage("");
+        setFailureMessage(
+          `There was an error adding ${skater_name}'s results!`
+        );
+      } else {
+        if (response.ok) {
+          setFailureMessage("");
+          setSuccessMessage(`${skater_name}'s results were added!`);
+        } else {
+          // Handle the case when the server returns an error
+          setFailureMessage(
+            `There was an error adding ${skater_name}'s results!`
+          );
         }
       }
     } catch (err) {
@@ -467,7 +687,7 @@ const EditSkater = ({ skater }) => {
 
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
-            Close
+            Cancel and Close
           </Button>
           <Button variant="primary" onClick={handleSaveModal}>
             Save Changes

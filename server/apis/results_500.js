@@ -178,12 +178,15 @@ router.put("/:skater_id", async (req, res) => {
 
     const updatedResult = await pool.query(query, values);
 
+    console.log(query);
+    console.log(values);
+
     console.log("Updated result: ", updatedResult.rows[0]);
 
     res.json(updatedResult.rows[0]);
   } catch (err) {
     console.error(err.message);
-    //res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

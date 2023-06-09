@@ -83,6 +83,19 @@ app.get("/complete", async (req, res) => {
   }
 })
 
+app.get("/exists/:skater_id/:distance", async (req, res) => {
+  try {
+    const {skater_id, distance} = req.params;
+    const exist = await pool.query(`
+    SELECT COUNT(*) FROM results_${distance} WHERE skater_id = $1
+    LIMIT 1`, [skater_id]);
+
+    res.json(exist.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+})
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");
