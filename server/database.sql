@@ -11,7 +11,6 @@ CREATE TABLE skaters(
 );
 
 CREATE TABLE results_500 (
-    result_id SERIAL PRIMARY KEY,
     skater_id INT REFERENCES skaters(skater_id),
     all_time_best DECIMAL(10, 3),
     all_time_location VARCHAR(50),
@@ -20,38 +19,11 @@ CREATE TABLE results_500 (
     season_best DECIMAL(10, 3),
     season_location VARCHAR(50),
     season_competition_name VARCHAR(50),
-    season_date TIMESTAMP
-);
-
--- to be implemented:
--- CREATE TABLE results_500 (
---     skater_id INT REFERENCES skaters(skater_id),
---     all_time_best DECIMAL(10, 3),
---     all_time_location VARCHAR(50),
---     all_time_competition_name VARCHAR(50),
---     all_time_date TIMESTAMP,
---     season_best DECIMAL(10, 3),
---     season_location VARCHAR(50),
---     season_competition_name VARCHAR(50),
---     season_date TIMESTAMP,
---     PRIMARY KEY (skater_id)
--- );
-
-CREATE TABLE results_1500 (
-    result_id SERIAL PRIMARY KEY,
-    skater_id INT REFERENCES skaters(skater_id),
-    all_time_best DECIMAL(10, 3),
-    all_time_location VARCHAR(50),
-    all_time_competition_name VARCHAR(50),
-    all_time_date TIMESTAMP,
-    season_best DECIMAL(10, 3),
-    season_location VARCHAR(50),
-    season_competition_name VARCHAR(50),
-    season_date TIMESTAMP
+    season_date TIMESTAMP,
+    PRIMARY KEY (skater_id)
 );
 
 CREATE TABLE results_1000 (
-    result_id SERIAL PRIMARY KEY,
     skater_id INT REFERENCES skaters(skater_id),
     all_time_best DECIMAL(10, 3),
     all_time_location VARCHAR(50),
@@ -60,8 +32,24 @@ CREATE TABLE results_1000 (
     season_best DECIMAL(10, 3),
     season_location VARCHAR(50),
     season_competition_name VARCHAR(50),
-    season_date TIMESTAMP
+    season_date TIMESTAMP,
+    PRIMARY KEY (skater_id)
 );
+
+CREATE TABLE results_1500 (
+    skater_id INT REFERENCES skaters(skater_id),
+    all_time_best DECIMAL(10, 3),
+    all_time_location VARCHAR(50),
+    all_time_competition_name VARCHAR(50),
+    all_time_date TIMESTAMP,
+    season_best DECIMAL(10, 3),
+    season_location VARCHAR(50),
+    season_competition_name VARCHAR(50),
+    season_date TIMESTAMP,
+    PRIMARY KEY (skater_id)
+);
+
+
 
 -- Alter the table to add a new case-insensitive collation for skater_name
 ALTER TABLE skaters
