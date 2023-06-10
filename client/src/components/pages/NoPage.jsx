@@ -1,10 +1,10 @@
 import React from "react";
-import Homebar from "../Homebar";
+import Navbar from "../Navbar";
 
 function NoPage() {
   return (
     <>
-      <Homebar />
+      <Navbar />
       <h1>this is the no page error page</h1>
     </>
   );

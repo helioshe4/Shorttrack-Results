@@ -1,21 +1,23 @@
 import React from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import BootstrapNavbar from "react-bootstrap/Navbar";
 
 function Navbar() {
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/contact">Contact</Link>
-        </li>
-      </ul>
-    </nav>
+    <>
+      <BootstrapNavbar bg="dark" variant="dark">
+        <Container>
+          <BootstrapNavbar.Brand href="#home">Homepage</BootstrapNavbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/athletes">Athletes</Nav.Link>
+            <Nav.Link href="/login">Login</Nav.Link>
+          </Nav>
+        </Container>
+      </BootstrapNavbar>
+      <br />
+    </>
   );
 }
 
