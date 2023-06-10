@@ -8,7 +8,7 @@ function Navbar() {
     <>
       <BootstrapNavbar bg="dark" variant="dark">
         <Container>
-          <BootstrapNavbar.Brand href="#home">Homepage</BootstrapNavbar.Brand>
+          <BootstrapNavbar.Brand href="/">Welcome!</BootstrapNavbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/athletes">Athletes</Nav.Link>

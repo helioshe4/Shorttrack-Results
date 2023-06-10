@@ -35,12 +35,14 @@ const skatersRouter = require("./skaters");
 const results_500Router = require("./results_500");
 const results_1000Router = require("./results_1000");
 const results_1500Router = require("./results_1500");
+const countriesRouter = require("./countries");
 
 
 app.use("/skaters", skatersRouter);
 app.use("/results_500", results_500Router);
 app.use("/results_1000", results_1000Router);
 app.use("/results_1500", results_1500Router);
+app.use("/countries", countriesRouter);
 
 app.post("/login", async (req, res) => {
   // Validate admin credentials
@@ -85,7 +87,7 @@ app.get("/complete", async (req, res) => {
 
 app.get("/exists/:skater_id/:distance", async (req, res) => {
   try {
-    const {skater_id, distance} = req.params;
+    const { skater_id, distance } = req.params;
     const exist = await pool.query(`
     SELECT COUNT(*) FROM results_${distance} WHERE skater_id = $1
     LIMIT 1`, [skater_id]);
