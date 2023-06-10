@@ -4,7 +4,7 @@ import Table from "react-bootstrap/Table";
 import Navbar from "../Navbar";
 import Button from "react-bootstrap/Button";
 
-import "../stylingComponents/Athletes.css";
+import "../stylingComponents/Countries.css";
 
 function Countries() {
   const [countries, setCountries] = useState([]);

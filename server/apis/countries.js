@@ -38,4 +38,34 @@ router.get("/:country", async (req, res) => {
   }
 });
 
+router.get("/:country/:gender", async (req, res) => {
+  try {
+    const { country, gender } = req.params;
+    let skaters;
+
+    if (gender === 'null') {
+      skaters = await pool.query(
+        `SELECT *
+         FROM skaters
+         WHERE country = $1 AND gender IS NULL
+         ORDER BY skater_name`,
+        [country]
+      );
+    } else {
+      skaters = await pool.query(
+        `SELECT *
+         FROM skaters
+         WHERE country = $1 AND gender = $2
+         ORDER BY skater_name`,
+        [country, gender]
+      );
+    }
+
+    res.json(skaters.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

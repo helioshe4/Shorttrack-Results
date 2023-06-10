@@ -1,0 +1,15 @@
+.athletesContainer h1 {
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.athletesContainer table {
+  width: 30%; 
+  margin: 0 auto;
+  text-align: left;
+}
+
+.athletesContainer .headerCell {
+  text-decoration: underline;
+  font-size: large;
+}
