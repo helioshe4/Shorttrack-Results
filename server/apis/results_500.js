@@ -193,10 +193,10 @@ router.put("/:skater_id", async (req, res) => {
 //get a result_500
 router.get("/:skater_id", async (req, res) => {
   try {
-    const { result_id } = req.params;
+    const { skater_id } = req.params;
     const result_500 = await pool.query(
-      "SELECT * FROM results_500 WHERE result_id = $1",
-      [result_id]
+      "SELECT * FROM results_500 WHERE skater_id = $1",
+      [skater_id]
     );
 
     res.json(result_500.rows[0]);
@@ -248,21 +248,5 @@ router.get("/skaters/:skater_name", async (req, res) => {
   }
 });
 
-//get result_id from a skater_id
-router.get("/result-id/:skater_id", async (req, res) => {
-  try {
-    const { skater_id } = req.params;
-    const result_id = await pool.query(
-      "SELECT result_id FROM results_500 WHERE skater_id = $1 LIMIT 1",
-      [skater_id]
-    );
-
-    res.json(result_id.rows[0]);
-    //res.json(typeof skater.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
 
 module.exports = router;

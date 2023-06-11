@@ -1,0 +1,17 @@
+.skaterinfoContainer h1 {
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.skaterinfoContainer h2 {
+  text-align: center;
+  padding-top: 50px;
+  font-size: 25x;
+}
+
+.skaterinfoContainer table {
+  width: 27%; 
+  margin: 0 auto;
+  text-align: left;
+}
+
