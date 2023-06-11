@@ -9,9 +9,26 @@
   font-size: 25x;
 }
 
-.skaterinfoContainer table {
+.skaterinfoContainer .skaterInfo {
   width: 27%; 
   margin: 0 auto;
   text-align: left;
+}
+
+.skaterinfoContainer table {
+  width: 27%; 
+  margin: 0 5px;
+  text-align: left;
+}
+
+.skaterinfoContainer .tableContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+
+.skaterinfoContainer .tableContainer table{
+  width: 20%;
 }
 
