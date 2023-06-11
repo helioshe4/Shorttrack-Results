@@ -100,124 +100,121 @@ function Countries() {
       <Navbar />
 
       <div className="wrapper-container">
-        <div className="country-container">
-          <Table borderless hover className="country-table">
-            <thead>
-              <tr>
-                <th colSpan={2}>
-                  <h1>Search by Country</h1>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {column1.map((country, index) => (
-                <tr key={index}>
-                  <td>
+        <Table borderless hover className="country-table">
+          <thead>
+            <tr>
+              <th colSpan={2}>
+                <h1>Search by Country</h1>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {column1.map((country, index) => (
+              <tr key={index}>
+                <td>
+                  <Button variant="light" onClick={handleClick}>
+                    <span style={{ display: "flex", alignItems: "center" }}>
+                      {country.code !== "UNKNOWN" && country.code !== null && (
+                        <img
+                          src={`https://flagsapi.com/${country.code}/flat/16.png`}
+                          style={{ marginRight: "5px" }}
+                        />
+                      )}
+                      {country.name}
+                    </span>
+                  </Button>
+                </td>
+                <td>
+                  {column2[index] ? (
                     <Button variant="light" onClick={handleClick}>
                       <span style={{ display: "flex", alignItems: "center" }}>
-                        {country.code !== "UNKNOWN" &&
-                          country.code !== null && (
+                        {column2[index].code !== "UNKNOWN" &&
+                          column2[index].code !== null && (
                             <img
-                              src={`https://flagsapi.com/${country.code}/flat/16.png`}
+                              src={`https://flagsapi.com/${column2[index].code}/flat/16.png`}
                               style={{ marginRight: "5px" }}
                             />
                           )}
-                        {country.name}
+                        {column2[index].name}
                       </span>
                     </Button>
-                  </td>
-                  <td>
-                    {column2[index] ? (
-                      <Button variant="light" onClick={handleClick}>
-                        <span style={{ display: "flex", alignItems: "center" }}>
-                          {column2[index].code !== "UNKNOWN" &&
-                            column2[index].code !== null && (
-                              <img
-                                src={`https://flagsapi.com/${column2[index].code}/flat/16.png`}
-                                style={{ marginRight: "5px" }}
-                              />
-                            )}
-                          {column2[index].name}
-                        </span>
-                      </Button>
-                    ) : (
-                      ""
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>  
-        <div className="search-container">
-          <Table borderless className="search-table">
-            <thead>
-              <tr>
-                <th colSpan={2}>
-                  <h1>Search by Name</h1>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colSpan={2}>
-                  <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control
-                        placeholder="First Last"
-                        onChange={handleQueryChange}
-                      />
-                    </Form.Group>
-                    <br />
-
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                      <Form.Label>Select Filters</Form.Label>
-                      <div className="checkbox-group">
-                        <Form.Check
-                          type="checkbox"
-                          label="Check me out"
-                          value="checkbox1"
-                          onChange={handleCheckboxChange}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="Check me out"
-                          value="checkbox2"
-                          onChange={handleCheckboxChange}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="Check me out"
-                          value="checkbox3"
-                          onChange={handleCheckboxChange}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="Check me out"
-                          value="checkbox4"
-                          onChange={handleCheckboxChange}
-                        />
-                      </div>
-                    </Form.Group>
-                    <Button variant="primary" type="submit">
-                      Search
-                    </Button>
-                    <Button variant="danger" type="reset" onClick={handleClear}>
-                      Clear
-                    </Button>
-                  </Form>
+                  ) : (
+                    ""
+                  )}
                 </td>
               </tr>
-            </tbody>
-          </Table>
-          {searchResultsVisible && (
-            <SearchResults
-              searchQuery={searchQuery}
-              selectedCheckboxes={selectedCheckboxes}
-            />
-          )}
-        </div>
+            ))}
+          </tbody>
+        </Table>
+
+        
+        <Table borderless className="search-table">
+          <thead>
+            <tr>
+              <th colSpan={2}>
+                <h1>Search by Name</h1>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan={2}>
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                      placeholder="First Last"
+                      onChange={handleQueryChange}
+                    />
+                  </Form.Group>
+                  <br />
+
+                  <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Label>Select Filters</Form.Label>
+                    <div className="checkbox-group">
+                      <Form.Check
+                        type="checkbox"
+                        label="Check me out"
+                        value="checkbox1"
+                        onChange={handleCheckboxChange}
+                      />
+                      <Form.Check
+                        type="checkbox"
+                        label="Check me out"
+                        value="checkbox2"
+                        onChange={handleCheckboxChange}
+                      />
+                      <Form.Check
+                        type="checkbox"
+                        label="Check me out"
+                        value="checkbox3"
+                        onChange={handleCheckboxChange}
+                      />
+                      <Form.Check
+                        type="checkbox"
+                        label="Check me out"
+                        value="checkbox4"
+                        onChange={handleCheckboxChange}
+                      />
+                    </div>
+                  </Form.Group>
+                  <Button variant="primary" type="submit">
+                    Search
+                  </Button>
+                  <Button variant="danger" type="reset" onClick={handleClear}>
+                    Clear
+                  </Button>
+                </Form>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+        {searchResultsVisible && (
+          <SearchResults
+            searchQuery={searchQuery}
+            selectedCheckboxes={selectedCheckboxes}
+          />
+        )}
       </div>
     </>
   );

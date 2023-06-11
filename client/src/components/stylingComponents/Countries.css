@@ -9,6 +9,11 @@ h1 {
   text-align: left;
 }
 
+.wrapper-container {
+  display: flex;
+  justify-content: center;
+}
+
 .country-table {
   margin: 0 2rem;
   height: 100%;
@@ -17,7 +22,6 @@ h1 {
 .search-table {
   margin: 0 2rem;
   height: 100%;
-  width: 100%;
 }
 
 .search-table button{
