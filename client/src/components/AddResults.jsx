@@ -56,6 +56,10 @@ const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
       parseInt(seconds) +
       parseFloat(paddedMilliseconds) / 1000;
 
+    if (isNaN(totalSeconds)) {
+      return 0;
+    }
+
     return totalSeconds.toFixed(3); // Convert to a decimal with 3 decimal places
   };
 
