@@ -41,25 +41,28 @@ router.get("/:country", async (req, res) => {
 router.get("/:country/:gender", async (req, res) => {
   try {
     const { country, gender } = req.params;
-    let skaters;
+    const queryParams = [];
+    let query = `SELECT *
+                 FROM skaters
+                 WHERE `;
 
-    if (gender === 'null') {
-      skaters = await pool.query(
-        `SELECT *
-         FROM skaters
-         WHERE country = $1 AND gender IS NULL
-         ORDER BY skater_name`,
-        [country]
-      );
+    if (country.toLowerCase() === 'unknown') {
+      query += ` country IS NULL`;
     } else {
-      skaters = await pool.query(
-        `SELECT *
-         FROM skaters
-         WHERE country = $1 AND gender = $2
-         ORDER BY skater_name`,
-        [country, gender]
-      );
+      query += ` country = $${queryParams.length + 1}`;
+      queryParams.push(country);
     }
+
+    if (gender.toLowerCase() === 'null') {
+      query += ` AND gender IS NULL`;
+    } else {
+      query += ` AND gender = $${queryParams.length + 1}`;
+      queryParams.push(gender);
+    }
+
+    query += ` ORDER BY skater_name`;
+
+    const skaters = await pool.query(query, queryParams);
 
     res.json(skaters.rows);
   } catch (err) {
