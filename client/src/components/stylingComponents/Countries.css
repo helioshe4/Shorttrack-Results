@@ -4,8 +4,31 @@
   text-align: left;
 }
 
-
 h1 {
   font-size: 2rem;
   text-align: left;
+}
+
+.country-table {
+  margin: 0 2rem;
+  height: 100%;
+}
+
+.search-table {
+  margin: 0 2rem;
+  height: 100%;
+  width: 100%;
+}
+
+.search-table button{
+  margin: 0 0.5rem;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.checkbox-group .form-check {
+  margin-right: 1rem;
 }
