@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Button from "react-bootstrap/esm/Button";
 import "./stylingContainers/LoginContainer.css";
 
 async function loginUser(credentials) {
@@ -39,7 +40,7 @@ export default function LoginContainer({ setToken }) {
           <input type="password" onChange={e => setPassword(e.target.value)}/>
         </label>
         <div>
-          <button type="submit">Submit</button>
+          <Button variant="success" type="submit">Submit</Button>
         </div>
       </form>
     </div>

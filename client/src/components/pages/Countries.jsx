@@ -147,7 +147,6 @@ function Countries() {
           </tbody>
         </Table>
 
-        
         <Table borderless className="search-table">
           <thead>
             <tr>

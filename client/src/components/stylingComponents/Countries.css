@@ -1,5 +1,5 @@
 .table {
-  width: 20%; 
+  width: 20%;
   margin: 0 auto;
   text-align: left;
 }
@@ -24,7 +24,7 @@ h1 {
   height: 100%;
 }
 
-.search-table button{
+.search-table button {
   margin: 0 0.5rem;
 }
 

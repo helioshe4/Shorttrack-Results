@@ -52,7 +52,7 @@ function Athletes() {
       }
     };
 
-    if (countries.length > 0 && !countries.includes(country)) {
+    if (countries.length > 0 && !countries.includes(country) && country !== "UNKNOWN") {
       setCountryExists(false); // Update the state variable if country doesn't exist
     } else {
       fetchData("Male");
