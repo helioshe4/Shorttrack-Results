@@ -1,8 +1,8 @@
-.table {
+/* .table {
   width: 20%;
   margin: 0 auto;
   text-align: left;
-}
+} */
 
 h1 {
   font-size: 2rem;
@@ -17,11 +17,20 @@ h1 {
 .country-table {
   margin: 0 2rem;
   height: 100%;
+  width: 20%;
+  text-align: left;
 }
 
 .search-table {
   margin: 0 2rem;
   height: 100%;
+  width: 20%;
+  text-align: left;
+}
+.search-results-container {
+  width: 100%;
+  margin-bottom: 2rem;
+  margin-top: 20px;
 }
 
 .search-table button {

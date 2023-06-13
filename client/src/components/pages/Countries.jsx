@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCode } from "iso-3166-1-alpha-2";
+
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { getCode } from "iso-3166-1-alpha-2";
+import Container from "react-bootstrap/esm/Container";
+import Row from "react-bootstrap/esm/Row";
+import Col from "react-bootstrap/esm/Col";
 
 import Navbar from "../Navbar";
 import SearchResults from "../SearchResults";
@@ -117,6 +121,7 @@ function Countries() {
                       {country.code !== "UNKNOWN" && country.code !== null && (
                         <img
                           src={`https://flagsapi.com/${country.code}/flat/16.png`}
+                          alt=""
                           style={{ marginRight: "5px" }}
                         />
                       )}
@@ -132,6 +137,7 @@ function Countries() {
                           column2[index].code !== null && (
                             <img
                               src={`https://flagsapi.com/${column2[index].code}/flat/16.png`}
+                              alt=""
                               style={{ marginRight: "5px" }}
                             />
                           )}
@@ -206,14 +212,20 @@ function Countries() {
                 </Form>
               </td>
             </tr>
+            {searchResultsVisible && (
+              <tr>
+                <td colSpan={2}>
+                  <div className="search-results-container">
+                    <SearchResults
+                      searchQuery={searchQuery}
+                      selectedCheckboxes={selectedCheckboxes}
+                    />
+                  </div>
+                </td>
+              </tr>
+            )}
           </tbody>
         </Table>
-        {searchResultsVisible && (
-          <SearchResults
-            searchQuery={searchQuery}
-            selectedCheckboxes={selectedCheckboxes}
-          />
-        )}
       </div>
     </>
   );
