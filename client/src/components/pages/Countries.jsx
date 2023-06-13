@@ -5,9 +5,6 @@ import { getCode } from "iso-3166-1-alpha-2";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/esm/Container";
-import Row from "react-bootstrap/esm/Row";
-import Col from "react-bootstrap/esm/Col";
 
 import Navbar from "../Navbar";
 import SearchResults from "../SearchResults";
@@ -96,6 +93,8 @@ function Countries() {
   };
 
   const handleClear = () => {
+    setSearchQuery("");
+    setSelectedCheckboxes([]);
     setSearchResultsVisible(false);
   };
 
@@ -168,7 +167,7 @@ function Countries() {
                   <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
-                      placeholder="First Last"
+                      placeholder="Search by name (partial or full)..."
                       onChange={handleQueryChange}
                     />
                   </Form.Group>
@@ -179,13 +178,13 @@ function Countries() {
                     <div className="checkbox-group">
                       <Form.Check
                         type="checkbox"
-                        label="Check me out"
+                        label="Male"
                         value="checkbox1"
                         onChange={handleCheckboxChange}
                       />
                       <Form.Check
                         type="checkbox"
-                        label="Check me out"
+                        label="Female"
                         value="checkbox2"
                         onChange={handleCheckboxChange}
                       />
