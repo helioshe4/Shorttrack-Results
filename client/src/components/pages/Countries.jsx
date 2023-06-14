@@ -16,6 +16,7 @@ function Countries() {
   const [column1, column2] = populateTableColumns(countries);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [selectedAge, setSelectedAge] = useState("");
   const [searchResultsVisible, setSearchResultsVisible] = useState(false);
 
   const navigate = useNavigate();
@@ -80,21 +81,32 @@ function Countries() {
     }
   };
 
+  // useEffect(() => {
+  //   console.log(selectedCheckboxes);
+  // }, [selectedCheckboxes]);
+
+  const handleSelect = (e) => {
+    setSelectedAge(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (searchQuery.trim() === "" && selectedCheckboxes.length === 0) {
+    if (
+      searchQuery.trim() === "" &&
+      selectedCheckboxes.length === 0 &&
+      selectedAge === ""
+    ) {
       setSearchResultsVisible(false);
     } else {
       setSearchResultsVisible(true);
-      // Perform search and update the searchResults state
-      // Example:
     }
   };
 
   const handleClear = () => {
     setSearchQuery("");
     setSelectedCheckboxes([]);
+    setSelectedAge("");
     setSearchResultsVisible(false);
   };
 
@@ -171,7 +183,6 @@ function Countries() {
                       onChange={handleQueryChange}
                     />
                   </Form.Group>
-                  <br />
 
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Label>Select Filters</Form.Label>
@@ -179,29 +190,36 @@ function Countries() {
                       <Form.Check
                         type="checkbox"
                         label="Male"
-                        value="checkbox1"
+                        value="Male"
                         onChange={handleCheckboxChange}
                       />
                       <Form.Check
                         type="checkbox"
                         label="Female"
-                        value="checkbox2"
+                        value="Female"
                         onChange={handleCheckboxChange}
                       />
-                      <Form.Check
-                        type="checkbox"
-                        label="Check me out"
-                        value="checkbox3"
-                        onChange={handleCheckboxChange}
-                      />
-                      <Form.Check
-                        type="checkbox"
-                        label="Check me out"
-                        value="checkbox4"
-                        onChange={handleCheckboxChange}
-                      />
+                      <Form.Select
+                        className="form-select"
+                        aria-label="Default select example"
+                        onChange={handleSelect}
+                      >
+                        <option>Age Group</option>
+                        <option value="1">Senior</option>
+                        <option value="2">Junior A2 (18)</option>
+                        <option value="3">Junior A1 (17)</option>
+                        <option value="4">Junior B2 (16)</option>
+                        <option value="5">Junior B1 (15)</option>
+                        <option value="6">Junior C1 (14)</option>
+                        <option value="7">Junior C2 (13)</option>
+                        <option value="8">Junior D1 (12)</option>
+                        <option value="9">Junior D2 (11)</option>
+                      </Form.Select>
                     </div>
                   </Form.Group>
+
+                  <br />
+
                   <Button variant="primary" type="submit">
                     Search
                   </Button>
@@ -218,6 +236,7 @@ function Countries() {
                     <SearchResults
                       searchQuery={searchQuery}
                       selectedCheckboxes={selectedCheckboxes}
+                      selectedAge={selectedAge}
                     />
                   </div>
                 </td>

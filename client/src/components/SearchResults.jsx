@@ -3,7 +3,7 @@ import Table from "react-bootstrap/esm/Table";
 
 import "./stylingComponents/SearchResults.css";
 
-const SearchResults = ({ searchQuery, selectedCheckboxes }) => {
+const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
   const [skaters, setSkaters] = useState([]);
   const [filteredSkaters, setFilteredSkaters] = useState([]);
 
@@ -27,6 +27,21 @@ const SearchResults = ({ searchQuery, selectedCheckboxes }) => {
           .filter((skater) =>
             skater.skater_name.toLowerCase().includes(searchQuery.toLowerCase())
           )
+          .filter((skater) => {
+            if (selectedCheckboxes.length === 0) {
+              return true; // Return all skaters if no gender filters are selected
+            }
+            return selectedCheckboxes.includes(skater.gender); // Filter skaters based on selected genders
+          })
+          .filter((skater) => {
+            if (!selectedAge || selectedAge === "Age Group") {
+              console.log("here");
+              return true; // Return all skaters if no age group is selected
+            }
+            const skaterAgeGroup = getAgeGroup(skater.dob);
+            console.log(skaterAgeGroup);
+            return skaterAgeGroup === selectedAge; // Filter skaters based on selected age group
+          })
           .sort((a, b) => {
             // Handle empty or null country values
             const countryA = a.country ? a.country.trim() : "";
@@ -44,17 +59,53 @@ const SearchResults = ({ searchQuery, selectedCheckboxes }) => {
             }
             return a.skater_name.localeCompare(b.skater_name); // Sort by name if countries are the same
           });
-
-        for (let i = 0; i < sortedSkaters.length; i++) {
-          console.log(sortedSkaters[i].skater_name);
-        }
         setFilteredSkaters(sortedSkaters);
       } catch (err) {
         console.error(`Error fetching skaters: ${err.message}`);
       }
     };
     filterSkaters();
-  }, [searchQuery, skaters]);
+  }, [searchQuery, selectedCheckboxes, selectedAge, skaters]);
+
+  const getAgeGroup = (dob) => {
+    const currentDate = new Date();
+    const birthDate = new Date(dob);
+
+    let age = currentDate.getFullYear() - birthDate.getFullYear();
+
+    // Check if the skater's birthday has occurred this year
+    const currentMonth = currentDate.getMonth();
+    const birthMonth = birthDate.getMonth();
+    const currentDay = currentDate.getDate();
+    const birthDay = birthDate.getDate();
+
+    if (
+      currentMonth < birthMonth ||
+      (currentMonth === birthMonth && currentDay < birthDay)
+    ) {
+      age--; // Reduce the age by 1 if the birthday has not yet occurred this year
+    }
+
+    if (age >= 18) {
+      return "Senior";
+    } else if (age === 17) {
+      return "Junior A1 (17)";
+    } else if (age === 16) {
+      return "Junior B2 (16)";
+    } else if (age === 15) {
+      return "Junior B1 (15)";
+    } else if (age === 14) {
+      return "Junior C1 (14)";
+    } else if (age === 13) {
+      return "Junior C2 (13)";
+    } else if (age === 12) {
+      return "Junior D1 (12)";
+    } else if (age === 11) {
+      return "Junior D2 (11)";
+    } else {
+      return "Unknown";
+    }
+  };
 
   return (
     <>
