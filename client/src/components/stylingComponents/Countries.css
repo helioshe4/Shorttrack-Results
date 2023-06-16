@@ -45,3 +45,7 @@ h1 {
 .checkbox-group .form-check {
   margin-right: 1rem;
 }
+
+.search-table .form-select {
+  margin-top: 10px;
+}

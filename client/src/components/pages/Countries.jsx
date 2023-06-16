@@ -205,15 +205,16 @@ function Countries() {
                         onChange={handleSelect}
                       >
                         <option>Age Group</option>
-                        <option value="1">Senior</option>
-                        <option value="2">Junior A2 (18)</option>
-                        <option value="3">Junior A1 (17)</option>
-                        <option value="4">Junior B2 (16)</option>
-                        <option value="5">Junior B1 (15)</option>
-                        <option value="6">Junior C1 (14)</option>
-                        <option value="7">Junior C2 (13)</option>
-                        <option value="8">Junior D1 (12)</option>
-                        <option value="9">Junior D2 (11)</option>
+                        <option value="Senior">Senior</option>
+                        <option value="Junior A2 (18)">Junior A2 (18)</option>
+                        <option value="Junior A1 (17)">Junior A1 (17)</option>
+                        <option value="Junior B2 (16)">Junior B2 (16)</option>
+                        <option value="Junior B1 (15)">Junior B1 (15)</option>
+                        <option value="Junior C1 (14)">Junior C1 (14)</option>
+                        <option value="Junior C2 (13)">Junior C2 (13)</option>
+                        <option value="Junior D1 (12)">Junior D1 (12)</option>
+                        <option value="Junior D2 (11)">Junior D2 (11)</option>
+                        <option value="Other">Other</option>
                       </Form.Select>
                     </div>
                   </Form.Group>

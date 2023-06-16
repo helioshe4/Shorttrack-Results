@@ -38,6 +38,7 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
               return true; // Return all skaters if no age group is selected
             }
             const skaterAgeGroup = getAgeGroup(skater.dob);
+            console.log(skaterAgeGroup);
             return skaterAgeGroup === selectedAge; // Filter skaters based on selected age group
           })
           .sort((a, b) => {
@@ -67,8 +68,7 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
 
   const getAgeGroup = (dob) => {
     if (dob === null || dob === "") {
-      console.log(`age:unknown`);
-      return "Unknown";
+      return "Other";
     }
     const currentDate = new Date();
     const birthDate = new Date(dob);
@@ -83,16 +83,20 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
     const birthDay = birthDate.getDate();
 
     if (
-      currentMonth < birthMonth ||
-      (currentMonth === birthMonth && currentDay < birthDay)
+      birthMonth > 6 ||
+      (birthMonth === 6 && currentDate.getDate() < birthDate.getDate())
     ) {
-      age--; // Reduce the age by 1 if the birthday has not yet occurred this year
+      age--; // Reduce the age by 1 if the birthday is after June 30th
     }
 
-    if (age >= 18) {
+    console.log(`Age: ${age}`);
+
+    if (age > 18) {
       return "Senior";
-    } else if (age === 17) {
+    } else if (age === 18) {
       return "Junior A2 (18)";
+    } else if (age === 17) {
+      return "Junior A1 (17)";
     } else if (age === 16) {
       return "Junior B2 (16)";
     } else if (age === 15) {
@@ -106,7 +110,7 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
     } else if (age === 11) {
       return "Junior D2 (11)";
     } else {
-      return "Unknown";
+      return "Other";
     }
   };
 
