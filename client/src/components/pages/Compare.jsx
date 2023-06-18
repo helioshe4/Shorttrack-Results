@@ -15,7 +15,7 @@ function Compare() {
   const [skaters, setSkaters] = useState([]); //list of skaters
   const [value1, setValue1] = useState(""); //skater1 in the search bar
   const [value2, setValue2] = useState(""); //skater2 in the search bar
-  const maxSkaters = 10; //max number of skaters in dropdown
+  const maxSkaters = 5; //max number of skaters in dropdown
   const typeaheadRef1 = useRef();
   const typeaheadRef2 = useRef();
 
@@ -35,14 +35,6 @@ function Compare() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  };
-
-  const onSelect1 = async (skaterName) => {
-    setValue1(skaterName);
-  };
-
-  const onChange1 = (e) => {
-    setValue1(e.target.value);
   };
 
   const clearBar = () => {
@@ -68,6 +60,7 @@ function Compare() {
               id="typeahead-skater1"
               labelKey="skater1"
               onChange={(selected) => setValue1(selected[0])}
+              onInputChange={(input) => setValue1(input)}
               options={skaterNames.slice(0, maxSkaters)}
               placeholder="Skater 1"
               minLength={2}
@@ -80,6 +73,7 @@ function Compare() {
               id="typeahead-skater2"
               labelKey="skater2"
               onChange={(selected) => setValue2(selected[0])}
+              onInputChange={(input) => setValue2(input)}
               options={skaterNames.slice(0, maxSkaters)}
               placeholder="Skater 2"
               minLength={2}
