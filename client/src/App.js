@@ -7,6 +7,7 @@ import NoPage from "./components/pages/NoPage";
 import Countries from "./components/pages/Countries";
 import Athletes from "./components/pages/Athletes";
 import SkaterInfo from "./components/pages/SkaterInfo";
+import Compare from "./components/pages/Compare";
 
 //Styling
 import "./styling/App.css";
@@ -37,6 +38,7 @@ function App() {
             element={<Dashboard />}
           />
           <Route path="athletes" element={<Countries />} />
+          <Route path="compare" element={<Compare />} />
           <Route path="athletes/:country" element={<Athletes />} />
           <Route path="skaterbio/:skater_id" element={<SkaterInfo />} />
           <Route path="*" element={<NoPage />} />

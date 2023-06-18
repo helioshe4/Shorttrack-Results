@@ -1,0 +1,11 @@
+.compare .compare-title {
+  text-align: center;
+}
+
+.compare-form {
+  width: 50%;
+  /* align-items: center; */
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}

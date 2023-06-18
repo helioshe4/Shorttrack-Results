@@ -179,7 +179,7 @@ function Countries() {
                   <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
-                      placeholder="Search by name (partial or full)..."
+                      placeholder="Search by name ..."
                       onChange={handleQueryChange}
                     />
                   </Form.Group>
