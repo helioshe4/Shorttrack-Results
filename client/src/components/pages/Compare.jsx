@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -15,10 +15,9 @@ function Compare() {
   const [skaters, setSkaters] = useState([]); //list of skaters
   const [value1, setValue1] = useState(""); //skater1 in the search bar
   const [value2, setValue2] = useState(""); //skater2 in the search bar
-  const [dropdownSkaters, setDropdownSkaters] = useState([]); //list of skaters to show in dropdown
-  const [showDropdown, setShowDropdown] = useState(false); //to show or not show dropdown
-  const [singleSelections, setSingleSelections] = useState([]);
   const maxSkaters = 10; //max number of skaters in dropdown
+  const typeaheadRef1 = useRef();
+  const typeaheadRef2 = useRef();
 
   useEffect(() => {
     const getSkaters = async () => {
@@ -44,7 +43,13 @@ function Compare() {
 
   const onChange1 = (e) => {
     setValue1(e.target.value);
-    setShowDropdown(true);
+  };
+
+  const clearBar = () => {
+    setValue1("");
+    setValue2("");
+    typeaheadRef1.current.clear();
+    typeaheadRef2.current.clear();
   };
 
   const skaterNames = skaters.map((skater) => skater.skater_name);
@@ -59,44 +64,28 @@ function Compare() {
       <Form className="compare-form" onSubmit={handleSubmit}>
         <Row>
           <Col>
-            {/* <Form.Control
-              placeholder="Skater 1"
-              value={value1}
-              onChange={onChange1}
-            /> */}
             <Typeahead
               id="typeahead-skater1"
               labelKey="skater1"
               onChange={(selected) => setValue1(selected[0])}
               options={skaterNames.slice(0, maxSkaters)}
               placeholder="Skater 1"
-              selected={singleSelections}
+              minLength={2}
+              ref={typeaheadRef1}
+              value={value1}
             />
-            {/* {showDropdown && (
-              <Dropdown className="dropdown-container">
-                <Dropdown.Menu>
-                  {skaters
-                    .filter((skater) => {
-                      const searchTerm = value1.toLowerCase();
-                      const fullName = skater.skater_name.toLowerCase();
-
-                      return searchTerm && fullName.includes(searchTerm);
-                    })
-                    .slice(0, maxSkaters)
-                    .map((skater) => (
-                      <Dropdown.Item
-                        key={skater.skater_id}
-                        onClick={() => onSelect1(skater.skater_name)}
-                      >
-                        {skater.skater_name}
-                      </Dropdown.Item>
-                    ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            )} */}
           </Col>
           <Col>
-            <Form.Control placeholder="Skater 2" value={value2} />
+            <Typeahead
+              id="typeahead-skater2"
+              labelKey="skater2"
+              onChange={(selected) => setValue2(selected[0])}
+              options={skaterNames.slice(0, maxSkaters)}
+              placeholder="Skater 2"
+              minLength={2}
+              ref={typeaheadRef2}
+              value={value2}
+            />
           </Col>
           <Col>
             <Form.Select aria-label="Default select example">
@@ -114,29 +103,12 @@ function Compare() {
             <Button variant="primary" type="submit">
               Compare
             </Button>
+            <Button variant="danger" onClick={clearBar}>
+              Clear
+            </Button>
           </Col>
         </Row>
       </Form>
-      {/* <div className="dropdown1">
-        {showDropdown &&
-          skaters
-            .filter((skater) => {
-              const searchTerm = value1.toLowerCase();
-              const fullName = skater.skater_name.toLowerCase();
-
-              return searchTerm && fullName.includes(searchTerm);
-            })
-            .slice(0, maxSkaters) //renders only first 10 elements
-            .map((skater) => (
-              <div
-                onClick={() => onSelect1(skater.skater_name)}
-                className="dropdown-row"
-                key={skater.skater_id}
-              >
-                {skater.skater_name}
-              </div>
-            ))}
-      </div> */}
     </div>
   );
 }
