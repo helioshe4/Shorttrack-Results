@@ -687,7 +687,7 @@ const EditSkater = ({ skater }) => {
 
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
-            Cancel and Close
+            Close
           </Button>
           <Button variant="primary" onClick={handleSaveModal}>
             Save Changes
