@@ -8,6 +8,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { Typeahead } from "react-bootstrap-typeahead";
 
 import Navbar from "../Navbar";
+import Chart from "../Chart";
 
 import "../stylingComponents/Compare.css";
 
@@ -15,6 +16,8 @@ function Compare() {
   const [skaters, setSkaters] = useState([]); //list of skaters
   const [value1, setValue1] = useState(""); //skater1 in the search bar
   const [value2, setValue2] = useState(""); //skater2 in the search bar
+  const [distance, setDistance] = useState("");
+  const [showCharts, setShowCharts] = useState(false);
   const maxSkaters = 5; //max number of skaters in dropdown
   const typeaheadRef1 = useRef();
   const typeaheadRef2 = useRef();
@@ -35,6 +38,19 @@ function Compare() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setShowCharts(true);
+
+    if (distance === "All") {
+      setDistance(["500", "1000", "1500"]);
+    } else if (distance === "") {
+      setDistance([]); // Set an empty array when distance is empty
+    } else {
+      setDistance([distance]);
+    }
+  };
+
+  const handleDistanceChange = (e) => {
+    setDistance(e.target.value);
   };
 
   const clearBar = () => {
@@ -81,28 +97,35 @@ function Compare() {
               value={value2}
             />
           </Col>
-          <Col>
-            <Form.Select aria-label="Default select example">
+          {/* <Col>
+            <Form.Select
+              aria-label="select distance"
+              value={distance}
+              onChange={handleDistanceChange}
+            >
               <option>Select a distance</option>
               <option value="500">500m</option>
               <option value="1000">1000m</option>
               <option value="1500">1500m</option>
               <option value="All">All</option>
             </Form.Select>
-          </Col>
+          </Col> */}
         </Row>
         <br />
         <Row>
           <Col>
-            <Button variant="primary" type="submit">
+            <Button className="form-button" variant="primary" type="submit">
               Compare
             </Button>
-            <Button variant="danger" onClick={clearBar}>
+            <Button className="form-button" variant="danger" onClick={clearBar}>
               Clear
             </Button>
           </Col>
         </Row>
       </Form>
+      {showCharts && (
+        <Chart skater1Name={value1} skater2Name={value2} />
+      )}
     </div>
   );
 }
