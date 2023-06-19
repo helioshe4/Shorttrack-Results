@@ -232,16 +232,21 @@ router.delete("/:skater_id", async (req, res) => {
 router.get("/skaters/:skater_name", async (req, res) => {
   try {
     const { skater_name } = req.params;
-    const results_1500 = await pool.query(
+    const result_1500 = await pool.query(
       `SELECT * FROM results_1500 LEFT JOIN 
       skaters ON results_1500.skater_id = skaters.skater_id 
       WHERE skater_name = $1`,
       [skater_name]
     );
 
-    res.json(results_1500.rows[0]);
+    if (result_1500.rows[0]) {
+      res.json(result_1500.rows[0]);
+    } else {
+      res.json({ error: "No results for skater with the given name" });
+    }
   } catch (err) {
     console.error(err.message);
+    res.json({ error: "An error occurred on the server" });
   }
 });
 

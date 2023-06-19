@@ -242,9 +242,14 @@ router.get("/skaters/:skater_name", async (req, res) => {
       [skater_name]
     );
 
-    res.json(result_500.rows[0]);
+    if (result_500.rows[0]) {
+      res.json(result_500.rows[0]);
+    } else {
+      res.json({ error: "No results for skater with the given name" });
+    }
   } catch (err) {
     console.error(err.message);
+    res.json({ error: "An error occurred on the server" });
   }
 });
 
