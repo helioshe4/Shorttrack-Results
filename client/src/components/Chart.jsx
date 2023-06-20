@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  LabelList,
 } from "recharts";
 
 import "./stylingComponents/Chart.css";
@@ -111,25 +112,85 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
             <h1>All Time Bests - {distance}m</h1>
             <br />
             <BarChart width={350} height={300} data={[allTimeData]} barGap={10}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="distance" />
-              <YAxis domain={domain} />
+              {/* <CartesianGrid strokeDasharray="3 3" /> */}
+              <XAxis dataKey="distance" tick={false} />
+              <YAxis
+                domain={domain}
+                label={{
+                  value: "Seconds",
+                  angle: -90,
+                  position: "insideLeft",
+                  textAnchor: "middle",
+                }}
+              />
               <Tooltip formatter={(seconds) => formatSeconds(seconds)} />
-              <Legend />
-              <Bar dataKey="all_time_1" fill="#80bdff" name={skater1Name} />
-              <Bar dataKey="all_time_2" fill="#9b1b30" name={skater2Name} />
+              <Legend align="center" />
+              <Bar
+                dataKey="all_time_1"
+                fill="#80bdff"
+                name={skater1Name}
+                isAnimationActive={false} //must disable to show labellist on top of bar
+              >
+                <LabelList
+                  dataKey="all_time_1"
+                  position="top"
+                  formatter={formatSeconds}
+                />
+              </Bar>
+              <Bar
+                dataKey="all_time_2"
+                fill="#9b1b30"
+                name={skater2Name}
+                isAnimationActive={false}
+              >
+                <LabelList
+                  dataKey="all_time_2"
+                  position="top"
+                  formatter={formatSeconds}
+                />
+              </Bar>
             </BarChart>
 
             <h1>Season Bests - {distance}m</h1>
             <br />
             <BarChart width={350} height={300} data={[seasonData]} barGap={10}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="distance" />
-              <YAxis domain={domain} />
+              {/* <CartesianGrid strokeDasharray="3 3" /> */}
+              <XAxis dataKey="distance" tick={false}/>
+              <YAxis
+                domain={domain}
+                label={{
+                  value: "Seconds",
+                  angle: -90,
+                  position: "insideLeft",
+                  textAnchor: "middle",
+                }}
+              />
               <Tooltip formatter={(seconds) => formatSeconds(seconds)} />
-              <Legend />
-              <Bar dataKey="season_1" fill="#80bdff" name={skater1Name} />
-              <Bar dataKey="season_2" fill="#9b1b30" name={skater2Name} />
+              <Legend align="center" />
+              <Bar
+                dataKey="season_1"
+                fill="#80bdff"
+                name={skater1Name}
+                isAnimationActive={false}
+              >
+                <LabelList
+                  dataKey="season_1"
+                  position="top"
+                  formatter={formatSeconds}
+                />
+              </Bar>
+              <Bar
+                dataKey="season_2"
+                fill="#9b1b30"
+                name={skater2Name}
+                isAnimationActive={false}
+              >
+                <LabelList
+                  dataKey="season_2"
+                  position="top"
+                  formatter={formatSeconds}
+                />
+              </Bar>
             </BarChart>
           </div>
         );
