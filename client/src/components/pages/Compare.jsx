@@ -16,7 +16,6 @@ function Compare() {
   const [skaters, setSkaters] = useState([]); //list of skaters
   const [value1, setValue1] = useState(""); //skater1 in the search bar
   const [value2, setValue2] = useState(""); //skater2 in the search bar
-  const [distance, setDistance] = useState("");
   const [showCharts, setShowCharts] = useState(false);
   const maxSkaters = 5; //max number of skaters in dropdown
   const typeaheadRef1 = useRef();
@@ -38,24 +37,15 @@ function Compare() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setShowCharts(true);
-
-    if (distance === "All") {
-      setDistance(["500", "1000", "1500"]);
-    } else if (distance === "") {
-      setDistance([]); // Set an empty array when distance is empty
-    } else {
-      setDistance([distance]);
+    if (value1 !== "" || value2 !== "") {
+      setShowCharts(true);
     }
-  };
-
-  const handleDistanceChange = (e) => {
-    setDistance(e.target.value);
   };
 
   const clearBar = () => {
     setValue1("");
     setValue2("");
+    setShowCharts(false);
     typeaheadRef1.current.clear();
     typeaheadRef2.current.clear();
   };
@@ -77,9 +67,9 @@ function Compare() {
               labelKey="skater1"
               onChange={(selected) => setValue1(selected[0])}
               onInputChange={(input) => setValue1(input)}
-              options={skaterNames.slice(0, maxSkaters)}
+              options={skaterNames}
               placeholder="Skater 1"
-              minLength={2}
+              minLength={1}
               ref={typeaheadRef1}
               value={value1}
             />
@@ -90,26 +80,13 @@ function Compare() {
               labelKey="skater2"
               onChange={(selected) => setValue2(selected[0])}
               onInputChange={(input) => setValue2(input)}
-              options={skaterNames.slice(0, maxSkaters)}
+              options={skaterNames}
               placeholder="Skater 2"
-              minLength={2}
+              minLength={1}
               ref={typeaheadRef2}
               value={value2}
             />
           </Col>
-          {/* <Col>
-            <Form.Select
-              aria-label="select distance"
-              value={distance}
-              onChange={handleDistanceChange}
-            >
-              <option>Select a distance</option>
-              <option value="500">500m</option>
-              <option value="1000">1000m</option>
-              <option value="1500">1500m</option>
-              <option value="All">All</option>
-            </Form.Select>
-          </Col> */}
         </Row>
         <br />
         <Row>
@@ -124,7 +101,9 @@ function Compare() {
         </Row>
       </Form>
       {showCharts && (
-        <Chart skater1Name={value1} skater2Name={value2} />
+        <div>
+          <Chart skater1Name={value1} skater2Name={value2} />
+        </div>
       )}
     </div>
   );
