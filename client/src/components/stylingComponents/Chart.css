@@ -1,0 +1,26 @@
+.bar-chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* justify-content: space-around; */
+  margin: 0 auto;
+  width: 50%;
+}
+
+.barchart {
+  width: 50%;
+}
+
+.bar-chart {
+  /* margin-top: 3rem; */
+  flex: 1 0 10%; /* This means the charts will take up 30% of the line and wrap when necessary */
+  margin: 1rem; /* Add some margin around the charts */
+  /* width: 100%; */
+}
+
+.bar-chart h1 {
+  /* align-items: center; */
+  text-align: center;
+  /* margin: 0 auto; */
+  /* margin-bottom: 1rem; */
+}
