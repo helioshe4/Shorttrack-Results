@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import Button from "react-bootstrap/esm/Button";
 import "./stylingContainers/LoginContainer.css";
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
+
 async function loginUser(credentials) {
   return fetch('http://localhost:5000/login', {
     method: 'POST',
