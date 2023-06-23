@@ -1,9 +1,11 @@
 # Shorttrack Results
 
-Shorttrack Results is a user-friendly web application for speed skating enthusiasts, allowing users to explore and analyze short track speed skating data. It offers personalized skater search, side-by-side comparisons, and tracks all-time and season bests. Includes an admin feature that enables users to add, edit, and update skater information.
+Shorttrack Results is a user-friendly web application for speed skating enthusiasts, allowing users to explore and analyze short track speed skating data. It offers personalized skater search, side-by-side comparisons, and tracks all-time and season bests. Includes an admin feature that enables users to add, edit, update, and remove skater information.
 
-<img src="./client/src/images/comparison.png" alt="Comparison example" width="400">
-Example output from comparing two skaters.
+<div align="center">
+  <img src="./client/src/images/comparison.png" alt="Comparison example" width="700">
+  <p align="center">Example output from comparing two skaters.</p>
+</div>
 
 ## Description
 
