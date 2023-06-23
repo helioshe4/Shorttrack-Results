@@ -16,9 +16,10 @@ Shorttrack Results is a comprehensive web application for speed skating enthusia
 ### Dependencies
 
 - Docker Engine 1.13.0+ (to run compose file v3)
+- Git (to clone, otherwise download zip file)
 
 ### Installing
-
+Open a terminal and run:
 ```
 git clone https://github.com/helioshe4/Shorttrack-Results.git
 cd Shorttrack-Results/
@@ -33,9 +34,14 @@ or
 ```
 ./tools/build.sh
 ```
+To access the site, open your web browser and navigate to [localhost:3000](http://localhost:3000).
 
-<!-- ## Help -->
-
+## Help
+To stop the application, run
+```
+docker-compose down
+```
+Add the -v flag to remove postgres database as well (will delete your added entries, but not the example entries)
 
 ## Authors
 
