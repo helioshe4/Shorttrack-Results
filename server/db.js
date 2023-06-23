@@ -6,7 +6,7 @@ const pool = new Pool({
   password: process.env.PG_PASSWORD,
   host: "postgres",
   port: 5432,
-  database: "new_skater_database"
+  database: "skater_database"
 });
 
 

@@ -3,10 +3,6 @@ import PropTypes from "prop-types";
 import Button from "react-bootstrap/esm/Button";
 import "./stylingContainers/LoginContainer.css";
 
-//const SERVER_URL = process.env.REACT_APP_SERVER_URL || "http://localhost:5000";
-
-//console.log("SERVER_URL", SERVER_URL);
-
 async function loginUser(credentials) {
   return fetch(`http://localhost:5000/login`, {
     method: "POST",
@@ -18,8 +14,8 @@ async function loginUser(credentials) {
 }
 
 export default function LoginContainer({ setToken }) {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();

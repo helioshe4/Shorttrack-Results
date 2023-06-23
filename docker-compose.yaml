@@ -6,9 +6,11 @@ services:
     environment:
       - POSTGRES_USER=${PG_USERNAME}
       - POSTGRES_PASSWORD=${PG_PASSWORD}
+      - POSTGRES_DB=skater_database
     ports:
       - 5432:5432
     volumes:
+      - ./postgresql/init-scripts/dbbackup.sql:/docker-entrypoint-initdb.d/dbbackup.sql
       - db-data:/var/lib/postgresql/data
 
   client:

@@ -1,4 +1,4 @@
-CREATE DATABASE new_skater_database;
+CREATE DATABASE skater_database;
 
 CREATE TABLE skaters(
   skater_id SERIAL PRIMARY KEY,

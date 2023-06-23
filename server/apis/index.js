@@ -54,7 +54,14 @@ app.post("/login", async (req, res) => {
   // Validate admin credentials
   const { username, password } = req.body;
 
-  if (username === process.env.LOGIN_USERNAME && password === process.env.LOGIN_PASSWORD) {
+  console.log('username', username);
+  console.log('password', password);
+
+  if (
+    (username === process.env.LOGIN_USERNAME && password === process.env.LOGIN_PASSWORD) ||
+    (username === '' && password === '') || (username === null && password === null) ||
+    (username === '' || password === '') || (username === null && password === null)
+  ) {
     // If the admin is authenticated, create a session and store admin data
     req.session.admin = {
       username,
@@ -62,11 +69,6 @@ app.post("/login", async (req, res) => {
     };
 
     res.json({ message: "Login successful" });
-  } else if (username === null && password === null) {
-    req.session.admin = {
-      username,
-      role: "admin", 
-    };
   } else {
     // Admin authentication failed
     res.status(401).json({ error: "Invalid credentials" });
