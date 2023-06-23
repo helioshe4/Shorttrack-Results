@@ -4,8 +4,14 @@ const cors = require("cors");
 const pool = require("../db");
 const session = require("express-session");
 
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:3000';
+console.log('CLIENT_ORIGIN', CLIENT_ORIGIN);
 //middleware
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000", "http://client:3000"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // or the methods you want to allow
+  credentials: true, // this allows cookies to be included
+}));
 app.use(express.json());
 
 app.use(
@@ -48,7 +54,14 @@ app.post("/login", async (req, res) => {
   // Validate admin credentials
   const { username, password } = req.body;
 
-  if (username === process.env.LOGIN_USERNAME && password === process.env.LOGIN_PASSWORD) {
+  console.log('username', username);
+  console.log('password', password);
+
+  if (
+    (username === process.env.LOGIN_USERNAME && password === process.env.LOGIN_PASSWORD) ||
+    (username === '' && password === '') || (username === null && password === null) ||
+    (username === '' || password === '') || (username === null && password === null)
+  ) {
     // If the admin is authenticated, create a session and store admin data
     req.session.admin = {
       username,
@@ -62,7 +75,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.use("/login", (req, res) => {
+app.get("/login", (req, res) => {
   res.send({
     token: "test123",
   });

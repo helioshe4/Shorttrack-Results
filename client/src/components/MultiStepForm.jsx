@@ -21,13 +21,10 @@ const MultiStepForm = () => {
   };
 
   const handleSkaterFormSubmit = async () => {
-    console.log("submitted skater");
     handleNextStep(); // Proceed to the next step (AddResults)
   };
 
   const handleResultsFormSubmit = () => {
-    console.log("submitted results");
-
     // Reset form data and navigate back to the first step (AddSkater)
     // setSkaterFormData({});
     //handlePreviewSubmit();

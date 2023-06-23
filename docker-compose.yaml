@@ -4,24 +4,32 @@ services:
     image: postgres:15.3
     container_name: postgres
     environment:
+      - POSTGRES_USER=${PG_USERNAME}
       - POSTGRES_PASSWORD=${PG_PASSWORD}
+      - POSTGRES_DB=skater_database
     ports:
       - 5432:5432
     volumes:
+      - ./postgresql/init-scripts/dbbackup.sql:/docker-entrypoint-initdb.d/dbbackup.sql
       - db-data:/var/lib/postgresql/data
 
   client:
     build: ./client
+    container_name: client
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_SERVER_URL=http://server:5000
+      - REACT_APP_SERVER_URL=http://localhost:5000
     depends_on:
       - server
 
   server:
     build: ./server
+    container_name: server
+    ports:
+      - 5000:5000
     environment:
+      - CLIENT_ORIGIN=http://client:3000
       - LOGIN_USERNAME=${LOGIN_USERNAME}
       - LOGIN_PASSWORD=${LOGIN_PASSWORD}
     depends_on:
