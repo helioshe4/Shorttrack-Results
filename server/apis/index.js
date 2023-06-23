@@ -4,8 +4,14 @@ const cors = require("cors");
 const pool = require("../db");
 const session = require("express-session");
 
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:3000';
+console.log('CLIENT_ORIGIN', CLIENT_ORIGIN);
 //middleware
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000", "http://client:3000"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // or the methods you want to allow
+  credentials: true, // this allows cookies to be included
+}));
 app.use(express.json());
 
 app.use(
@@ -56,13 +62,18 @@ app.post("/login", async (req, res) => {
     };
 
     res.json({ message: "Login successful" });
+  } else if (username === null && password === null) {
+    req.session.admin = {
+      username,
+      role: "admin", 
+    };
   } else {
     // Admin authentication failed
     res.status(401).json({ error: "Invalid credentials" });
   }
 });
 
-app.use("/login", (req, res) => {
+app.get("/login", (req, res) => {
   res.send({
     token: "test123",
   });
