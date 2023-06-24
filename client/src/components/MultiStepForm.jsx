@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
+
 import AddSkater from "./AddSkater";
 import AddResults from "./AddResults";
 import PreviewData from "./PreviewData";
@@ -54,16 +54,6 @@ const MultiStepForm = () => {
     setCurrentStep(currentStep + 1);
   };
 
-  // const handleSubmit = () => {
-  //   // Perform necessary API calls or data handling with skaterFormData and resultsFormData
-
-  //   // Reset form data and navigate back to the first step (AddSkater)
-  //   setSkaterFormData({});
-  //   setResultsFormData({});
-  //   setPreviewData(null);
-  //   setCurrentStep(1);
-  // };
-
   return (
     <Container>
       <Row className="justify-content-center">
@@ -109,37 +99,9 @@ const MultiStepForm = () => {
               preview1500={results1500FormData}
               setCurrentStep={setCurrentStep}
             />
-            // <div>
-            //   <h2>Preview</h2>
-            //   {previewData && (
-            //     <div>
-            //       <p>Skater Name: {previewData.skater_name}</p>
-            //       <p>Date of Birth: {previewData.dob}</p>
-            //       {/* Render other preview data fields */}
-            //     </div>
-            //   )}
-            //   <Button variant="secondary" onClick={handlePreviousStep}>
-            //     Previous
-            //   </Button>{" "}
-            //   <Button variant="primary" onClick={handleSubmit}>
-            //     Submit
-            //   </Button>
-            // </div>
-          )}
-
-          {currentStep > 1 && currentStep <= 5 && (
-            <Button variant="secondary" onClick={handlePreviousStep}>
-              Previous
-            </Button>
-          )}
-          {currentStep < 5 && (
-            <Button variant="primary" onClick={handleNextStep}>
-              Next
-            </Button>
           )}
         </Col>
       </Row>
-      {/* <h1>{skaterName}</h1> */}
     </Container>
   );
 };

@@ -15,7 +15,7 @@ export default function SearchSkater() {
   const [successMessage, setSuccessMessage] = useState(""); //message after deleting skater
   const [failureMessage, setFailureMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1); // current page number
-  const skatersPerPage = 10; // number of skaters to display per page
+  const skatersPerPage = 5; // number of skaters to display per page
 
   const typeaheadRef = useRef();
 
@@ -122,38 +122,19 @@ export default function SearchSkater() {
     const filteredSkaters = skaters.filter((skater) =>
       skater.skater_name.toLowerCase().includes(searchTerm)
     );
-    // .sort((a, b) => a.skater_name.localeCompare(b.skater_name));
 
     setTableSkaters(filteredSkaters.slice(0, 10));
     setShowTable(true);
     setShowDropdown(false);
   };
 
-  // const onSearch = (skater_name) => {
-  //   setValue(skater_name);
-
-  //   const filteredSkaters = skaters.filter(
-  //     (skater) => skater.skater_name === skater_name
-  //   );
-
-  //   setTableSkaters(filteredSkaters); //dont need to slice should be one value
-  //   setShowTable(true);
-  //   setShowDropdown(false);
-  // };
-
   const handleSearchClick = () => {
-    //onSearch(value);
-
     if (value !== "") {
-      //ensures user has box input
       performSearch();
     }
   };
 
   const handleShowAllClick = () => {
-    // const sortedSkaters = skaters.sort((a, b) =>
-    //   a.skater_name.localeCompare(b.skater_name)
-    // ); // Sort all skaters alphabetically
     setCurrentPage(1);
     setTableSkaters(skaters.slice(0, skatersPerPage));
     setShowTable(true);
@@ -182,34 +163,38 @@ export default function SearchSkater() {
 
       <div className="search-container">
         <div className="search-inner">
-          <Typeahead
-            id="typeahead-skater"
-            labelKey="skater"
-            onChange={(selected) => setValue(selected[0])} //selected from dropdown
-            onInputChange={(input) => setValue(input)} //input box
-            options={skaters.map((skater) => skater.skater_name)}
-            placeholder="Skater Name"
-            //minLength={1}
-            ref={typeaheadRef}
-            value={value}
-          />
-          <button
-            type="button"
-            onClick={handleSearchClick}
-            className="btn btn-success"
-          >
-            Search
-          </button>
-          <button type="button" onClick={clearBar} className="btn btn-danger">
-            Clear
-          </button>
-          <button
-            type="button"
-            onClick={handleShowAllClick}
-            className="btn btn-secondary"
-          >
-            Show All
-          </button>
+          <div className="typeahead-container">
+            <Typeahead
+              id="typeahead-skater"
+              labelKey="skater"
+              onChange={(selected) => setValue(selected[0])} //selected from dropdown
+              onInputChange={(input) => setValue(input)} //input box
+              options={skaters.map((skater) => skater.skater_name)}
+              placeholder="Skater Name"
+              minLength={1}
+              ref={typeaheadRef}
+              value={value}
+            />
+          </div>
+          <div className="button-container">
+            <button
+              type="button"
+              onClick={handleSearchClick}
+              className="btn btn-success"
+            >
+              Search
+            </button>
+            <button type="button" onClick={clearBar} className="btn btn-danger">
+              Clear
+            </button>
+            <button
+              type="button"
+              onClick={handleShowAllClick}
+              className="btn btn-secondary"
+            >
+              Show All
+            </button>
+          </div>
         </div>
 
         {showTable && (

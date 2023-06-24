@@ -5,17 +5,20 @@
 
 .dashboard {
   display: flex;
-  /* justify-content: center; */
-
   align-items: flex-start;
+  justify-content: center;
+  height: 100vh;
+  margin-top: 2rem;
 }
 
 .multistep-form {
   flex: 1;
-  margin-right: 5px; /* Adjust the spacing between the components */
+  
+  margin: 0 10px;
 }
 
 .search-skater {
   flex: 1;
-  margin-left: 5px; /* Adjust the spacing between the components */
+  /* margin-left: 5px; */
+  margin: 0 10px;
 }

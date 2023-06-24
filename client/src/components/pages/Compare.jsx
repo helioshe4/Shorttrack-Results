@@ -65,8 +65,8 @@ function Compare() {
             <Typeahead
               id="typeahead-skater1"
               labelKey="skater1"
-              onChange={(selected) => setValue1(selected[0])}
-              onInputChange={(input) => setValue1(input)}
+              onChange={(selected) => setValue1(selected[0])} //selected from dropdown
+              onInputChange={(input) => setValue1(input)} //input box
               options={skaterNames}
               placeholder="Skater 1"
               minLength={1}
