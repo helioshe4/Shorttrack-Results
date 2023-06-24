@@ -110,6 +110,7 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
           allTimeData &&
           allTimeData.hasOwnProperty("all_time_1") &&
           allTimeData.hasOwnProperty("all_time_2");
+
         const isSeasonDataAvailable =
           seasonData &&
           seasonData.hasOwnProperty("season_1") &&
@@ -123,13 +124,28 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
           seasonData?.season_2 || 0
         );
 
+        // Find the minimum y-value among the available data
+        let minDataValue = Math.min(
+          allTimeData?.all_time_1 || Number.POSITIVE_INFINITY,
+          allTimeData?.all_time_2 || Number.POSITIVE_INFINITY,
+          seasonData?.season_1 || Number.POSITIVE_INFINITY,
+          seasonData?.season_2 || Number.POSITIVE_INFINITY
+        );
+
+        if (minDataValue === Number.POSITIVE_INFINITY) {
+          minDataValue = 0;
+        }
+
         // Check if both allTimeData and seasonData are missing
         const isDataMissing = !allTimeData && !seasonData;
 
         // Determine the domain based on data availability
         const adjustedDomain = isDataMissing
           ? domain
-          : [Math.round(maxDataValue - 3), Math.round(maxDataValue + 3)];
+          : [
+              Math.max(0, Math.round(minDataValue - 3)),
+              Math.round(maxDataValue + 3),
+            ];
 
         return (
           <div key={distance} className="bar-chart">
