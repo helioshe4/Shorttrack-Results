@@ -34,10 +34,22 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
           );
           const skater2Data = await skater2Response.json();
           console.log(skater2Data);
+
+          const allTime1Value =
+            isNaN(skater1Data.all_time_best) ||
+            skater1Data.all_time_best === null
+              ? 0
+              : skater1Data.all_time_best;
+          const allTime2Value =
+            isNaN(skater2Data.all_time_best) ||
+            skater2Data.all_time_best === null
+              ? 0
+              : skater2Data.all_time_best;
+
           results.push({
             distance: `${distance}m`,
-            all_time_1: skater1Data.all_time_best,
-            all_time_2: skater2Data.all_time_best,
+            all_time_1: allTime1Value,
+            all_time_2: allTime2Value,
           });
         }
         setChartAllTimeData(results);
@@ -62,20 +74,26 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
           );
           const skater1Data = await skater1Response.json();
           //console.log(skater1Response);
-          console.log(skater1Data);
+
           const skater2Response = await fetch(
             `http://localhost:5000/results_${distance}/skaters/${skater2Name}`
           );
           const skater2Data = await skater2Response.json();
-          console.log(skater2Data);
+
+          const season1Value = isNaN(skater1Data.season_best)
+            ? null
+            : skater1Data.season_best;
+          const season2Value = isNaN(skater2Data.season_best)
+            ? null
+            : skater2Data.season_best;
+
           results.push({
             distance: `${distance}m`,
-            season_1: skater1Data.season_best,
-            season_2: skater2Data.season_best,
+            season_1: season1Value,
+            season_2: season2Value,
           });
         }
         setChartSeasonData(results);
-        console.log(results);
       } catch (err) {
         console.error(err.message);
       }
@@ -87,8 +105,14 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
   function formatSeconds(seconds) {
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
-    const ms = Math.floor((seconds % 1) * 1000).toFixed(0);
+    const ms = Math.round((seconds % 1) * 1000).toFixed(0);
     return `${min}:${sec < 10 ? "0" : ""}${sec}.${ms.padStart(3, "0")}`;
+  }
+
+  function nonzeroValue(value) {
+    return value !== null && !isNaN(value) && value !== 0
+      ? value
+      : Number.POSITIVE_INFINITY;
   }
 
   return (
@@ -123,18 +147,15 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
           seasonData?.season_1 || 0,
           seasonData?.season_2 || 0
         );
+        //console.log(allTimeData.all_time_1)
+        console.log(maxDataValue);
 
-        // Find the minimum y-value among the available data
         let minDataValue = Math.min(
-          allTimeData?.all_time_1 || Number.POSITIVE_INFINITY,
-          allTimeData?.all_time_2 || Number.POSITIVE_INFINITY,
-          seasonData?.season_1 || Number.POSITIVE_INFINITY,
-          seasonData?.season_2 || Number.POSITIVE_INFINITY
+          nonzeroValue(allTimeData?.all_time_1),
+          nonzeroValue(allTimeData?.all_time_2),
+          nonzeroValue(seasonData?.season_1),
+          nonzeroValue(seasonData?.season_2)
         );
-
-        if (minDataValue === Number.POSITIVE_INFINITY) {
-          minDataValue = 0;
-        }
 
         // Check if both allTimeData and seasonData are missing
         const isDataMissing = !allTimeData && !seasonData;
@@ -152,7 +173,6 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
             <h1>All Time Bests - {distance}m</h1>
             <br />
             <BarChart width={350} height={300} data={[allTimeData]} barGap={10}>
-              {/* <CartesianGrid strokeDasharray="3 3" /> */}
               <XAxis dataKey="distance" tick={false} />
               <YAxis
                 domain={adjustedDomain}
