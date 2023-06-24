@@ -180,7 +180,7 @@ export default function SearchSkater() {
             <button
               type="button"
               onClick={handleSearchClick}
-              className="btn btn-success"
+              className="btn btn-primary"
             >
               Search
             </button>

@@ -11,7 +11,7 @@
   margin-top: 2rem;
 }
 
-.multistep-form {
+/* .multistep-form {
   flex: 1;
   
   margin: 0 10px;
@@ -19,6 +19,10 @@
 
 .search-skater {
   flex: 1;
-  /* margin-left: 5px; */
   margin: 0 10px;
+} */
+
+.multistep-form,
+.search-skater {
+  flex: 1;
 }
