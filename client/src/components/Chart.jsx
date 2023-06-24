@@ -87,10 +87,8 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
   function formatSeconds(seconds) {
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
-    const ms = Math.floor((seconds % 1) * 1000);
-    return `${min}:${sec < 10 ? "0" : ""}${sec}.${
-      ms < 100 ? (ms < 10 ? "00" : "0") : ""
-    }${ms}`;
+    const ms = Math.floor((seconds % 1) * 1000).toFixed(0);
+    return `${min}:${sec < 10 ? "0" : ""}${sec}.${ms.padStart(3, "0")}`;
   }
 
   return (
@@ -107,6 +105,32 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
           (d) => d.distance === `${distance}m`
         );
 
+        // Check if both allTimeData and seasonData are present
+        const isAllTimeDataAvailable =
+          allTimeData &&
+          allTimeData.hasOwnProperty("all_time_1") &&
+          allTimeData.hasOwnProperty("all_time_2");
+        const isSeasonDataAvailable =
+          seasonData &&
+          seasonData.hasOwnProperty("season_1") &&
+          seasonData.hasOwnProperty("season_2");
+
+        // Find the maximum y-value among the available data
+        let maxDataValue = Math.max(
+          allTimeData?.all_time_1 || 0,
+          allTimeData?.all_time_2 || 0,
+          seasonData?.season_1 || 0,
+          seasonData?.season_2 || 0
+        );
+
+        // Check if both allTimeData and seasonData are missing
+        const isDataMissing = !allTimeData && !seasonData;
+
+        // Determine the domain based on data availability
+        const adjustedDomain = isDataMissing
+          ? domain
+          : [Math.round(Math.min(domain[0], maxDataValue) - 5), Math.round(maxDataValue + 5)];
+
         return (
           <div key={distance} className="bar-chart">
             <h1>All Time Bests - {distance}m</h1>
@@ -115,7 +139,7 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
               {/* <CartesianGrid strokeDasharray="3 3" /> */}
               <XAxis dataKey="distance" tick={false} />
               <YAxis
-                domain={domain}
+                domain={adjustedDomain}
                 label={{
                   value: "Seconds",
                   angle: -90,
@@ -155,9 +179,9 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
             <br />
             <BarChart width={350} height={300} data={[seasonData]} barGap={10}>
               {/* <CartesianGrid strokeDasharray="3 3" /> */}
-              <XAxis dataKey="distance" tick={false}/>
+              <XAxis dataKey="distance" tick={false} />
               <YAxis
-                domain={domain}
+                domain={adjustedDomain}
                 label={{
                   value: "Seconds",
                   angle: -90,
