@@ -16,6 +16,21 @@
       "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "shorttrack_image.jpeg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    },
+    {
+      "src": "isu_logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "montreal_logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "start_url": ".",
