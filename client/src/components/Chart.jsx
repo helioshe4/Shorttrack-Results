@@ -129,7 +129,7 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
         // Determine the domain based on data availability
         const adjustedDomain = isDataMissing
           ? domain
-          : [Math.round(Math.min(domain[0], maxDataValue) - 5), Math.round(maxDataValue + 5)];
+          : [Math.round(maxDataValue - 3), Math.round(maxDataValue + 3)];
 
         return (
           <div key={distance} className="bar-chart">
