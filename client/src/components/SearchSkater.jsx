@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
-import "./stylingComponents/SearchSkater.css";
+import { useState, useEffect, useRef } from "react";
 import EditSkater from "./EditSkater";
+
 import Table from "react-bootstrap/Table";
+import { Typeahead } from "react-bootstrap-typeahead";
+
+import "./stylingComponents/SearchSkater.css";
 
 export default function SearchSkater() {
   const [value, setValue] = useState(""); //value in the search bar
@@ -13,6 +16,8 @@ export default function SearchSkater() {
   const [failureMessage, setFailureMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1); // current page number
   const skatersPerPage = 10; // number of skaters to display per page
+
+  const typeaheadRef = useRef();
 
   useEffect(() => {
     document.addEventListener("click", clearMessages);
@@ -84,20 +89,25 @@ export default function SearchSkater() {
   const clearBar = () => {
     setValue("");
     setShowTable(false);
+    typeaheadRef.current.clear();
   };
 
-  const onChange = (e) => {
-    setValue(e.target.value);
-    setShowDropdown(true);
-  };
+  // const onChange = (e) => {
+  //   setValue(e.target.value);
+  //   setShowDropdown(true);
+  // };
 
   const getSkaters = async () => {
     try {
       const response = await fetch("http://localhost:5000/skaters");
       const jsonData = await response.json();
 
+      const sortedSkaters = jsonData.sort((a, b) =>
+        a.skater_name.localeCompare(b.skater_name)
+      ); // Sort skaters alphabetically by name
+
       //console.log(jsonData);
-      setSkaters(jsonData);
+      setSkaters(sortedSkaters);
     } catch (err) {
       console.error(err.message);
     }
@@ -112,23 +122,24 @@ export default function SearchSkater() {
     const filteredSkaters = skaters.filter((skater) =>
       skater.skater_name.toLowerCase().includes(searchTerm)
     );
+    // .sort((a, b) => a.skater_name.localeCompare(b.skater_name));
 
     setTableSkaters(filteredSkaters.slice(0, 10));
     setShowTable(true);
     setShowDropdown(false);
   };
 
-  const onSearch = (skater_name) => {
-    setValue(skater_name);
+  // const onSearch = (skater_name) => {
+  //   setValue(skater_name);
 
-    const filteredSkaters = skaters.filter(
-      (skater) => skater.skater_name === skater_name
-    );
+  //   const filteredSkaters = skaters.filter(
+  //     (skater) => skater.skater_name === skater_name
+  //   );
 
-    setTableSkaters(filteredSkaters); //dont need to slice should be one value
-    setShowTable(true);
-    setShowDropdown(false);
-  };
+  //   setTableSkaters(filteredSkaters); //dont need to slice should be one value
+  //   setShowTable(true);
+  //   setShowDropdown(false);
+  // };
 
   const handleSearchClick = () => {
     //onSearch(value);
@@ -140,6 +151,9 @@ export default function SearchSkater() {
   };
 
   const handleShowAllClick = () => {
+    // const sortedSkaters = skaters.sort((a, b) =>
+    //   a.skater_name.localeCompare(b.skater_name)
+    // ); // Sort all skaters alphabetically
     setCurrentPage(1);
     setTableSkaters(skaters.slice(0, skatersPerPage));
     setShowTable(true);
@@ -168,14 +182,23 @@ export default function SearchSkater() {
 
       <div className="search-container">
         <div className="search-inner">
-          <input type="text" value={value} onChange={onChange} />
+          <Typeahead
+            id="typeahead-skater"
+            labelKey="skater"
+            onChange={(selected) => setValue(selected[0])} //selected from dropdown
+            onInputChange={(input) => setValue(input)} //input box
+            options={skaters.map((skater) => skater.skater_name)}
+            placeholder="Skater Name"
+            //minLength={1}
+            ref={typeaheadRef}
+            value={value}
+          />
           <button
             type="button"
             onClick={handleSearchClick}
             className="btn btn-success"
           >
-            {" "}
-            Search{" "}
+            Search
           </button>
           <button type="button" onClick={clearBar} className="btn btn-danger">
             Clear
@@ -189,30 +212,14 @@ export default function SearchSkater() {
           </button>
         </div>
 
-        <div className="dropdown">
-          {showDropdown &&
-            skaters
-              .filter((skater) => {
-                const searchTerm = value.toLowerCase();
-                const fullName = skater.skater_name.toLowerCase();
-
-                return searchTerm && fullName.includes(searchTerm);
-              })
-              .slice(0, 10) //renders only first 10 elements
-              .map((skater) => (
-                <div
-                  onClick={() => onSearch(skater.skater_name)}
-                  className="dropdown-row"
-                  key={skater.skater_id}
-                >
-                  {skater.skater_name}
-                </div>
-              ))}
-        </div>
-
         {showTable && (
           <>
-            <Table striped bordered hover className="table mt-5 text-center table-header-spacing">
+            <Table
+              striped
+              bordered
+              hover
+              className="table mt-5 text-center table-header-spacing"
+            >
               <thead>
                 <tr>
                   <th>Name</th>
@@ -221,22 +228,24 @@ export default function SearchSkater() {
                 </tr>
               </thead>
               <tbody>
-                {tableSkaters.map((skater) => (
-                  <tr key={skater.skater_id}>
-                    <td>{skater.skater_name}</td>
-                    <td>
-                      <EditSkater skater={skater} />
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => deleteSkater(skater.skater_id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {tableSkaters
+                  .sort((a, b) => a.skater_name.localeCompare(b.skater_name))
+                  .map((skater) => (
+                    <tr key={skater.skater_id}>
+                      <td>{skater.skater_name}</td>
+                      <td>
+                        <EditSkater skater={skater} />
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => deleteSkater(skater.skater_id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
 
