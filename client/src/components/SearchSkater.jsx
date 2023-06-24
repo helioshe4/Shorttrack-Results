@@ -123,7 +123,7 @@ export default function SearchSkater() {
       skater.skater_name.toLowerCase().includes(searchTerm)
     );
 
-    setTableSkaters(filteredSkaters.slice(0, 10));
+    setTableSkaters(filteredSkaters);
     setShowTable(true);
     setShowDropdown(false);
   };
@@ -167,7 +167,7 @@ export default function SearchSkater() {
             <Typeahead
               id="typeahead-skater"
               labelKey="skater"
-              onChange={(selected) => setValue(selected[0])} //selected from dropdown
+              onChange={() => performSearch()} //selected from dropdown
               onInputChange={(input) => setValue(input)} //input box
               options={skaters.map((skater) => skater.skater_name)}
               placeholder="Skater Name"
