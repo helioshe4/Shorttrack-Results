@@ -27,10 +27,25 @@ function Countries() {
         const response = await fetch("http://localhost:5000/countries");
         const jsonData = await response.json();
 
-        let countryData = await jsonData.map((country) => ({
-          name: country.country,
-          code: getCode(country.country), // Convert country name to country code
-        }));
+        let countryData = await jsonData.map((country) => {
+          let code = getCode(country.country);
+
+          if(country.country === 'Czechia') {
+            code = 'cz';
+          } else if (country.country === 'Russia') {
+            code = 'ru';
+          } else if (country.country === 'Korea') {
+            code = 'kr';
+          } else if (country.country === 'Taiwan') {
+            code = 'tw';
+          } else if (country.country === 'North Korea') {
+            code = 'kp';
+          }
+           return {
+            name: country.country,
+            code: code ? code.toLowerCase() : null, // Convert country name to country code
+          };
+        });
 
         countryData.push({ name: "UNKNOWN", code: "UNKNOWN" }); // ensures it's the last element
         setCountries(countryData);
@@ -131,7 +146,8 @@ function Countries() {
                     <span style={{ display: "flex", alignItems: "center" }}>
                       {country.code !== "UNKNOWN" && country.code !== null && (
                         <img
-                          src={`https://flagsapi.com/${country.code}/flat/16.png`}
+                          // src={`https://flagsapi.com/${country.code}/flat/16.png`}
+                          src={require(`/src/src/images/country_flags/${country.code}.png`)}
                           alt=""
                           style={{ marginRight: "5px" }}
                         />
@@ -147,7 +163,7 @@ function Countries() {
                         {column2[index].code !== "UNKNOWN" &&
                           column2[index].code !== null && (
                             <img
-                              src={`https://flagsapi.com/${column2[index].code}/flat/16.png`}
+                              src={require(`/src/src/images/country_flags/${column2[index].code}.png`)}
                               alt=""
                               style={{ marginRight: "5px" }}
                             />
