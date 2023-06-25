@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "react-bootstrap/esm/Table";
+import Button from "react-bootstrap/esm/Button";
+import { getCode } from "iso-3166-1-alpha-2";
 
 import "./stylingComponents/SearchResults.css";
 
 const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
   const [skaters, setSkaters] = useState([]);
   const [filteredSkaters, setFilteredSkaters] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getSkaters = async () => {
@@ -89,8 +94,6 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
       age--; // Reduce the age by 1 if the birthday is after June 30th
     }
 
-    console.log(`Age: ${age}`);
-
     if (age > 18) {
       return "Senior";
     } else if (age === 18) {
@@ -114,23 +117,68 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
     }
   };
 
+  function handleClick(e, skater_id) {
+    e.preventDefault();
+    navigate(`/skaterbio/${skater_id}`);
+  }
+
+  function getCustomCode(country) {
+    let code = getCode(country);
+
+    if (country === "Czechia") {
+      code = "cz";
+    } else if (country === "Russia") {
+      code = "ru";
+    } else if (country === "Korea") {
+      code = "kr";
+    } else if (country === "Taiwan") {
+      code = "tw";
+    } else if (country === "North Korea") {
+      code = "kp";
+    }
+
+    return code ? code.toLowerCase() : null;
+  }
+
   return (
     <>
       <Table borderless className="search-result-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Country</th>
-            <th>DOB</th>
+            <th className="align-center">Name</th>
+            <th className="align-center">Country</th>
+            <th className="align-center">DOB</th>
             {/* Add more table headers as needed */}
           </tr>
         </thead>
         <tbody>
           {filteredSkaters.map((skater) => (
             <tr key={skater.skater_id}>
-              <td>{skater.skater_name}</td>
-              <td>{skater.country}</td>
-              <td>{skater.dob ? skater.dob.substring(0, 10) : ""}</td>
+              <td className="left-align vertical-align expand-cell">
+                <Button
+                  variant="light"
+                  onClick={(e) => handleClick(e, skater.skater_id)}
+                  className="name-button"
+                >
+                  {skater.skater_name}
+                </Button>
+              </td>
+              <td className="align-center vertical-align expand-cell">
+                {getCustomCode(skater.country) !== "UNKNOWN" &&
+                  getCustomCode(skater.country) !== null && (
+                    <img
+                      src={require(`/src/src/images/country_flags/${getCustomCode(
+                        skater.country
+                      )}.png`)}
+                      alt=""
+                      style={{ marginRight: "5px" }}
+                    />
+                  )}
+                {skater.country}
+              </td>
+              <td className="align-center vertical-align expand-cell">
+                {skater.dob ? skater.dob.substring(0, 10) : ""}
+              </td>
               {/* Add more table cells as needed */}
             </tr>
           ))}
