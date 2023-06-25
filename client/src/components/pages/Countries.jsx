@@ -13,7 +13,7 @@ import "../stylingComponents/Countries.css";
 
 // Countries Component
 // This component fetches and displays a list of countries from a server.
-// It allows users to search for athletes by country and provides a form for 
+// It allows users to search for athletes by country and provides a form for
 // searching by name and applying filters.
 function Countries() {
   const [countries, setCountries] = useState([]);
@@ -146,7 +146,11 @@ function Countries() {
             {column1.map((country, index) => (
               <tr key={index}>
                 <td>
-                  <Button variant="light" onClick={handleClick}>
+                  <Button
+                    variant="light"
+                    onClick={handleClick}
+                    className="text-nowrap"
+                  >
                     <span style={{ display: "flex", alignItems: "center" }}>
                       {country.code !== "UNKNOWN" && country.code !== null && (
                         <img
@@ -161,7 +165,11 @@ function Countries() {
                 </td>
                 <td>
                   {column2[index] ? (
-                    <Button variant="light" onClick={handleClick}>
+                    <Button
+                      variant="light"
+                      onClick={handleClick}
+                      className="text-nowrap"
+                    >
                       <span style={{ display: "flex", alignItems: "center" }}>
                         {column2[index].code !== "UNKNOWN" &&
                           column2[index].code !== null && (
