@@ -7,6 +7,12 @@ Shorttrack Results is a user-friendly web application designed for exploring and
   <p align="center">Example output from comparing two skaters.</p>
 </div>
 
+<div align="center">
+  <img src="./client/src/images/search-demo.png" alt="Search example" width="700">
+  <p align="center">Search page to filter for skaters</p>
+</div>
+
+
 ## Description
 
 Shorttrack Results is a comprehensive web application for speed skating enthusiasts and athletes worldwide, built on the PERN stack. It offers a modern platform for exploring short track speed skating data, allowing users to search for skaters based on various filters. The application features side-by-side skater comparisons, tracks all-time and seasonal best data, and includes an admin feature for managing skater information. Leveraging Docker for easy deployment and data management, Shorttrack Results serves as a showcase project while providing a valuable resource for shorttrack fans.
