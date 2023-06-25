@@ -8,6 +8,11 @@ import NoPage from "./NoPage";
 
 import styles from "../stylingComponents/Athletes.module.css";
 
+// Athletes Component
+// This component fetches and displays a list of athletes from a specific country.
+// It categorizes athletes by gender and provides a button to navigate to each athlete's bio.
+// Note: not what renders under the 'Athletes' tab in the navbar, that's Countries.jsx,
+//       this is what renders after you select a country in Countries.jsx
 function Athletes() {
   const { country } = useParams();
   const navigate = useNavigate();
@@ -52,7 +57,11 @@ function Athletes() {
       }
     };
 
-    if (countries.length > 0 && !countries.includes(country) && country !== "UNKNOWN") {
+    if (
+      countries.length > 0 &&
+      !countries.includes(country) &&
+      country !== "UNKNOWN"
+    ) {
       setCountryExists(false); // Update the state variable if country doesn't exist
     } else {
       fetchData("Male");

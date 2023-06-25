@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
 import { Typeahead } from "react-bootstrap-typeahead";
 
 import Navbar from "../Navbar";
@@ -12,6 +11,11 @@ import Chart from "../Chart";
 
 import "../stylingComponents/Compare.css";
 
+// Compare Component
+// This component allows users to compare two athletes.
+// It fetches a list of skaters from server and provides input boxes for users to select two skaters.
+// Once the form is submitted, comparison charts for the selected skaters are displayed.
+// There's also a clear button that resets the form and hides the chart.
 function Compare() {
   const [skaters, setSkaters] = useState([]); //list of skaters
   const [value1, setValue1] = useState(""); //skater1 in the search bar

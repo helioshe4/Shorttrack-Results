@@ -8,6 +8,9 @@ import NoPage from "./NoPage";
 
 import styles from "../stylingComponents/SkaterInfo.module.css";
 
+// SkaterInfo Component
+// This component fetches and displays a skater's information and personal bests.
+// Rendered when you click on a skater's name in Athletes.jsx
 function SkaterInfo() {
   const { skater_id } = useParams();
   const navigate = useNavigate();

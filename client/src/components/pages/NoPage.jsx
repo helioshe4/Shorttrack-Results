@@ -1,6 +1,8 @@
 import React from "react";
 import Navbar from "../Navbar";
 
+// NoPage Component
+// This component displays the no page error page, when url is invalid.
 function NoPage() {
   return (
     <>

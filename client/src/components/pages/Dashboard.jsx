@@ -5,6 +5,8 @@ import MultiStepForm from "../MultiStepForm.jsx";
 
 import "../stylingComponents/Dashboard.css";
 
+// Dashboard Component
+// Display after logging in
 function Dashboard() {
   return (
     <>

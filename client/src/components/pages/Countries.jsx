@@ -11,6 +11,10 @@ import SearchResults from "../SearchResults";
 
 import "../stylingComponents/Countries.css";
 
+// Countries Component
+// This component fetches and displays a list of countries from a server.
+// It allows users to search for athletes by country and provides a form for 
+// searching by name and applying filters.
 function Countries() {
   const [countries, setCountries] = useState([]);
   const [column1, column2] = populateTableColumns(countries);
@@ -30,18 +34,18 @@ function Countries() {
         let countryData = await jsonData.map((country) => {
           let code = getCode(country.country);
 
-          if(country.country === 'Czechia') {
-            code = 'cz';
-          } else if (country.country === 'Russia') {
-            code = 'ru';
-          } else if (country.country === 'Korea') {
-            code = 'kr';
-          } else if (country.country === 'Taiwan') {
-            code = 'tw';
-          } else if (country.country === 'North Korea') {
-            code = 'kp';
+          if (country.country === "Czechia") {
+            code = "cz";
+          } else if (country.country === "Russia") {
+            code = "ru";
+          } else if (country.country === "Korea") {
+            code = "kr";
+          } else if (country.country === "Taiwan") {
+            code = "tw";
+          } else if (country.country === "North Korea") {
+            code = "kp";
           }
-           return {
+          return {
             name: country.country,
             code: code ? code.toLowerCase() : null, // Convert country name to country code
           };
