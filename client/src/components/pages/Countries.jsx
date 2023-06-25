@@ -134,7 +134,7 @@ function Countries() {
       <Navbar />
 
       <div className="wrapper-container">
-        <Table borderless hover className="country-table">
+        <Table borderless hover className="country-table condensed-table">
           <thead>
             <tr>
               <th colSpan={2}>
@@ -150,7 +150,6 @@ function Countries() {
                     <span style={{ display: "flex", alignItems: "center" }}>
                       {country.code !== "UNKNOWN" && country.code !== null && (
                         <img
-                          // src={`https://flagsapi.com/${country.code}/flat/16.png`}
                           src={require(`/src/src/images/country_flags/${country.code}.png`)}
                           alt=""
                           style={{ marginRight: "5px" }}

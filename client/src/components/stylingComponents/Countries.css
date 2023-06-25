@@ -21,6 +21,24 @@ h1 {
   text-align: left;
 }
 
+.condensed-table {
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.condensed-table td,
+.condensed-table th {
+  padding: 0px 10px;
+}
+
+.condensed-table thead th {
+  padding: 12px;
+}
+
+.condensed-table tbody td {
+  vertical-align: middle;
+}
+
 .search-table {
   margin: 0 2rem;
   height: 100%;
