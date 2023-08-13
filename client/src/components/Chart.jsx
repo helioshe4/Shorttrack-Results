@@ -11,6 +11,7 @@ import {
 } from "recharts";
 
 import "./stylingComponents/Chart.css";
+import { serverURL } from "../apiEndpoints";
 
 const ChartComponent = ({ skater1Name, skater2Name }) => {
   const [chartAllTimeData, setChartAllTimeData] = useState([]);
@@ -22,15 +23,16 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
         const distances = ["500", "1000", "1500"];
         const results = [];
         for (const distance of distances) {
-          console.log(distance);
           const skater1Response = await fetch(
-            `http://localhost:5000/results_${distance}/skaters/${skater1Name}`
+            //`http://localhost:5000/results_${distance}/skaters/${skater1Name}`
+            `${serverURL}/results_${distance}/skaters/${skater1Name}`
           );
           const skater1Data = await skater1Response.json();
           //console.log(skater1Response);
           console.log(skater1Data);
           const skater2Response = await fetch(
-            `http://localhost:5000/results_${distance}/skaters/${skater2Name}`
+            //`http://localhost:5000/results_${distance}/skaters/${skater2Name}`
+            `${serverURL}/results_${distance}/skaters/${skater2Name}`
           );
           const skater2Data = await skater2Response.json();
           console.log(skater2Data);
@@ -68,15 +70,16 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
         const distances = ["500", "1000", "1500"];
         const results = [];
         for (const distance of distances) {
-          console.log(distance);
           const skater1Response = await fetch(
-            `http://localhost:5000/results_${distance}/skaters/${skater1Name}`
+            //`http://localhost:5000/results_${distance}/skaters/${skater1Name}`
+            `${serverURL}/results_${distance}/skaters/${skater1Name}`
           );
           const skater1Data = await skater1Response.json();
           //console.log(skater1Response);
 
           const skater2Response = await fetch(
-            `http://localhost:5000/results_${distance}/skaters/${skater2Name}`
+            //`http://localhost:5000/results_${distance}/skaters/${skater2Name}`
+            `${serverURL}/results_${distance}/skaters/${skater2Name}`
           );
           const skater2Data = await skater2Response.json();
 
@@ -147,8 +150,6 @@ const ChartComponent = ({ skater1Name, skater2Name }) => {
           seasonData?.season_1 || 0,
           seasonData?.season_2 || 0
         );
-        //console.log(allTimeData.all_time_1)
-        console.log(maxDataValue);
 
         let minDataValue = Math.min(
           nonzeroValue(allTimeData?.all_time_1),

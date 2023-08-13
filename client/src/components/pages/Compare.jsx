@@ -8,6 +8,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 
 import Navbar from "../Navbar";
 import Chart from "../Chart";
+import { skatersURL } from "../../apiEndpoints";
 
 import "../stylingComponents/Compare.css";
 
@@ -28,7 +29,8 @@ function Compare() {
   useEffect(() => {
     const getSkaters = async () => {
       try {
-        const response = await fetch("http://localhost:5000/skaters");
+        //const response = await fetch("http://localhost:5000/skaters");
+        const response = await fetch(skatersURL);
         const jsonData = await response.json();
 
         setSkaters(jsonData);

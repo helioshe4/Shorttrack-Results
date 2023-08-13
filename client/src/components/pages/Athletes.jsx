@@ -5,6 +5,7 @@ import Button from "react-bootstrap/esm/Button";
 
 import Navbar from "../Navbar";
 import NoPage from "./NoPage";
+import { countriesURL } from "../../apiEndpoints";
 
 import styles from "../stylingComponents/Athletes.module.css";
 
@@ -26,7 +27,8 @@ function Athletes() {
   useEffect(() => {
     const getCountries = async () => {
       try {
-        const response = await fetch("http://localhost:5000/countries");
+        //const response = await fetch("http://localhost:5000/countries");
+        const response = await fetch(countriesURL);
         const jsonData = await response.json();
         const countryNames = jsonData.map((country) => country.country);
         setCountries(countryNames);
@@ -41,7 +43,8 @@ function Athletes() {
     const fetchData = async (gender) => {
       try {
         const response = await fetch(
-          `http://localhost:5000/countries/${country}/${gender}`
+          //`http://localhost:5000/countries/${country}/${gender}`
+          `${countriesURL}/${country}/${gender}`
         );
         const jsonData = await response.json();
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
+
 import "./stylingComponents/AddSkater.css";
+import { skatersURL } from "../apiEndpoints";
 
 const AddSkater = ({ updateSkaterName, onSubmit, setSkaterFormData }) => {
   const [skater_name, setSkaterName] = useState("");
@@ -55,7 +57,8 @@ const AddSkater = ({ updateSkaterName, onSubmit, setSkaterFormData }) => {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/skaters", {
+      //const response = await fetch("http://localhost:5000/skaters", {
+      const response = await fetch(skatersURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

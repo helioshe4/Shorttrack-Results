@@ -5,6 +5,7 @@ import Button from "react-bootstrap/esm/Button";
 import { getCode } from "iso-3166-1-alpha-2";
 
 import "./stylingComponents/SearchResults.css";
+import { skatersURL } from "../apiEndpoints";
 
 const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
   const [skaters, setSkaters] = useState([]);
@@ -15,7 +16,8 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
   useEffect(() => {
     const getSkaters = async () => {
       try {
-        const response = await fetch("http://localhost:5000/skaters");
+        //const response = await fetch("http://localhost:5000/skaters");
+        const response = await fetch(skatersURL);
         const jsonData = await response.json();
         setSkaters(jsonData);
       } catch (err) {
@@ -168,7 +170,7 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
                 {getCustomCode(skater.country) !== "UNKNOWN" &&
                   getCustomCode(skater.country) !== null && (
                     <img
-                      src={require(`/src/src/images/country_flags/${getCustomCode(
+                      src={require(`/usr/src/app/client/src/images/country_flags/${getCustomCode(
                         skater.country
                       )}.png`)}
                       alt=""

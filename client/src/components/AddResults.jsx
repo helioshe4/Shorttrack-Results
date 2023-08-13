@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
 
 import "./stylingComponents/AddResults.css";
+import { serverURL, skatersURL } from "../apiEndpoints";
 
 const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
   const [all_time_best, setAllTimeBest] = useState("");
@@ -67,7 +68,8 @@ const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
     e.preventDefault();
     try {
       const response1 = await fetch(
-        `http://localhost:5000/skaters/skater-name/${skaterName}`
+        //`http://localhost:5000/skaters/skater-name/${skaterName}`
+        `${skatersURL}/skater-name/${skaterName}`
       );
       const jsonData = await response1.json();
       const skater_id = jsonData.skater_id;
@@ -86,7 +88,8 @@ const AddResults = ({ distance, skaterName, onSubmit, setResultsFormData }) => {
       console.log("Form data:", body);
 
       const response = await fetch(
-        `http://localhost:5000/results_${distance}/${skater_id}`,
+        //`http://localhost:5000/results_${distance}/${skater_id}`,
+        `${serverURL}/results_${distance}/${skater_id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 
 import Navbar from "../Navbar";
 import SearchResults from "../SearchResults";
+import { countriesURL } from "../../apiEndpoints";
 
 import "../stylingComponents/Countries.css";
 
@@ -28,7 +29,7 @@ function Countries() {
   useEffect(() => {
     const getCountries = async () => {
       try {
-        const response = await fetch("http://localhost:5000/countries");
+        const response = await fetch(countriesURL);
         const jsonData = await response.json();
 
         let countryData = await jsonData.map((country) => {
@@ -154,7 +155,7 @@ function Countries() {
                     <span style={{ display: "flex", alignItems: "center" }}>
                       {country.code !== "UNKNOWN" && country.code !== null && (
                         <img
-                          src={require(`/src/src/images/country_flags/${country.code}.png`)}
+                          src={require(`/usr/src/app/client/src/images/country_flags/${country.code}.png`)}
                           alt=""
                           style={{ marginRight: "5px" }}
                         />
@@ -174,7 +175,7 @@ function Countries() {
                         {column2[index].code !== "UNKNOWN" &&
                           column2[index].code !== null && (
                             <img
-                              src={require(`/src/src/images/country_flags/${column2[index].code}.png`)}
+                              src={require(`/usr/src/app/client/src/images/country_flags/${column2[index].code}.png`)}
                               alt=""
                               style={{ marginRight: "5px" }}
                             />

@@ -5,7 +5,9 @@ import InputMask from "react-input-mask";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+
 import "./stylingComponents/EditSkater.css";
+import { serverURL, skatersURL, results500URL, results1000URL, results1500URL } from "../apiEndpoints";
 
 const EditSkater = ({ skater }) => {
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +19,8 @@ const EditSkater = ({ skater }) => {
   const fetchResults = async (distance) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/results_${distance}/skaters/${skater.skater_name}`
+        //`http://localhost:5000/results_${distance}/skaters/${skater.skater_name}`
+        `${serverURL}/results_${distance}/skaters/${skater.skater_name}`
       );
       const text = await response.text();
       const jsonData = text ? JSON.parse(text) : {};
@@ -171,7 +174,8 @@ const EditSkater = ({ skater }) => {
       }
 
       const response = await fetch(
-        `http://localhost:5000/skaters/${skater.skater_id}`,
+        //`http://localhost:5000/skaters/${skater.skater_id}`,
+        `${skatersURL}/${skater.skater_id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -230,7 +234,8 @@ const EditSkater = ({ skater }) => {
       let response;
       if (exists) {
         response = await fetch(
-          `http://localhost:5000/results_500/${skater.skater_id}`,
+          //`http://localhost:5000/results_500/${skater.skater_id}`,
+          `${results500URL}/${skater.skater_id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -239,7 +244,8 @@ const EditSkater = ({ skater }) => {
         );
       } else {
         response = await fetch(
-          `http://localhost:5000/results_500/${skater.skater_id}`,
+          //`http://localhost:5000/results_500/${skater.skater_id}`,
+          `${results500URL}/${skater.skater_id}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -295,7 +301,8 @@ const EditSkater = ({ skater }) => {
       let response;
       if (exists) {
         response = await fetch(
-          `http://localhost:5000/results_1000/${skater.skater_id}`,
+          //`http://localhost:5000/results_1000/${skater.skater_id}`,
+          `${results1000URL}/${skater.skater_id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -304,7 +311,8 @@ const EditSkater = ({ skater }) => {
         );
       } else {
         response = await fetch(
-          `http://localhost:5000/results_1000/${skater.skater_id}`,
+          //`http://localhost:5000/results_1000/${skater.skater_id}`,
+          `${results1000URL}/${skater.skater_id}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -360,7 +368,8 @@ const EditSkater = ({ skater }) => {
       let response;
       if (exists) {
         response = await fetch(
-          `http://localhost:5000/results_1500/${skater.skater_id}`,
+          //`http://localhost:5000/results_1500/${skater.skater_id}`,
+          `${results1500URL}/${skater.skater_id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -369,7 +378,8 @@ const EditSkater = ({ skater }) => {
         );
       } else {
         response = await fetch(
-          `http://localhost:5000/results_1500/${skater.skater_id}`,
+          //`http://localhost:5000/results_1500/${skater.skater_id}`,
+          `${results1500URL}/${skater.skater_id}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

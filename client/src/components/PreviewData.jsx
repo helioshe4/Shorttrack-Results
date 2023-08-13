@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+
 import "./stylingComponents/PreviewData.css";
+import { skatersURL, results500URL, results1000URL, results1500URL } from "../apiEndpoints";
 
 const PreviewData = ({
   previewSkater,
@@ -17,7 +19,8 @@ const PreviewData = ({
   const getSkaterId = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/skaters/skater-name/${previewSkater.skater_name}`
+        //`http://localhost:5000/skaters/skater-name/${previewSkater.skater_name}`
+        `${skatersURL}/skater-name/${previewSkater.skater_name}`
       );
       const skater = await response.json();
 
@@ -33,28 +36,32 @@ const PreviewData = ({
       const id = await getSkaterId();
 
       const response500 = await fetch(
-        `http://localhost:5000/results_500/${id}`,
+        //`http://localhost:5000/results_500/${id}`,
+        `${results500URL}/${id}`,
         {
           method: "DELETE",
         }
       );
 
       const response1000 = await fetch(
-        `http://localhost:5000/results_1000/${id}`,
+        //`http://localhost:5000/results_1000/${id}`,
+        `${results1000URL}/${id}`,
         {
           method: "DELETE",
         }
       );
 
       const response1500 = await fetch(
-        `http://localhost:5000/results_1500/${id}`,
+        //`http://localhost:5000/results_1500/${id}`,
+        `${results1500URL}/${id}`,
         {
           method: "DELETE",
         }
       );
 
       const responseSkater = await fetch(
-        `http://localhost:5000/skaters/${id}`,
+        //`http://localhost:5000/skaters/${id}`,
+        `${skatersURL}/${id}`,
         {
           method: "DELETE",
         }

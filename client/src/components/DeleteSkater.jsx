@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { results500URL, results1000URL, results1500URL, skatersURL } from "../apiEndpoints";
+
 const DeleteSkater = () => {
   const [skaters, setSkaters] = useState([]);
   const [skater_name, setSkaterName] = useState("");
@@ -29,21 +31,24 @@ const DeleteSkater = () => {
       const id = await getSkaterId(skater_name);
 
       const response500 = await fetch(
-        `http://localhost:5000/results_500/${id}`,
+        //`http://localhost:5000/results_500/${id}`,
+        `${results500URL}/${id}`,
         {
           method: "DELETE",
         }
       );
 
       const response1000 = await fetch(
-        `http://localhost:5000/results_1000/${id}`,
+        //`http://localhost:5000/results_1000/${id}`,
+        `${results1000URL}/${id}`,
         {
           method: "DELETE",
         }
       );
 
       const response1500 = await fetch(
-        `http://localhost:5000/results_1500/${id}`,
+        //`http://localhost:5000/results_1500/${id}`,
+        `${results1500URL}/${id}`,
         {
           method: "DELETE",
         }
@@ -78,7 +83,8 @@ const DeleteSkater = () => {
   const getSkaterId = async (skaterName) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/skaters/skater-name/${skaterName}`
+        //`http://localhost:5000/skaters/skater-name/${skaterName}`
+        `${skatersURL}/skater-name/${skaterName}`
       );
       const skater = await response.json();
 

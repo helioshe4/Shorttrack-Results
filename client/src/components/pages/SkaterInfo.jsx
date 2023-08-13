@@ -5,6 +5,7 @@ import Table from "react-bootstrap/esm/Table";
 
 import Navbar from "../Navbar";
 import NoPage from "./NoPage";
+import { serverURL, skatersURL } from "../../apiEndpoints";
 
 import styles from "../stylingComponents/SkaterInfo.module.css";
 
@@ -25,7 +26,8 @@ function SkaterInfo() {
     const getSkater = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/skaters/${skater_id}`
+          //`http://localhost:5000/skaters/${skater_id}`
+          `${skatersURL}/${skater_id}`
         );
         const jsonData = await response.json();
         setSkater(jsonData);
@@ -41,7 +43,8 @@ function SkaterInfo() {
     const fetchData = async (distance) => {
       try {
         const response = await fetch(
-          `http://localhost:5000/results_${distance}/${skater_id}`
+          //`http://localhost:5000/results_${distance}/${skater_id}`
+          `${serverURL}/results_${distance}/${skater_id}`
         );
         const jsonData = await response.json();
 

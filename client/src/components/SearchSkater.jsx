@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import EditSkater from "./EditSkater";
-
 import Table from "react-bootstrap/Table";
 import { Typeahead } from "react-bootstrap-typeahead";
 
 import "./stylingComponents/SearchSkater.css";
+import EditSkater from "./EditSkater";
+import { skatersURL, results500URL, results1000URL, results1500URL } from "../apiEndpoints";
 
 export default function SearchSkater() {
   const [value, setValue] = useState(""); //value in the search bar
@@ -35,28 +35,32 @@ export default function SearchSkater() {
   const deleteSkater = async (id) => {
     try {
       const response500 = await fetch(
-        `http://localhost:5000/results_500/${id}`,
+        //`http://localhost:5000/results_500/${id}`,
+        `${results500URL}/${id}`,
         {
           method: "DELETE",
         }
       );
 
       const response1000 = await fetch(
-        `http://localhost:5000/results_1000/${id}`,
+        //`http://localhost:5000/results_1000/${id}`,
+        `${results1000URL}/${id}`,
         {
           method: "DELETE",
         }
       );
 
       const response1500 = await fetch(
-        `http://localhost:5000/results_1500/${id}`,
+        //`http://localhost:5000/results_1500/${id}`,
+        `${results1500URL}/${id}`,
         {
           method: "DELETE",
         }
       );
 
       const responseSkater = await fetch(
-        `http://localhost:5000/skaters/${id}`,
+        //`http://localhost:5000/skaters/${id}`,
+        `${skatersURL}/${id}`,
         {
           method: "DELETE",
         }
@@ -99,7 +103,8 @@ export default function SearchSkater() {
 
   const getSkaters = async () => {
     try {
-      const response = await fetch("http://localhost:5000/skaters");
+      //const response = await fetch("http://localhost:5000/skaters");
+      const response = await fetch(skatersURL);
       const jsonData = await response.json();
 
       const sortedSkaters = jsonData.sort((a, b) =>
