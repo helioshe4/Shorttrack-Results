@@ -21,7 +21,7 @@ function Compare() {
   const [value1, setValue1] = useState(""); //skater1 in the search bar
   const [value2, setValue2] = useState(""); //skater2 in the search bar
   const [showCharts, setShowCharts] = useState(false);
-  const maxSkaters = 5; //max number of skaters in dropdown
+  //const maxSkaters = 5; //max number of skaters in dropdown
   const typeaheadRef1 = useRef();
   const typeaheadRef2 = useRef();
 

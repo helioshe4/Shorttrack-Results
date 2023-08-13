@@ -67,7 +67,8 @@ function SkaterInfo() {
   }
 
   const handleBack = () => {
-    navigate(`/athletes/${skater.country}`, { replace: true });
+    //navigate(`/athletes/${skater.country}`, { replace: true });
+    navigate(-1);
   };
 
   return (

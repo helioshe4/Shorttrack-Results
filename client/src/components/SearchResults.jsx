@@ -117,9 +117,10 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
     }
   };
 
+  //back button
   function handleClick(e, skater_id) {
     e.preventDefault();
-    navigate(`/skaterbio/${skater_id}`);
+    navigate(-1);
   }
 
   function getCustomCode(country) {

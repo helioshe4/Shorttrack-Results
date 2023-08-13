@@ -76,6 +76,7 @@ function Athletes() {
 
   const handleBack = () => {
     navigate("/athletes");
+    //navigate(-1);
   };
 
   function handleClick(e, skater_id) {
