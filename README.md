@@ -47,11 +47,20 @@ The database currently contains the data for all world cup skaters starting from
 No username/password necessary for logging in (for the sake of demoing), just press submit.
 
 ## Help
-To stop the application, run
+- To stop the application, run
 ```
 docker-compose down
 ```
 Add the -v flag to remove postgres database as well (will delete your added entries, but not the default entries).
+
+- If your client or server containers fail to start, try 
+```
+cd client && npm install
+```
+or 
+```
+cd server && npm install
+```
 
 ## Authors
 
