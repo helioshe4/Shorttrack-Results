@@ -24,8 +24,8 @@ services:
     depends_on:
       - server
     volumes:
-      - ./client:/src
-      - /src/node_modules
+      - ./client:/usr/src/app/client
+      - /usr/src/app/client/node_modules
 
   server:
     build: ./server
