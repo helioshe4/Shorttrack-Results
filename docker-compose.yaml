@@ -37,8 +37,8 @@ services:
       - LOGIN_USERNAME=${LOGIN_USERNAME}
       - LOGIN_PASSWORD=${LOGIN_PASSWORD}
     volumes:
-      - ./server:/app
-      - /app/node_modules
+      - ./server:/src
+      - /src/node_modules
     depends_on:
       - postgres
 
