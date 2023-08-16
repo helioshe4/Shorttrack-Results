@@ -119,10 +119,10 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
     }
   };
 
-  //back button
   function handleClick(e, skater_id) {
     e.preventDefault();
-    navigate(-1);
+    navigate(`/skaterbio/${skater_id}`);
+    //navigate(-1);
   }
 
   function getCustomCode(country) {
@@ -151,7 +151,6 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
             <th className="align-center">Name</th>
             <th className="align-center">Country</th>
             <th className="align-center">DOB</th>
-            {/* Add more table headers as needed */}
           </tr>
         </thead>
         <tbody>
@@ -182,7 +181,6 @@ const SearchResults = ({ searchQuery, selectedCheckboxes, selectedAge }) => {
               <td className="align-center vertical-align expand-cell">
                 {skater.dob ? skater.dob.substring(0, 10) : ""}
               </td>
-              {/* Add more table cells as needed */}
             </tr>
           ))}
         </tbody>
